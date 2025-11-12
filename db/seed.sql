@@ -13,7 +13,7 @@ INSERT INTO categories (name, description) VALUES
 ('Capstone', 'Working on Capstone Project'),
 ('SENG 513', 'Working on SENG 513 Project'),
 ('Midterm', 'Studying for Midterm'),
-('ENGG 519', 'Working on ENGG 519 Project'),
+('ENGG 519', 'Working on ENGG 519 Project');
 
 -- insert sample users
 INSERT INTO users (username, email, password_hash) VALUES
@@ -21,7 +21,7 @@ INSERT INTO users (username, email, password_hash) VALUES
 ('fisayo', 'fisayo@procrastapp.com', 'hashed_password_2'),
 ('youssef', 'youssef@procrastapp.com', 'hashed_password_3'),
 ('caleb', 'caleb@procrastapp.com', 'hashed_password_4'),
-('syril', 'syril@procrastapp.com', 'hashed_password_5'),
+('syril', 'syril@procrastapp.com', 'hashed_password_5');
 
 -- insert sample tasks
 INSERT INTO tasks (user_id, category_id, status_id, title, description, due_date) VALUES
