@@ -1,12 +1,27 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-// import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import Settings from './pages/Settings/Settings'
+import ChangeUsername from './pages/Settings/ChangeUsername'
+import ChangePassword from './pages/Settings/ChangePassword'
+import ChangeEmail from './pages/Settings/ChangeEmail'
+import ChangeBirthday from './pages/Settings/ChangeBirthday'
 
 function App() {
-  return <Settings />;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Settings />} />
+        <Route path="/change-username" element={<ChangeUsername />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/change-email" element={<ChangeEmail />} />
+        <Route path="/change-birthday" element={<ChangeBirthday />} />
+      </Routes>
+    </Router>
+  )
   // const [count, setCount] = useState(0)
 
   // return (
