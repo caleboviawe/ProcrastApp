@@ -16,16 +16,24 @@ const ChangePassword: React.FC = () => {
     };
 
     return (
-        <div>
-            <h1>Change Password</h1>
-            <input 
-            type="password"
-            value={newPassword}
-            onChange={(e) =>  setNewPassword(e.target.value)}
-            placeholder="Enter new password"
-            />
-            <button onClick={handlePasswordChange}>Save</button>
-            <button onClick={() => navigate("/")}>Cancel</button>
+        <div className="change-container">
+            <div className="change=header">
+                <img src={settingsIcon} alt="Settings Icon" className='settings-icon'/>
+                <h1>Change Password</h1>
+            </div>
+            <div className="change-box">
+                <div className="field-section">
+                    <label className="field-label">CURRENT PASSWORD:</label>
+                    <input type="text" placeholder="Enter Current Password" />
+                </div>
+
+                <div className="field-section">
+                    <label className="field-label">NEW PASSWORD:</label>
+                    <input type="text" placeholder="Enter New Password:" />
+                    <span className="helper-text">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
+                </div>
+                <button className="change-btn">Change</button>
+            </div>
         </div>
     );
 };
