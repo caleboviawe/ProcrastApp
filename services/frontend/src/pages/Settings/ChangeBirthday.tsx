@@ -7,25 +7,27 @@ import settingsIcon from '../../assets/settings-icon.png'
 // placeholder for now
 
 const ChangeBirthday: React.FC = () => {
-    const [newUsername, setNewUsername] = useState("");
     const navigate = useNavigate();
 
+    const [birthday, setBirthday] = useState("");
+
     const handleUsernameChange = () => {
-        console.log("New UserName:", newUsername);
-        navigate("/");
+        console.log("New Birthday:", birthday);
     };
 
     return (
-        <div>
-            <h1>Change Username</h1>
-            <input 
-            type="text"
-            value={newUsername}
-            onChange={(e) => setNewUsername(e.target.value)}
-            placeholder="Enter new username"
-            />
-            <button onClick={handleUsernameChange}>Save</button>
-            <button onClick={() => navigate("/")}>Cancel</button>
+        <div className="change-container">
+            <div className="change-header">
+                <img src={settingsIcon} alt="Settings Icon" className='settings-icon'/>
+                <h1>Change Birthday</h1>
+            </div>
+            <div className="change-box">
+                <div className="field-section">
+                    <label className="field-label">CHANGE BIRTHDAY:</label>
+                    <input type="date" placeholder="Select New Date"/>
+                </div>
+                <button className="change-btn">Change</button>
+            </div>
         </div>
     );
 };
