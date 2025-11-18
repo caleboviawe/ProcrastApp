@@ -1,17 +1,19 @@
 .settings-container {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #fff;
     font-family: 'inter', sans-serif;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .settings-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin: 2rem 0;
+    margin: 1rem;
 }
 
 .profile-icon {
@@ -21,7 +23,7 @@
 
 .settings-box {
     width: 650px;
-    height: 700px;
+    height: 65vh;
     padding: 3rem 2rem;
     border-radius: 20px;
     background: linear-gradient(180deg, #8B5CF6, #6366F1);
@@ -30,6 +32,7 @@
     gap: 1.8rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     justify-content: space-between;
+    overflow: hidden;
 }
 
 .settings-rows {
@@ -66,4 +69,96 @@
     font-size: 1.2rem;
     cursor: pointer;
     transition: background 0.3s ease;
+}
+
+.settings-rows button:hover {
+    opacity: 0.85;
+}
+
+.change-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    font-family: 'inter', sans-serif;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.change-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.change-box {
+    width: 650px;
+    height: 45vh;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #8B5CF6, #6366F1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+    overflow: hidden;
+    align-items: center;
+}
+
+.field-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.field-label {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.change-box input {
+    width: 80%;
+    background: #D9D9D9;
+    border: none;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.helper-text {
+    font-size: 0.9rem;
+    color: black;
+    margin-top: -0.5rem;
+}
+
+.change-btn {
+    margin-top: 1.5rem;
+    width: 50%;
+    background: #fff;
+    color: #8B5CF6;
+    font-weight: bold;
+    border: none;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.change-btn:hover {
+    opacity: 0.85;
 }

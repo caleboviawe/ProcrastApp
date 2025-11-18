@@ -1,6 +1,6 @@
 import React from 'react';
 import  './Settings.css'
-import proileIcon from '../../assets/profile-icon.png'
+import profileIcon from '../../assets/profile-icon.png'
 import { useNavigate } from 'react-router-dom';
 
 const Settings: React.FC = () => {
@@ -8,7 +8,7 @@ const Settings: React.FC = () => {
   return (
     <div className='settings-container'>
       <div className='settings-header'>
-        <img src={proileIcon} alt="Profile Icon" className='profile-icon'/>
+        <img src={profileIcon} alt="Profile Icon" className='profile-icon'/>
         <h1>Your Profile</h1>
       </div>
     <div className='settings-box'>
@@ -40,7 +40,6 @@ const Settings: React.FC = () => {
       <div className='settings-rows'>
         <label>DATE CREATED:</label>
         <input type="text" readOnly/>
-        <button>Edit</button>
       </div>
 
     </div>
