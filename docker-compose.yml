@@ -1,7 +1,7 @@
 services:
-  app:
-    build: ./app
-    container_name: app
+  backend:
+    build: ./services/backend
+    container_name: backend
     ports:
       - "8000:5000"
     env_file:
