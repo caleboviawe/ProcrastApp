@@ -22,15 +22,18 @@ const User = sequelize.define('User', {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        field: 'password_hash'
     },
     role: {
         type: DataTypes.STRING,
-        defaultValue: 'student', // student, admin, guest
+        defaultValue: 'student', // expand to include admin and stuff later 
         allowNull: false
     }
 }, {
-    timestamps: true
+    tableName: 'users',
+    timestamps: true,
+    underscored: true
 });
 
 module.exports = User;

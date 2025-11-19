@@ -8,20 +8,25 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const port = process.env.PORT || 5000;
 
-// middleware setup
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
-// routes
 app.use('/api/auth', authRoutes);
+
+const errorHandler = require('./middleware/errorMiddleware');
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
     res.json({ message: 'backend is up and running' });
 });
 
-// start server and sync db
 const startServer = async () => {
+    if (!process.env.JWT_SECRET) {
+        console.error('ERROR: JWT_SECRET is not defined.');
+        process.exit(1);
+    }
+
     await connectDB();
     try {
         await sequelize.sync({ alter: true });
