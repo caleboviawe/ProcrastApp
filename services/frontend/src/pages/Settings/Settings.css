@@ -1,5 +1,66 @@
-.settings-container {
-    height: 100vh;
+* {
+    box-sizing: border-box;
+}
+
+/* for the basic header with the back and logout button*/
+
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.left-side {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.clock-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.app-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.right-side {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-btn, .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.back-btn img, .logout-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.back-btn:hover, .logout-btn:hover {
+    opacity: 0.7;
+}
+
+.settings-container, .change-container {
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,17 +83,7 @@
 }
 
 .settings-box {
-    width: 650px;
-    height: 65vh;
-    padding: 3rem 2rem;
-    border-radius: 20px;
-    background: linear-gradient(180deg, #8B5CF6, #6366F1);
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     justify-content: space-between;
-    overflow: hidden;
 }
 
 .settings-rows {
@@ -75,17 +126,6 @@
     opacity: 0.85;
 }
 
-.change-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-    font-family: 'inter', sans-serif;
-    justify-content: center;
-    overflow: hidden;
-}
-
 .change-header {
     display: flex;
     align-items: center;
@@ -99,8 +139,12 @@
 }
 
 .change-box {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.settings-box, .change-box {
     width: 650px;
-    height: 45vh;
     padding: 3rem 2rem;
     border-radius: 20px;
     background: linear-gradient(180deg, #8B5CF6, #6366F1);
@@ -108,9 +152,9 @@
     flex-direction: column;
     gap: 1.8rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    justify-content: flex-start;
+    height: auto;
+    max-height: calc(100vh - 150px);
     overflow: hidden;
-    align-items: center;
 }
 
 .field-section {
