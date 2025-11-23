@@ -42,9 +42,9 @@ const ChangeBirthday: React.FC = () => {
             <div className="change-box">
                 <div className="field-section">
                     <label className="field-label">CHANGE BIRTHDAY:</label>
-                    <input type="date" placeholder="Select New Date"/>
+                    <input type="date" placeholder="Select New Date" value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
                 </div>
-                <button className="change-btn">Change</button>
+                <button className="change-btn" onClick={handleBirthdayChange}>Change</button>
             </div>
         </div>
     );

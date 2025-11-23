@@ -44,7 +44,7 @@ const ChangeEmail: React.FC = () => {
                     <label className="field-label">CHANGE EMAIL:</label>
                     <input type="text" placeholder="Enter New Email Address" />
                 </div>
-                <button className="change-btn">Change</button>
+                <button className="change-btn" onClick={handleEmailChange}>Change</button>
             </div>
         </div>
     );

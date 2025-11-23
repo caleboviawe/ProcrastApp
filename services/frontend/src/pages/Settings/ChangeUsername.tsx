@@ -50,7 +50,7 @@ const ChangeUsername: React.FC = () => {
                     <input type="text" placeholder="Enter New Username"/>
                     <span className="helper-text">Must start with a letter or underscore</span>
                 </div>
-                <button className="change-btn">Change</button>
+                <button className="change-btn" onClick={handleUsernameChange}>Change</button>
             </div>
         </div>
     );

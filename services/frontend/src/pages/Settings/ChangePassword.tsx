@@ -6,9 +6,6 @@ import clockIcon from '../../assets/clock-icon.png'
 import logoutIcon from '../../assets/log-out.png'
 import backIcon from '../../assets/back-arrow.png'
 
-
-// placeholder for now
-
 const ChangePassword: React.FC = () => {
     const [newPassword, setNewPassword] = useState("");
     const navigate = useNavigate();
@@ -38,7 +35,7 @@ const ChangePassword: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className="change=header">
+            <div className="change-header">
                 <img src={settingsIcon} alt="Settings Icon" className='settings-icon'/>
                 <h1>Change Password</h1>
             </div>
@@ -53,7 +50,7 @@ const ChangePassword: React.FC = () => {
                     <input type="text" placeholder="Enter New Password:" />
                     <span className="helper-text">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
                 </div>
-                <button className="change-btn">Change</button>
+                <button className="change-btn" onClick={handlePasswordChange}>Change</button>
             </div>
         </div>
     );
