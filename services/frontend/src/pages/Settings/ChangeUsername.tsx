@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Settings.css'
-import settingsIcon from '../../assets/settings-icon.png'
-import clockIcon from '../../assets/clock-icon.png'
-import logoutIcon from '../../assets/log-out.png'
-import backIcon from '../../assets/back-arrow.png'
+import { Clock, LogOut, ArrowLeft, Settings } from 'lucide-react';
 
 const ChangeUsername: React.FC = () => {
     const [newUsername, setNewUsername] = useState("");
@@ -19,24 +16,24 @@ const ChangeUsername: React.FC = () => {
         <div className="change-container">
             <div className='top-bar'>
                 <div className='left-side'>
-                    <img src={clockIcon} alt="Clock Icon" className='clock-icon' />
+                    <Clock className='clock-icon' />
                     <h2 className='app-name'>ProcrastApp</h2>
                 </div>
 
                 <div className='right-side'>
                     <button className='back-btn' onClick={() => navigate(-1)}>
-                        <img src={backIcon} alt="Back" />
+                        <ArrowLeft className='back-icon'/>
                         Back
                     </button>
                 
                     <button className='logout-btn'>
-                        <img src={logoutIcon} alt="Log Out" />
+                        <LogOut className='logout-icon'/>
                         Log Out
                     </button>
                 </div>
             </div>
             <div className="change-header">
-                <img src={settingsIcon} alt="Settings Icon" className='settings-icon'/>
+                <Settings className='settings-icon'/>
                 <h1>Change Username</h1>
             </div>
             <div className="change-box">
