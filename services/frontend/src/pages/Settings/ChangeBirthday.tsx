@@ -5,15 +5,17 @@ import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 
 const ChangeBirthday: React.FC = () => {
     const navigate = useNavigate();
-
+    const [successMessage, setSuccessMessage] = useState("");
     const [birthday, setBirthday] = useState("");
 
     const handleBirthdayChange = () => {
         console.log("New Birthday:", birthday);
+        setSuccessMessage("Sucessfully Changed.");
     };
 
     return (
         <div className="change-container">
+            {successMessage && <div className="success-message">{successMessage}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />

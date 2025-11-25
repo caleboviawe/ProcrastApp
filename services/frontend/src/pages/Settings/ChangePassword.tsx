@@ -4,16 +4,18 @@ import './Settings.css'
 import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 
 const ChangePassword: React.FC = () => {
-    const [newPassword, setNewPassword] = useState("");
+    const [password, setPassword] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
 
     const handlePasswordChange = () => {
-        console.log("New Password:", newPassword);
-        navigate("/");
+        console.log("New Password:", password);
+        setSuccessMessage("Sucessfully Changed.");
     };
 
     return (
         <div className="change-container">
+            {successMessage && <div className="success-message">{successMessage}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />
@@ -39,12 +41,12 @@ const ChangePassword: React.FC = () => {
             <div className="change-box">
                 <div className="field-section">
                     <label className="field-label">CURRENT PASSWORD:</label>
-                    <input type="text" placeholder="Enter Current Password" />
+                    <input type="password" placeholder="Enter Current Password" />
                 </div>
 
                 <div className="field-section">
                     <label className="field-label">NEW PASSWORD:</label>
-                    <input type="text" placeholder="Enter New Password:" />
+                    <input type="password" placeholder="Enter New Password:" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <span className="helper-text">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
                 </div>
                 <button className="change-btn" onClick={handlePasswordChange}>Change</button>

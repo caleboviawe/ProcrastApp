@@ -4,16 +4,18 @@ import './Settings.css'
 import { Clock, LogOut, ArrowLeft, Settings } from 'lucide-react';
 
 const ChangeUsername: React.FC = () => {
-    const [newUsername, setNewUsername] = useState("");
+    const [username, setUsername] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
 
     const handleUsernameChange = () => {
-        console.log("New UserName:", newUsername);
-        navigate("/");
+        console.log("New UserName:", username);
+        setSuccessMessage("Sucessfully Changed.");
     };
 
     return (
         <div className="change-container">
+            {successMessage && <div className="success-message">{successMessage}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />
@@ -44,7 +46,7 @@ const ChangeUsername: React.FC = () => {
 
                 <div className="field-section">
                     <label className="field-label">NEW USERNAME:</label>
-                    <input type="text" placeholder="Enter New Username"/>
+                    <input type="text" placeholder="Enter New Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <span className="helper-text">Must start with a letter or underscore</span>
                 </div>
                 <button className="change-btn" onClick={handleUsernameChange}>Change</button>

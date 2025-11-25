@@ -4,16 +4,18 @@ import './Settings.css'
 import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 
 const ChangeEmail: React.FC = () => {
-    const [newEmail, setEmail] = useState("");
+    const [Email, setEmail] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
 
     const handleEmailChange = () => {
-        console.log("New Email:", newEmail);
-        navigate("/");
+        console.log("New Email:", Email);
+        setSuccessMessage("Sucessfully Changed.");
     };
 
     return (
         <div className="change-container">
+            {successMessage && <div className="success-message">{successMessage}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />
@@ -39,7 +41,7 @@ const ChangeEmail: React.FC = () => {
             <div className="change-box">
                 <div className="field-section">
                     <label className="field-label">CHANGE EMAIL:</label>
-                    <input type="text" placeholder="Enter New Email Address" />
+                    <input type="text" placeholder="Enter New Email Address" value={Email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 <button className="change-btn" onClick={handleEmailChange}>Change</button>
             </div>
