@@ -6,9 +6,20 @@ import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 const ChangeEmail: React.FC = () => {
     const [Email, setEmail] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const handleEmailChange = () => {
+        setSuccessMessage("");
+        setErrorMessage("");
+
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email);
+
+        if (!isValid) {
+            setErrorMessage("Please enter a valid email address.");
+            return;
+        }
+
         console.log("New Email:", Email);
         setSuccessMessage("Sucessfully Changed.");
     };
@@ -16,6 +27,7 @@ const ChangeEmail: React.FC = () => {
     return (
         <div className="change-container">
             {successMessage && <div className="success-message">{successMessage}</div>}
+            {error && <div className="error-message">{error}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />
