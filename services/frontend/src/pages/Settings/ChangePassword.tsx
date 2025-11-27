@@ -5,10 +5,21 @@ import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 
 const ChangePassword: React.FC = () => {
     const [password, setPassword] = useState("");
+    const [error, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
 
     const handlePasswordChange = () => {
+        setSuccessMessage("");
+        setErrorMessage("");
+
+        const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+
+        if (!isValid) {
+            setErrorMessage("Invalid Password. Must have at least one uppercase and lowercase letter, a number and a special character.");
+            return;
+        }
+
         console.log("New Password:", password);
         setSuccessMessage("Sucessfully Changed.");
     };
@@ -16,6 +27,7 @@ const ChangePassword: React.FC = () => {
     return (
         <div className="change-container">
             {successMessage && <div className="success-message">{successMessage}</div>}
+            {error && <div className="error-message">{error}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />

@@ -6,9 +6,20 @@ import { Clock, LogOut, ArrowLeft, Settings } from 'lucide-react';
 const ChangeUsername: React.FC = () => {
     const [username, setUsername] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const handleUsernameChange = () => {
+        setSuccessMessage("");
+        setErrorMessage("");
+
+        const isValid = /^[A-Za-z_].*/.test(username);
+
+        if (!isValid) {
+            setErrorMessage("Invalid Username. Must start with a letter or underscore.");
+            return;
+        }
+
         console.log("New UserName:", username);
         setSuccessMessage("Sucessfully Changed.");
     };
@@ -16,6 +27,7 @@ const ChangeUsername: React.FC = () => {
     return (
         <div className="change-container">
             {successMessage && <div className="success-message">{successMessage}</div>}
+            {error && <div className="error-message">{error}</div>}
             <div className='top-bar'>
                 <div className='left-side'>
                     <Clock className='clock-icon' />
