@@ -34,6 +34,8 @@ const ChangePassword: React.FC = () => {
                     <h2 className='app-name'>ProcrastApp</h2>
                 </div>
 
+                <div className='main-page-title'>Settings</div>
+
                 <div className='right-side'>
                     <button className='back-btn' onClick={() => navigate(-1)}>
                         <ArrowLeft className='back-icon'/>
@@ -61,7 +63,7 @@ const ChangePassword: React.FC = () => {
                     <input type="password" placeholder="Enter New Password:" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <span className="helper-text">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
                 </div>
-                <button className="change-btn" onClick={handlePasswordChange}>Change</button>
+                <button className="change-btn" onClick={handlePasswordChange}>Save Changes</button>
             </div>
         </div>
     );

@@ -34,6 +34,8 @@ const ChangeUsername: React.FC = () => {
                     <h2 className='app-name'>ProcrastApp</h2>
                 </div>
 
+                <div className='main-page-title'>Settings</div>
+
                 <div className='right-side'>
                     <button className='back-btn' onClick={() => navigate(-1)}>
                         <ArrowLeft className='back-icon'/>
@@ -61,7 +63,7 @@ const ChangeUsername: React.FC = () => {
                     <input type="text" placeholder="Enter New Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <span className="helper-text">Must start with a letter or underscore</span>
                 </div>
-                <button className="change-btn" onClick={handleUsernameChange}>Change</button>
+                <button className="change-btn" onClick={handleUsernameChange}>Save Changes</button>
             </div>
         </div>
     );

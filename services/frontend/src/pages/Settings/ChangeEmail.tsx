@@ -34,6 +34,8 @@ const ChangeEmail: React.FC = () => {
                     <h2 className='app-name'>ProcrastApp</h2>
                 </div>
 
+                <div className='main-page-title'>Settings</div>
+
                 <div className='right-side'>
                     <button className='back-btn' onClick={() => navigate(-1)}>
                         <ArrowLeft className='back-icon'/>
@@ -55,7 +57,7 @@ const ChangeEmail: React.FC = () => {
                     <label className="field-label">CHANGE EMAIL:</label>
                     <input type="text" placeholder="Enter New Email Address" value={Email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
-                <button className="change-btn" onClick={handleEmailChange}>Change</button>
+                <button className="change-btn" onClick={handleEmailChange}>Save Changes</button>
             </div>
         </div>
     );

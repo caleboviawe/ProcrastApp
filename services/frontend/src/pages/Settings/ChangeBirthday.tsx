@@ -17,10 +17,12 @@ const ChangeBirthday: React.FC = () => {
         <div className="change-container">
             {successMessage && <div className="success-message">{successMessage}</div>}
             <div className='top-bar'>
-                <div className='left-side'>
+                <div className='left-side'>on
                     <Clock className='clock-icon' />
                     <h2 className='app-name'>ProcrastApp</h2>
                 </div>
+
+                <div className='main-page-title'>Settings</div>
 
                 <div className='right-side'>
                     <button className='back-btn' onClick={() => navigate(-1)}>
@@ -43,7 +45,7 @@ const ChangeBirthday: React.FC = () => {
                     <label className="field-label">CHANGE BIRTHDAY:</label>
                     <input type="date" placeholder="Select New Date" value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
                 </div>
-                <button className="change-btn" onClick={handleBirthdayChange}>Change</button>
+                <button className="change-btn" onClick={handleBirthdayChange}>Save Changes</button>
             </div>
         </div>
     );
