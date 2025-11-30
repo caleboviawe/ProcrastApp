@@ -21,6 +21,10 @@ app.get('/', (req, res) => {
     res.json({ message: 'backend is up and running' });
 });
 
+const editorRoutes = require('./routes/editorRoutes');
+app.use('/api/docs/editor', editorRoutes);
+
+
 const startServer = async () => {
     if (!process.env.JWT_SECRET) {
         console.error('ERROR: JWT_SECRET is not defined.');
