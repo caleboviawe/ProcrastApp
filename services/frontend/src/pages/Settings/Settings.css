@@ -88,11 +88,10 @@ body {
     align-items: center;
 }
 
-.settings-header {
+.box-header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem;
 }
 
 .profile-icon {
@@ -328,10 +327,9 @@ body {
 }
 
 .description {
-    text-align: center;
+    text-align: left;
     font-size: 1rem;
     color: #555;
-    margin-bottom: 2rem;
 }
 
 .main-page-title {
@@ -359,12 +357,12 @@ body {
     background-color: #8B5CF6;
     color: #fff;
     border: none;
-    font-weight: 600;
+    font-weight: 600; 
+    margin-right: 1rem;
+    border: none;
     padding: 0.6rem 1rem;
-    cursor: pointer;   
+    cursor: pointer;
     transition: background 0.3s ease;
-    display: flex;
-    align-items: center;
     gap: 0.5rem;
 }
 
@@ -380,3 +378,104 @@ body {
     margin-top: 2rem;
 }
 
+.data-box {
+    width: 100%;
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}   
+
+.data-btn {
+    background-color: #8B5CF6;
+    color: #fff;
+    border: none;
+    font-weight: 600; 
+    margin-right: 1rem;
+}
+
+.delete-btn {
+    background-color: #EF4444;
+}
+
+.notif-box {
+    width: 100%;
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.notify-box .box-header h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.notif-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.notif-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.notif-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.notif-subtitle {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.notif-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #000;
+}
+
+.save-btn {
+    background-color: #8B5CF6;
+    color: #fff;
+    border: none;
+    font-weight: 600; 
+    margin-right: 1rem;;
+    transition: background 0.3s ease;
+    width: fit-content;
+    margin-top: 1rem;;
+}
+
+.data-btn:hover {
+    background-color: #7C3AED;
+}
+
+.save-btn:hover {
+    background-color: #7C3AED;
+}
+
+
+/* Dark Mode Styles */ 
+
+body.dark {
+    background-color: #1F2937;
+    color: #E5E7EB;
+}
