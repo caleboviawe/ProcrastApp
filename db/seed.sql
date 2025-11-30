@@ -38,3 +38,11 @@ INSERT INTO reminders (task_id, remind_at) VALUES
 (3, '2025-10-17 08:00:00'),
 (4, '2025-10-21 15:00:00'),
 (5, '2025-10-24 12:00:00');
+
+-- insert documents
+INSERT INTO documents (user_id, title, content, total_time_spent, due_date, document) VALUES
+(1, 'Capstone Proposal Draft', 'Initial draft text...', 1200, '2025-11-15 23:59:00'),
+(2, 'Auth Module Notes', 'Notes for auth module...', 400, '2025-11-20 23:59:00'),
+(3, 'Midterm Study Summary', 'Study notes...', 900, '2025-11-18 12:00:00'),
+(4, 'ENGG 519 Writeup', 'Project writeup...', 600, '2025-11-22 23:59:00'),
+(5, 'Project Timeline Planning', 'Plan details...', 300, '2025-11-25 18:00:00');
