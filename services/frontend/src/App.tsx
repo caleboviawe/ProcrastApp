@@ -6,7 +6,6 @@ import DocumentEditor from "./pages/DocumentEditor";
 import ProtectedRoutes from "./authServices/ProtectedRoutes";
 import Dashboard from "./pages/Dashboard";
 import PublicRoutes from "./authServices/PublicRoutes";
-import ProfilePage from "./pages/UserProfile";
 
 function App() {
     return (
@@ -20,7 +19,6 @@ function App() {
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/editor/:id" element={<DocumentEditor />} />
-                    <Route path="/profile" element={<ProfilePage />} />
                 </Route>
             </Routes>
         </Router>
