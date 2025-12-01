@@ -22,12 +22,18 @@ const User = sequelize.define('User', {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         field: 'password_hash'
+    },
+    googleId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true,
+        field: 'google_id'
     },
     role: {
         type: DataTypes.STRING,
-        defaultValue: 'student', // expand to include admin and stuff later 
+        defaultValue: 'student',
         allowNull: false
     }
 }, {

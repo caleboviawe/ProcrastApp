@@ -11,6 +11,7 @@ services:
       - backend
     environment:
       - VITE_API_URL=http://localhost:8000
+      - VITE_GOOGLE_CLIENT_ID=497858122128-1c1iqsd9qm4k98s0d8tujhsnghgg5l5k.apps.googleusercontent.com
 
   backend:
     build: ./services/backend
