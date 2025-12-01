@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, Mail, Lock, Loader2 } from 'lucide-react';
-import Logo from '../components/Logo';
 import { useAppContext } from '../authServices/helper';
 
 const Login = () => {
