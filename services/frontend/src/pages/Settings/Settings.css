@@ -262,11 +262,18 @@ body {
     padding: 0.6rem 1rem;
     cursor: pointer;
     transition: background 0.3s ease;
+    display: inline-flex;
+    align-items: center;
     gap: 0.5rem;
 }
 
 .toggle-btn:hover {
     background-color: #7C3AED;
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
 }
 
 .settings-options {
