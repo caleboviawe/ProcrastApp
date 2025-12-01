@@ -1,21 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import ProfilePage from './pages/UserProfile';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import DocumentEditor from "./pages/DocumentEditor";
+import ProtectedRoutes from "./authServices/ProtectedRoutes";
+import Dashboard from "./pages/Dashboard";
+import PublicRoutes from "./authServices/PublicRoutes";
+import ProfilePage from "./pages/UserProfile";
 
 function App() {
-  return (
-      <Router>
-          <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/profile" element={<ProfilePage />} />
-          </Routes>
-      </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route element={<PublicRoutes />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                </Route>
+                <Route element={<ProtectedRoutes />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/editor/:id" element={<DocumentEditor />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
