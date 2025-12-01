@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, User, Mail, Lock, Loader2 } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Signup = () => {
         setLoading(true);
 
         try {
-            const res = await axios.post('http://localhost:8000/api/auth/register', formData);
+            await axios.post('http://localhost:8000/api/auth/register', formData);
             navigate('/login');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Signup failed. Please try again.');
@@ -32,8 +33,8 @@ const Signup = () => {
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[100px] mix-blend-screen"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] mix-blend-screen"></div>
+                <div className="absolute inset-0 bg-grid-white opacity-[0.2]"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/80"></div>
             </div>
 
             <div className="max-w-md w-full bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-slate-800 relative z-10">
@@ -43,6 +44,7 @@ const Signup = () => {
                 </Link>
 
                 <div className="text-center mb-8">
+                    <Logo className="h-24 w-auto mx-auto mb-6" />
                     <h2 className="text-3xl font-bold text-white">Create Account</h2>
                     <p className="text-slate-400 mt-2">Join thousands of students beating procrastination</p>
                 </div>
