@@ -22,7 +22,7 @@ const ChangeBirthday: React.FC = () => {
                     <h2 className='app-name'>ProcrastApp</h2>
                 </div>
 
-                <div className='main-page-title'>Settings</div>
+                <h4 className='main-page-title'>Settings</h4>
 
                 <div className='right-side'>
                     <button className='back-btn' onClick={() => navigate(-1)}>

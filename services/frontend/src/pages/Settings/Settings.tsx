@@ -33,9 +33,9 @@ const SettingsPage: React.FC = () => {
       </div>
 
     <div className='settings-options'>
-      <div className='settings-box'>
+      <div className='profile-box'>
         <div className='box-header'>
-          <User className='profile-icon'/>
+          <User className='emoji-icon'/>
           <h4>Your Profile</h4>
         </div>
         <p className='description'>Manage your personal information and preferences.</p>
@@ -70,22 +70,20 @@ const SettingsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className='data-box'>
+        <div className='selection-box'>
           <div className='box-header'>
-            <Palette className='profile-icon'/>
+            <Palette className='emoji-icon'/>
             <h4>Appearance</h4>
           </div>
           <p className='description'>Customize the look and feel of your workspace.</p>
           <div className='settings-row'>
-            <button className='toggle-btn'>
-              <DarkModeToggle />
-            </button>
+            <DarkModeToggle />
           </div>
         </div>
 
-        <div className='data-box'>
+        <div className='selection-box'>
           <div className='box-header'>
-            <Database className='profile-icon'/>
+            <Database className='emoji-icon'/>
             <h4>Data Management</h4>
           </div>
           <p className='description'>Manage your data and privacy settings.</p>
@@ -95,9 +93,9 @@ const SettingsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className='notif-box'>
+        <div className='selection-box'>
           <div className='box-header'>
-            <Bell className='profile-icon'/>
+            <Bell className='emoji-icon'/>
             <h4>Notifications</h4>
           </div>
 
@@ -127,7 +125,10 @@ const SettingsPage: React.FC = () => {
             <input type="checkbox" />
           </div>
 
-          <button className='save-btn'>Save Selections</button>
+          <div className='settings-row'>
+            <button className='data-btn'>Save Selections</button>
+          </div>
+          
 
         </div>
 
