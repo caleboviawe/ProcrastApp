@@ -5,14 +5,17 @@ import Signup from './pages/Signup';
 import DocumentEditor from './pages/DocumentEditor';
 import ProtectedRoutes from './authServices/ProtectedRoutes';
 import Dashboard from './pages/Dashboard';
+import PublicRoutes from './authServices/PublicRoutes';
 
 function App() {
   return (
       <Router>
           <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
+              <Route element={<PublicRoutes />}>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+              </Route>
               <Route element={<ProtectedRoutes />}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/editor/:id" element={<DocumentEditor />} />

@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, Mail, Lock, Loader2 } from 'lucide-react';
+import { useAppContext } from '../authServices/helper';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { setUser } = useAppContext();
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -22,6 +24,21 @@ const Login = () => {
             const res = await axios.post('http://localhost:8000/api/auth/login', formData);
             // store JWT for auth
             localStorage.setItem('token', res.data.token);
+            if (res.data.token) {
+                try {
+                    const userResponse = await axios.get(
+                        "http://localhost:8000/api/me",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${res.data.token}`,
+                            },
+                        }
+                    );
+                    setUser(userResponse.data);
+                } catch (err) {
+                    console.error("Failed to fetch user data:", err);
+                }
+            }
             navigate('/dashboard');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed. Please try again.');
