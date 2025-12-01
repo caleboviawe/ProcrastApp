@@ -28,13 +28,14 @@ const Login = () => {
             if (res.data.token) {
                 try {
                     const userResponse = await axios.get(
-                        "http://localhost:8000/api/me",
+                        "http://localhost:8000/api/auth/me",
                         {
                             headers: {
                                 Authorization: `Bearer ${res.data.token}`,
                             },
                         }
                     );
+                    console.log("Fetched user data:", userResponse.data);
                     setUser(userResponse.data);
                 } catch (err) {
                     console.error("Failed to fetch user data:", err);

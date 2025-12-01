@@ -1,10 +1,15 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
+import { useAppContext } from "./helper";
 
 const PublicRoutes: React.FC = () => {
-    const isAuthenticated = localStorage.getItem("token");
+    const { user, loading } = useAppContext();
 
-    return !isAuthenticated ? <Outlet /> : <Navigate to="/dashboard" replace />;
+    if (loading) {
+        return <LoadingScreen />;
+    }
+    return !user ? <Outlet /> : <Navigate to="/dashboard" replace />;
 };
 
 export default PublicRoutes;
