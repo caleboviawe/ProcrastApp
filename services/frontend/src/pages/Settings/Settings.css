@@ -421,6 +421,27 @@ body.dark {
     .change-btn {
         width: 100%;
     }
+
+    .change-header {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .change-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .settings-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .data-btn {
+        margin-bottom: 0.5rem;
+    }
 }
 
 @media (max-width: 480px) {
