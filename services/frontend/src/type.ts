@@ -6,6 +6,7 @@ export interface User {
     role: 'student' | 'admin';
     created_at: string;
     updated_at: string;
+    google_id: string | null;
 }
 
 export interface Status {
