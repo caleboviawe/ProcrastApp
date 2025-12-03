@@ -13,8 +13,8 @@ export default function DarkModeToggle() {
     }, [darkMode]);
 
     return (
-        <button onClick={() => setDarkMode(!darkMode)} className='toggle-btn'>
-            {darkMode ? <Sun className='theme-icon'/> : <Moon className='theme-icon'/>}
+        <button onClick={() => setDarkMode(!darkMode)} className='bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 px-4 py-2 rounded-lg transition-all flex items-center justify-center cursor-pointer'>
+            {darkMode ? <Sun className='w-5'/> : <Moon className='w-5'/>}
             {darkMode ? 'Light Mode' : 'Dark Mode'}
         </button>
     );
