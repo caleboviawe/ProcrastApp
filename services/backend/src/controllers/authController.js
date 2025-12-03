@@ -83,6 +83,24 @@ const updateUsername = async (req, res, next) => {
     }
 }
 
+const updateEmail = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.email = email;
+        await user.save();
+        
+        res.json({ message: 'Email updated successfully', email: user.email });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
 const googleLogin = async (req, res, next) => {
     try {
         const { googleId, email, name } = req.body;
@@ -112,4 +130,4 @@ const googleLogin = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, getMe, updateUsername, googleLogin };
+module.exports = { register, login, getMe, updateUsername, updateEmail, googleLogin };
