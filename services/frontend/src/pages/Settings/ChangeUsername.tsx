@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings, Clock, LogOut, ArrowLeft, Divide } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
+import logo from '../../assets/procrastapp-logo.png';
 
 const ChangeUsername: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -32,10 +33,9 @@ const ChangeUsername: React.FC = () => {
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed'
             }}>
-            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl">
+            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full ">
                 <div className="flex items-center gap-3">
-                    <Clock className="w-7 h-7 text-white" />
-                    <h2 className="text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>
+                    <img src={logo} alt="ProcrastApp Logo" className="w-40 h-20"/>
                 </div>
 
                 <h4 className="text-xl md:text-2xl text-white font-semibold text-center">Settings:</h4>

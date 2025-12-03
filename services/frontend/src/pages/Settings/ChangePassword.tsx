@@ -32,7 +32,7 @@ const ChangePassword: React.FC = () => {
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed'
             }}>
-            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl">
+            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full">
                 <div className="flex items-center gap-3">
                     <Clock className="w-7 h-7 text-white" />
                     <h2 className="text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>

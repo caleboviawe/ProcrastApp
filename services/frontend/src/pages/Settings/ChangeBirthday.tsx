@@ -14,20 +14,16 @@ const ChangeBirthday: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative" style={{
+        <div className="min-h-screen w-full flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative" style={{
                 backgroundImage: `url(${landingBg})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed'
             }}>
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute inset-0 bg-grid-white opacity-[0.05]"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/80"></div>
-            </div>
 
-            <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
-                <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl">
+            <div className="w-full relative z-10 flex flex-col gap-8">
+                <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-8">
                     <div className="flex items-center gap-3">
                         <Clock className="w-7 h-7 text-white" />
                         <h2 className="text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>
@@ -46,6 +42,9 @@ const ChangeBirthday: React.FC = () => {
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
 
                 <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                     <div className="flex items-center gap-3">

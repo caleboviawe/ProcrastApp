@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DarkModeToggle from './DarkModeToggle';
 import { Bell, Database, Palette, User, Clock, LogOut, ArrowLeft } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
+import logo from '../../assets/procrastapp-logo.png';
 
 const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -20,11 +21,10 @@ const SettingsPage: React.FC = () => {
 
           <div className="flex flex-col md:flex-row justify-between items-center p-4 sm:p-5 md:p-4 gap-2 md:gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl mb-6">
             <div className="flex flex-col sm:flex-row items-center gap-3">
-              <Clock className="w-7 h-7 text-white" />
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>
+              <img src={logo} alt="ProcrastApp Logo" className="w-40 h-20"/>
             </div>
 
-            <h4 className="text-xl md:text-2xl text-white font-semibold text-center"></h4>
+            <h4 className="text-xl md:text-2xl text-white font-semibold text-center">Settings</h4>
 
             <div className="flex flex-col sm:flex-row items-center gap-3">
               <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={() => navigate(-1)}>
