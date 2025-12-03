@@ -17,28 +17,24 @@ const SettingsPage: React.FC = () => {
                 backgroundAttachment: 'fixed'
             }} >
         
-        <div className="w-full relative z-10 flex flex-col gap-8">
+        <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
+                <div className="flex items-center gap-3">
+                    <img src={logo} alt="ProcrastApp Logo" className="w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20"/>
+                </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center p-4 sm:p-5 md:p-4 gap-2 md:gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl mb-6">
-            <div className="flex flex-col sm:flex-row items-center gap-3">
-              <img src={logo} alt="ProcrastApp Logo" className="w-40 h-20"/>
+                <h4 className="text-xl sm:text-lg md:text-2xl text-white font-semibold text-center">Settings:</h4>
+
+                <div className="flex items-center gap-3">
+                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={() => navigate(-1)}>
+                        <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4"/>
+                        Back
+                    </button>
+                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
+                        <LogOut className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4"/>
+                        Log Out
+                    </button>
+                </div>
             </div>
-
-            <h4 className="text-xl md:text-2xl text-white font-semibold text-center">Settings</h4>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3">
-              <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={() => navigate(-1)}>
-                <ArrowLeft className="w-4 h-4"/>
-                Back
-              </button>
-              <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
-                <LogOut className="w-4 h-4"/>
-                Log Out
-              </button>
-            </div>
-          </div>
-
-        </div>
 
         {/*page container stuff*/}
         <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
@@ -54,7 +50,7 @@ const SettingsPage: React.FC = () => {
               </div>
               <p className="text-slate-400">Manage your personal preferences and information.</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
+              <div className="grid grid-cols-1 sm:grid-rows-1 md:grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
                 {[
                   {label: 'USERNAME', route: '/change-username' },
                   {label: 'PASSWORD', route: '/change-password' },
@@ -115,7 +111,7 @@ const SettingsPage: React.FC = () => {
                   {title: 'Daily Summary', subtitle: 'Get a daily summary of your tasks and progress.'},
                   {title: 'Overdue Alerts', subtitle: 'Urgent Notifications for overdue tasks'},
                 ].map((notif, idx) => (
-                  <div key={idx} className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2">
+                  <div key={idx} className="flex flex-col sm:flex-row sm:justify-between sm:items-center md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2">
                     <div className="flex flex-col">
                       <span className="font-semibold text-white">{notif.title}</span>
                       <span className="text-slate-400 text-sm">{notif.subtitle}</span>
