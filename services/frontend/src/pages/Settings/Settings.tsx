@@ -1,140 +1,132 @@
-import React, { useState } from 'react';
-import  './Settings.css'
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Database, Palette, User, Clock, LogOut, ArrowLeft, Sun, Moon } from 'lucide-react';
-import  DarkModeToggle  from './DarkModeToggle';
-
-// adding dark mode toggle for now --> will implement later
+import DarkModeToggle from './DarkModeToggle';
+import { Bell, Database, Palette, User, Clock, LogOut, ArrowLeft } from 'lucide-react';
 
 const SettingsPage: React.FC = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  return (
-    <div className='settings-container'>
-      <div className='top-bar'>
-        <div className='left-side'>
-          <Clock className='clock-icon' />
-          <h2 className='app-name'>ProcrastApp</h2>
+    return (
+      <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 sm:p-5 md:p-6 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative">
+        
+        {/*Background stuff*/}
+        <div className="absolute inset-0 overflow-hideen pointer-events-none">
+          <div className="absolute inset-0 bg-grid-white opacity-[0.05]"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/80"></div>
         </div>
-
-        <h4 className='main-page-title'>Settings</h4>
-
-        <div className='right-side'>
-          <button className='back-btn' onClick={() => navigate(-1)}>
-            <ArrowLeft className='back-icon'/>
-            Back
-          </button>
+        
+        {/*page container stuff*/}
+        <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
           
-          <button className='logout-btn'>
-            <LogOut className='logout-icon'/>
-            Log Out
-          </button>
+          <div className="flex flex-col md:flex-row justify-between items-center p-4 sm:p-5 md:p-4 gap-2 md:gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl">
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <Clock className="w-7 h-7 text-white" />
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>
+            </div>
+
+            <h4 className="text-xl md:text-2xl text-white font-semibold text-center"></h4>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={() => navigate(-1)}>
+                <ArrowLeft className="w-4 h-4"/>
+                Back
+              </button>
+              <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
+                <LogOut className="w-4 h-4"/>
+                Log Out
+              </button>
+            </div>
+          </div>
+
+          {/*setting options stuff*/}
+          <div className="flex flex-col gap-6">
+
+            {/*profile box*/}
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <User className="w-8 h-8 text-white"/>
+                <h4 className="text-lg font-semibold text-white">Your Profile</h4>
+              </div>
+              <p className="text-slate-400">Manage your personal preferences and information.</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
+                {[
+                  {label: 'USERNAME', route: '/change-username' },
+                  {label: 'PASSWORD', route: '/change-password' },
+                  {label: 'EMAIL', route: '/change-email' },
+                  {label: 'BIRTHDAY', route: '/change-birthday' },
+                ].map(({ label, route }) => (
+                  <React.Fragment key={label}>
+                    <label className="text-left md:text-right font-semibold text-slate-300">{label}:</label>
+                    <input type="text" readOnly className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500" />
+
+                    <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-3 py-1 rounded-lg font-medium transition-all" onClick={() => navigate(route)}>Edit</button>
+
+                  </React.Fragment>
+                ))}
+
+                <label className="text-right font-semibold text-slate-300">DATE CREATED:</label>
+                <input type="text" readOnly className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2" />
+              </div>
+            </div>
+
+            {/*appearance box*/}
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <Palette className="w-8 h-8 text-white"/>
+                  <h4 className="text-lg font-semibold text-white">Appearance</h4>
+                </div>
+                <p className="text-slate-400">Customize the look and feel of your workspace.</p>
+
+                <div className="flex justify-center mt-4">
+                  <DarkModeToggle />
+                </div>
+            </div>
+
+            {/*data management box*/}
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <Database className="w-8 h-8 text-white"/>
+                  <h4 className="text-lg font-semibold text-white">Data Management</h4>
+                </div>
+
+                <p className="text-slate-400">Manage your data and privacy settings.</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all">Export Data</button>
+                  <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all">Delete Account</button>
+                </div>
+            </div>
+
+            {/*notifications box*/}
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <Bell className="w-8 h-8 text-white"/>
+                  <h4 className="text-lg font-semibold text-white">Notifications:</h4>
+                </div>
+                <p className="text-slate-400">Set your notification preferences.</p>
+
+                {[
+                  {title: 'Deadline Reminders', subtitle: 'Receive reminders for upcoming deadlines.'},
+                  {title: 'Daily Summary', subtitle: 'Get a daily summary of your tasks and progress.'},
+                  {title: 'Overdue Alerts', subtitle: 'Urgent Notifications for overdue tasks'},
+                ].map((notif, idx) => (
+                  <div key={idx} className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2">
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-white">{notif.title}</span>
+                      <span className="text-slate-400 text-sm">{notif.subtitle}</span>
+                    </div>
+                    <input type="checkbox" className="w-5 h-5 mt-2 md:mt-0 accent-violet-500" />
+                  </div>
+                ))}
+
+                <div className="flex justify-center mt-4">
+                  <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all">Save Selections</button>
+                </div>
+            </div>
+          </div>
         </div>
       </div>
-
-    <div className='settings-options'>
-      <div className='profile-box'>
-        <div className='box-header'>
-          <User className='emoji-icon'/>
-          <h4>Your Profile</h4>
-        </div>
-        <p className='description'>Manage your personal information and preferences.</p>
-
-          <div className='settings-rows'>
-            <label>USERNAME:</label>
-            <input type="text" readOnly/>
-            <button onClick={() => navigate('/change-username')}>Edit</button>
-          </div>
-
-          <div className='settings-rows'>
-            <label>PASSWORD:</label>
-            <input type="text" readOnly/>
-            <button onClick={() => navigate('/change-password')}>Edit</button>
-          </div>
-
-          <div className='settings-rows'>
-            <label>EMAIL:</label>
-            <input type="text" readOnly/>
-            <button onClick={() => navigate('/change-email')}>Edit</button>
-          </div>
-
-          <div className='settings-rows'>
-            <label>BIRTHDAY:</label>
-            <input type="text" readOnly/>
-            <button onClick={() => navigate('/change-birthday')}>Edit</button>
-          </div>
-
-          <div className='settings-rows'>
-            <label>DATE CREATED:</label>
-            <input type="text" readOnly/>
-          </div>
-        </div>
-
-        <div className='selection-box'>
-          <div className='box-header'>
-            <Palette className='emoji-icon'/>
-            <h4>Appearance</h4>
-          </div>
-          <p className='description'>Customize the look and feel of your workspace.</p>
-          <div className='settings-row'>
-            <DarkModeToggle />
-          </div>
-        </div>
-
-        <div className='selection-box'>
-          <div className='box-header'>
-            <Database className='emoji-icon'/>
-            <h4>Data Management</h4>
-          </div>
-          <p className='description'>Manage your data and privacy settings.</p>
-          <div className='settings-row'>
-            <button className='data-btn'>Export Data</button>
-            <button className='data-btn delete-btn'>Delete Account</button>
-          </div>
-        </div>
-
-        <div className='selection-box'>
-          <div className='box-header'>
-            <Bell className='emoji-icon'/>
-            <h4>Notifications</h4>
-          </div>
-
-          <p className='description'>Set your notification preferences.</p>
-
-          <div className='notif-row'>
-            <div className='notif-text'>
-              <span className='notif-title'>Deadline Reminders</span>
-              <span className='notif-subtitle'>Receive reminders for upcoming deadlines.</span>
-            </div>
-            <input type="checkbox" />
-          </div>
-
-          <div className='notif-row'>
-            <div className='notif-text'>
-              <span className='notif-title'>Daily Digest</span>
-              <span className='notif-subtitle'>Summary of Today's tasks.</span>
-            </div>
-            <input type="checkbox" />
-          </div>
-
-          <div className='notif-row'>
-            <div className='notif-text'>
-              <span className='notif-title'>OverDue Alerts</span>
-              <span className='notif-subtitle'>Urgent notifications for overdue tasks.</span>
-            </div>
-            <input type="checkbox" />
-          </div>
-
-          <div className='settings-row'>
-            <button className='data-btn'>Save Selections</button>
-          </div>
-          
-
-        </div>
-
-      </div>
-    </div>
-  );
+    )
 };
 
 export default SettingsPage;

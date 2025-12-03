@@ -1,7 +1,21 @@
 services:
-  app:
-    build: ./app
-    container_name: app
+  frontend:
+    build: ./services/frontend
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./services/frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_GOOGLE_CLIENT_ID=497858122128-1c1iqsd9qm4k98s0d8tujhsnghgg5l5k.apps.googleusercontent.com
+
+  backend:
+    build: ./services/backend
+    container_name: backend
     ports:
       - "8000:5000"
     env_file:
