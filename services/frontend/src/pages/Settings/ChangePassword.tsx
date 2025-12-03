@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings, Clock, LogOut, ArrowLeft, Divide } from 'lucide-react';
+import landingBg from '../../assets/landing-bg-3.jpg';
 
 const ChangePassword: React.FC = () => {
     const [password, setPassword] = useState("");
@@ -24,7 +25,13 @@ const ChangePassword: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative">
+        <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative" style={{
+                backgroundImage: `url(${landingBg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed'
+            }}>
             <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl">
                 <div className="flex items-center gap-3">
                     <Clock className="w-7 h-7 text-white" />

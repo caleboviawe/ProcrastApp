@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
+import landingBg from '../../assets/landing-bg-3.jpg';
 
 const ChangeEmail: React.FC = () => {
     const [Email, setEmail] = useState("");
@@ -24,7 +25,13 @@ const ChangeEmail: React.FC = () => {
     };
 
     return (
-            <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative">
+            <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative" style={{
+                backgroundImage: `url(${landingBg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed'
+            }}>
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute inset-0 bg-grid-white opacity-[0.05]"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/80"></div>

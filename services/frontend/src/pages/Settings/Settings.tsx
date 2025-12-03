@@ -2,23 +2,23 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DarkModeToggle from './DarkModeToggle';
 import { Bell, Database, Palette, User, Clock, LogOut, ArrowLeft } from 'lucide-react';
+import landingBg from '../../assets/landing-bg-3.jpg';
 
 const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-      <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 sm:p-5 md:p-6 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative">
+      <div className="min-h-screen w-full flex flex-col items-center p-4 sm:p-5 md:p-6 font-sans selection:bg-violet-500/30 selection:text-violet-200 overflow-x-hidden relative" style={{
+                backgroundImage: `url(${landingBg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed'
+            }} >
         
-        {/*Background stuff*/}
-        <div className="absolute inset-0 overflow-hideen pointer-events-none">
-          <div className="absolute inset-0 bg-grid-white opacity-[0.05]"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/80"></div>
-        </div>
-        
-        {/*page container stuff*/}
-        <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
-          
-          <div className="flex flex-col md:flex-row justify-between items-center p-4 sm:p-5 md:p-4 gap-2 md:gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl">
+        <div className="w-full relative z-10 flex flex-col gap-8">
+
+          <div className="flex flex-col md:flex-row justify-between items-center p-4 sm:p-5 md:p-4 gap-2 md:gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl mb-6">
             <div className="flex flex-col sm:flex-row items-center gap-3">
               <Clock className="w-7 h-7 text-white" />
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>
@@ -37,6 +37,11 @@ const SettingsPage: React.FC = () => {
               </button>
             </div>
           </div>
+
+        </div>
+
+        {/*page container stuff*/}
+        <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
 
           {/*setting options stuff*/}
           <div className="flex flex-col gap-6">
@@ -130,3 +135,4 @@ const SettingsPage: React.FC = () => {
 };
 
 export default SettingsPage;
+
