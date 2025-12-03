@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import './Settings.css'
-import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Settings, Clock, LogOut, ArrowLeft, Divide } from 'lucide-react';
 
 const ChangePassword: React.FC = () => {
     const [password, setPassword] = useState("");
-    const [error, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const handlePasswordChange = () => {
@@ -25,48 +24,54 @@ const ChangePassword: React.FC = () => {
     };
 
     return (
-        <div className="change-container">
-            {successMessage && <div className="success-message">{successMessage}</div>}
-            {error && <div className="error-message">{error}</div>}
-            <div className='top-bar'>
-                <div className='left-side'>
-                    <Clock className='clock-icon' />
-                    <h2 className='app-name'>ProcrastApp</h2>
+        <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative">
+            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl">
+                <div className="flex items-center gap-3">
+                    <Clock className="w-7 h-7 text-white" />
+                    <h2 className="text-xl md:text-2xl font-bold text-white">ProcrastApp</h2>
                 </div>
 
-                <h4 className='main-page-title'>Settings</h4>
+                <h4 className="text-xl md:text-2xl text-white font-semibold text-center">Settings:</h4>
 
-                <div className='right-side'>
-                    <button className='back-btn' onClick={() => navigate(-1)}>
-                        <ArrowLeft className='back-icon'/>
+                <div className="flex items-center gap-3">
+                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={() => navigate(-1)}>
+                        <ArrowLeft className="w-4 h-4"/>
                         Back
                     </button>
-                
-                    <button className='logout-btn'>
-                        <LogOut className='logout-icon'/>
+                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
+                        <LogOut className="w-4 h-4"/>
                         Log Out
                     </button>
                 </div>
             </div>
-            <div className="change-header">
-                <Settings className='settings-icon'/>
-                <h1>Change Password</h1>
+
+            {successMessage && <div className="bg-green-600 text-white px-4 py-2 rounded-lg mt-6 w-full max-w-4xl text-center">{successMessage}</div>}
+            {error && <div className="bg-red-600 text-white px-4 py-2 rounded-lg mt-6 w-full max-w-4xl text-center">{error}</div>}
+
+            <div className="flex item-center gap-4 mt-8">
+                <Settings className='w-8 h-8 text-white'/>
+                <h1 className="text-2xl font-bold text-white">Change Password</h1>
             </div>
-            <div className="change-box">
-                <div className="field-section">
-                    <label className="field-label">CURRENT PASSWORD:</label>
-                    <input type="password" placeholder="Enter Current Password" />
+
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-6 w-full max-w-4xl mt-4">
+                <div className="flex flex-col gap-4">
+                    <label className="text-slate-300 font-semibold">CURRENT PASSWORD:</label>
+                    <input type="text" placeholder='Enter Current Password' className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
                 </div>
 
-                <div className="field-section">
-                    <label className="field-label">NEW PASSWORD:</label>
-                    <input type="password" placeholder="Enter New Password:" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    <span className="helper-text">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
+                <div className="flex flex-col gap-2">
+                    <label className="text-slate-300 font-semibold">NEW PASSWORD:</label>
+                    <input type="text" placeholder='Enter New Password' value={password} onChange={(e) => setPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
+                    <span className="text-slate-400 text-sm">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
                 </div>
-                <button className="change-btn" onClick={handlePasswordChange}>Save Changes</button>
+
+                <div className="flex justify-center mt-4">
+                    <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all" onClick={handlePasswordChange}>Save Changes</button>
+                </div>
             </div>
+
         </div>
-    );
+    )
 };
 
 export default ChangePassword;

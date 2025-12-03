@@ -56,12 +56,12 @@ const ChangeUsername: React.FC = () => {
             <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-6 w-full max-w-4xl mt-4">
                 <div className="flex flex-col gap-4">
                     <label className="text-slate-300 font-semibold">CURRENT USERNAME:</label>
-                    <input type="text" placeholder='Enter Current Username' className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full" />
+                    <input type="text" placeholder='Enter Current Username' className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
                 </div>
 
                 <div className="flex flex-col gap-2">
                     <label className="text-slate-300 font-semibold">NEW USERNAME:</label>
-                    <input type="text" placeholder='Enter New Username' value={username} onChange={(e) => setUsername(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full" />
+                    <input type="text" placeholder='Enter New Username' value={username} onChange={(e) => setUsername(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
                     <span className="text-slate-400 text-sm">Must start with a letter or underscore</span>
                 </div>
 
