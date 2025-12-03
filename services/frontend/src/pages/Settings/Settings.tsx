@@ -84,7 +84,7 @@ const SettingsPage: React.FC = () => {
                                     route: "/change-email",
                                     placeholder: user?.email,
                                 },
-                            ].filter(item => item.show)
+                            ]
                             .map(({ label, route, placeholder }) => (
                                 <React.Fragment key={label}>
                                     <label className="text-left md:text-right font-semibold text-slate-300">
