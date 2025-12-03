@@ -329,11 +329,13 @@ body {
 .notif-title {
     font-size: 1rem;
     font-weight: 600;
+    text-align: left;
 }
 
 .notif-subtitle {
     font-size: 0.9rem;
     color: #555;
+    text-align: left;
 }
 
 .notif-row input[type="checkbox"] {
