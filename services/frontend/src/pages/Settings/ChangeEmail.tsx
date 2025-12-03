@@ -3,25 +3,40 @@ import { useNavigate } from "react-router-dom";
 import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
+import axios from "axios";
 
 const ChangeEmail: React.FC = () => {
-    const [Email, setEmail] = useState("");
+    const [email, setEmail] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
-    const handleEmailChange = () => {
+    const handleEmailChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
 
-        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email);
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
         if (!isValid) {
             setErrorMessage("Please enter a valid email address.");
             return;
         }
 
-        console.log("New Email:", Email);
+        const res = await axios.put(
+            "http://localhost:8000/api/user/updateEmail",
+            { email },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }
+        );
+        if (res.status !== 200) {
+            setErrorMessage("Failed to change username. Please try again.");
+            return;
+        }
+
+        console.log("New email:", email);
         setSuccessMessage("Sucessfully Changed.");
     };
 
@@ -58,7 +73,7 @@ const ChangeEmail: React.FC = () => {
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-3">
                             <Settings className='w-8 h-8 text-white'/>
-                            <h4 className="text-lg font-semibold text-white">Change Email</h4>
+                            <h4 className="text-lg font-semibold text-white">Change email</h4>
                         </div>
                         
                         {successMessage && <div className="bg-green-600 text-white px-4 py-2 rounded-lg mt-6 w-full max-w-4xl text-center">{successMessage}</div>}
@@ -67,7 +82,7 @@ const ChangeEmail: React.FC = () => {
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
                                 <label className="text-white font-semibold">NEW EMAIL:</label>
-                                <input type="text" placeholder="Enter New Email Address" value={Email} onChange={(e) => setEmail(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white placeholder:text-slate-500" />
+                                <input type="text" placeholder="Enter New email Address" value={email} onChange={(e) => setEmail(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white placeholder:text-slate-500" />
                             </div>
 
                             <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all self-center mt-2" onClick={handleEmailChange}>Save Changes</button>
