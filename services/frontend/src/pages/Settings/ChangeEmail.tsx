@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './Settings.css'
 import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
 
 const ChangeEmail: React.FC = () => {
