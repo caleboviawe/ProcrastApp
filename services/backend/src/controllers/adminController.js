@@ -58,6 +58,29 @@ const getAllTasks = async (req, res) => {
     }
 };
 
+const updateTask = async (req, res) => {
+    const taskId = req.params.id;
+    const { title, description, dueDate, statusId, categoryId } = req.body;
+
+    try {
+        const task = await Task.findByPk(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        task.title = title || task.title;
+        task.description = description || task.description;
+        task.dueDate = dueDate || task.dueDate;
+        task.statusId = statusId || task.statusId;
+        task.categoryId = categoryId || task.categoryId;
+
+        await task.save();
+        res.json({ message: "Task updated successfully", task });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 const deleteTask = async (req, res) => {
     const taskId = req.params.id;
     
@@ -81,4 +104,5 @@ module.exports = {
     updateUser,
     deleteUser,
     deleteTask,
+    updateTask,
 };

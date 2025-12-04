@@ -7,6 +7,7 @@ const {
     updateUser,
     deleteUser,
     deleteTask,
+    updateTask,
 } = require("../controllers/adminController");
 const { checkAdmin } = require("../middleware/roleMiddleware.js");
 
@@ -17,6 +18,8 @@ router.put("/updateUser/:id", authMiddleware, checkAdmin, updateUser);
 router.delete("/deleteUser/:id", authMiddleware, checkAdmin, deleteUser);
 
 router.get("/allTasks", authMiddleware, checkAdmin, getAllTasks);
+
+router.put("/updateTask/:id", authMiddleware, checkAdmin, updateTask);
 
 router.delete("/deleteTask/:id", authMiddleware, checkAdmin, deleteTask);
 
