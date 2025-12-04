@@ -2,7 +2,6 @@ export interface User {
     id: number;
     username: string;
     email: string;
-    password: string;
     role: 'student' | 'admin';
     createdAt: Date;
     updatedAt: Date;

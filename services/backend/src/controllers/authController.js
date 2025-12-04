@@ -56,8 +56,29 @@ const login = async (req, res, next) => {
 
 const getMe = async (req, res, next) => {
     try {
-        const user = await User.findByPk(req.user.id);
+        const user = await User.findByPk(req.user.id, {
+            attributes: { exclude: ['password'] }
+        });
         res.json(user);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const updatePassword = async (req, res, next) => {
+    try {
+        const { password } = req.body;
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ message: "Password updated successfully" });
     } catch (error) {
         next(error);
     }
@@ -128,4 +149,4 @@ const googleLogin = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, getMe, updateUsername, updateEmail, googleLogin };
+module.exports = { register, login, getMe, updateUsername, updateEmail, updatePassword, googleLogin };
