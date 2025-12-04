@@ -4,6 +4,7 @@ import Logo from '../components/Logo';
 import { Button } from '../ui/button';
 import { LogOut, Settings, Plus} from 'lucide-react';
 import { useAppContext } from '../authServices/helper';
+import AddTaskForm from '../components/AddTaskForm';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -109,6 +110,15 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+      {/* Add Task Modal */}
+      <AddTaskForm
+        isOpen={isAddTaskOpen}
+        onClose={() => setIsAddTaskOpen(false)}
+        onTaskCreated={() => {
+          setIsAddTaskOpen(false);
+          // Optional: refresh tasks, show success toast, etc.
+        }}
+      />
     </div>
   );
 }
