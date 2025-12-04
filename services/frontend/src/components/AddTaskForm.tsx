@@ -1,26 +1,22 @@
-// components/AddTaskModal.tsx
-import { X, Plus, Calendar, Tag, AlertCircle } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '../ui/dialog';
+import { X, Plus, Calendar, Tag } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { useState } from 'react';
+
+interface TaskFormData {
+  title: string;
+  category: string;
+  dueDate?: string;
+  hasDocument: boolean;
+}
 
 interface AddTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTaskCreated?: () => void;
+  onTaskCreated?: (task: TaskFormData) => void; // Now accepts form data
 }
 
 export default function AddTaskModal({
@@ -28,11 +24,30 @@ export default function AddTaskModal({
   onClose,
   onTaskCreated,
 }: AddTaskModalProps) {
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('other');
+  const [dueDate, setDueDate] = useState('');
+  const [hasDocument, setHasDocument] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Task created!');
-    onTaskCreated?.();
+
+    if (!title.trim()) return;
+
+    const newTask: TaskFormData = {
+      title: title.trim(),
+      category,
+      dueDate: dueDate || undefined,
+      hasDocument,
+    };
+
+    onTaskCreated?.(newTask);
     onClose();
+    // Reset form
+    setTitle('');
+    setCategory('other');
+    setDueDate('');
+    setHasDocument(false);
   };
 
   return (
@@ -59,6 +74,8 @@ export default function AddTaskModal({
             </Label>
             <Input
               id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., Complete 513 Mockups"
               required
               className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-violet-500 focus:ring-violet-500/30 rounded-xl"
@@ -70,7 +87,7 @@ export default function AddTaskModal({
               <Tag size={16} />
               Category *
             </Label>
-            <Select defaultValue="other">
+            <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="bg-slate-800/50 border-slate-700 text-white rounded-xl">
                 <SelectValue />
               </SelectTrigger>
@@ -84,7 +101,7 @@ export default function AddTaskModal({
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 ">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-slate-300 font-medium flex items-center gap-2">
                 <Calendar size={16} />
@@ -92,32 +109,23 @@ export default function AddTaskModal({
               </Label>
               <Input
                 type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
                 className="bg-slate-800/50 border-slate-700 text-white focus:border-violet-500 focus:ring-violet-500/30 rounded-xl"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300 font-medium flex items-center gap-2">
-                <AlertCircle size={16} />
+              <Label className="text-slate-300 font-medium">
                 Add a Document (optional)
               </Label>
-              <Select defaultValue="medium">
+              <Select value={hasDocument ? "yes" : "no"} onValueChange={(v) => setHasDocument(v === "yes")}>
                 <SelectTrigger className="bg-slate-800/50 border-slate-700 text-white rounded-xl">
-                  <SelectValue />
+                  <SelectValue placeholder="No" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-900 border-slate-700 text-white">
-                  <SelectItem value="low">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                      No
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="medium">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      Yes
-                    </div>
-                  </SelectItem>
+                  <SelectItem value="no">No</SelectItem>
+                  <SelectItem value="yes">Yes</SelectItem>
                 </SelectContent>
               </Select>
             </div>
