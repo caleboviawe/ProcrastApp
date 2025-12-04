@@ -12,6 +12,27 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    const userId = req.params.id;
+    const { username, email, role } = req.body;
+
+    try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        user.username = username || user.username;
+        user.email = email || user.email;
+        user.role = role || user.role;
+
+        await user.save();
+        res.json({ message: "User updated successfully", user });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 const getAllTasks = async (req, res) => {
     try {
         const tasks = await Task.findAll();
@@ -21,4 +42,4 @@ const getAllTasks = async (req, res) => {
     }
 };
 
-module.exports = { getAllUsers, getAllTasks };
+module.exports = { getAllUsers, getAllTasks, updateUser };
