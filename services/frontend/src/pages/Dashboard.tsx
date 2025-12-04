@@ -83,6 +83,10 @@ export default function Dashboard() {
 
   const hasTasks = filteredTasks.length > 0;
 
+  const completedCount = tasks.filter(t => t.status === 'completed').length;
+  const inProgressCount = tasks.filter(t => t.status === 'in-progress').length;
+  const notStartedCount = tasks.filter(t => t.status === 'not-started').length;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-violet-500/30 selection:text-violet-200">
       
@@ -204,7 +208,7 @@ export default function Dashboard() {
                                     </span>
                                 )}
                                 {task.hasDocument && (
-                                    <Link to="/editor" className="flex items-center gap-3">
+                                    <Link to="/editor" className="flex items-center gap-3" title="Click to view the document">
                                         <span className="text-xs px-3 py-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-full flex items-center gap-1.5 cursor-pointer hover:bg-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-200">                                            <Paperclip className="w-3 h-3" />
                                                 View Attached Document
                                         </span>                                   
@@ -246,6 +250,75 @@ export default function Dashboard() {
                 )}
             </div>
           </div>
+          {/* RIGHT SIDE */}
+            <div className="space-y-6">
+
+            {/* Progress Overview */}
+                <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6">
+                    <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-3">
+                    <div className="p-2 bg-violet-600/20 rounded-lg">
+                        <svg className="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                    Progress Overview
+                    </h3>
+
+                    <div className="space-y-6">
+                        {/* Completion Rate */}
+                        <div>
+                            <div className="flex justify-between text-sm mb-2">
+                            <span className="text-slate-400">Completion Rate</span>
+                                <span className="text-white font-medium">
+                                    {tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100)}%
+                                </span>
+                            </div>
+                            <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 transition-all duration-700 ease-out"
+                                    style={{ width: `${tasks.length === 0 ? 0 : (completedCount / tasks.length) * 100}%` }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Stats Cards */}
+                        <div className="space-y-3"> 
+                            {/* Completed */}
+                            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3.5 flex items-center justify-between hover:bg-emerald-500/15 transition-colors">
+                                <div className="flex items-center gap-3">
+                                    <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                                    <span className="text-sm font-medium text-emerald-300">Completed</span> 
+                                </div>
+                                    <span className="text-l font-bold text-emerald-300 tabular-nums tracking-tight">
+                                    {completedCount}
+                                    </span>
+                            </div>
+
+                            {/* In Progress */}
+                            <div className="bg-violet-500/10 border border-violet-500/30 rounded-lg p-3.5 flex items-center justify-between hover:bg-violet-500/15 transition-colors">
+                                <div className="flex items-center gap-3">
+                                    <Clock className="w-6 h-6 text-violet-400" />
+                                    <span className="text-sm font-medium text-violet-300">In Progress</span>
+                                </div>
+                                    <span className="text-l font-bold text-violet-300 tabular-nums tracking-tight">
+                                    {inProgressCount}
+                                    </span>
+                            </div>
+
+                            {/* Not Started */}
+                            <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-3.5 flex items-center justify-between hover:bg-slate-700/60 transition-colors">
+                                <div className="flex items-center gap-3">
+                                    <Circle className="w-6 h-6 text-slate-400" />
+                                    <span className="text-sm font-medium text-slate-300">Not Started</span>
+                                </div>
+                                    <span className="text-l font-bold text-white tabular-nums tracking-tight">
+                                    {notStartedCount}
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </main>
       {/* Add Task Modal */}
