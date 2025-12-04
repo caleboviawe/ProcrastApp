@@ -33,6 +33,22 @@ const updateUser = async (req, res) => {
     }
 };
 
+const deleteUser = async (req, res) => {
+    const userId = req.params.id;
+    
+    try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        await user.destroy();
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
 const getAllTasks = async (req, res) => {
     try {
         const tasks = await Task.findAll();
@@ -42,4 +58,4 @@ const getAllTasks = async (req, res) => {
     }
 };
 
-module.exports = { getAllUsers, getAllTasks, updateUser };
+module.exports = { getAllUsers, getAllTasks, updateUser, deleteUser };

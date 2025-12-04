@@ -5,12 +5,15 @@ const {
     getAllUsers,
     getAllTasks,
     updateUser,
+    deleteUser,
 } = require("../controllers/adminController");
 const { checkAdmin } = require("../middleware/roleMiddleware.js");
 
 router.get("/allUsers", authMiddleware, checkAdmin, getAllUsers);
 
 router.put("/updateUser/:id", authMiddleware, checkAdmin, updateUser);
+
+router.delete("/deleteUser/:id", authMiddleware, checkAdmin, deleteUser);
 
 router.get("/allTasks", authMiddleware, checkAdmin, getAllTasks);
 
