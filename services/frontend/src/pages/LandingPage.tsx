@@ -1,27 +1,39 @@
 import { Link } from 'react-router-dom';
-import { CheckCircle, Clock, Shield, ArrowRight } from 'lucide-react';
+import { ArrowRight, Flame } from 'lucide-react';
+import Logo from '../components/Logo';
+import Footer from '../components/Footer';
+import { features } from '../constants';
+
+import landingBg from '../assets/landing-bg-3.jpg';
 
 const LandingPage = () => {
+
     return (
-        <div className="min-h-screen bg-slate-950 font-sans text-slate-50 selection:bg-violet-500/30 selection:text-violet-200 overflow-x-hidden">
-            <nav className="fixed w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16 items-center">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-violet-500/20">
-                                <CheckCircle className="w-5 h-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                                ProcrastApp
-                            </span>
+        <div
+            className="min-h-screen font-sans text-slate-50 selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden"
+            style={{
+                backgroundImage: `url(${landingBg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed'
+            }}
+        >
+            <nav className="sticky top-0 z-50 py-4 backdrop-blur-lg border-b border-white/5">
+                <div className="container px-4 mx-auto relative lg:text-sm">
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center flex-shrink-0">
+                            <Link to="/" className="flex items-center drop-shadow-lg">
+                                <Logo className="h-14 w-auto" />
+                            </Link>
                         </div>
-                        <div className="flex items-center space-x-4">
-                            <Link to="/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                Log in
+                        <div className="flex justify-center space-x-4 items-center">
+                            <Link to="/login" className="py-2 px-4 text-slate-300 hover:text-white transition-colors text-sm font-medium">
+                                Sign In
                             </Link>
                             <Link
                                 to="/signup"
-                                className="text-sm font-medium bg-white text-slate-950 px-4 py-2 rounded-full hover:bg-slate-200 transition-colors"
+                                className="bg-[#6366F1] hover:bg-[#5558DD] text-white py-2 px-4 rounded-full transition-all text-sm font-medium"
                             >
                                 Get Started
                             </Link>
@@ -30,139 +42,146 @@ const LandingPage = () => {
                 </div>
             </nav>
 
-            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32">
-                {/* animated background blobs */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-                    <div className="absolute top-20 left-1/4 w-72 h-72 bg-violet-500/20 rounded-full blur-[100px] mix-blend-screen animate-blob"></div>
-                    <div className="absolute top-40 right-1/4 w-72 h-72 bg-indigo-500/20 rounded-full blur-[100px] mix-blend-screen animate-blob animation-delay-2000"></div>
-                </div>
+            <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-20 min-h-screen flex flex-col items-center justify-center">
 
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-tight animate-fade-in-up animation-delay-100">
-                        Stop Planning. <br />
-                        <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">
-                            Start Doing.
+
+
+                <div className="w-full px-4 sm:px-6 lg:px-8 text-center relative z-10 max-w-7xl mx-auto">
+                    <h1 className="text-5xl md:text-7xl xl:text-8xl font-bold tracking-tight text-white mb-8 leading-tight animate-fade-in-up animation-delay-[0.1s]">
+                        <span className="text-white block mb-2 md:mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">Turn Tasks Into</span>
+                        <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-2xl">
+                            Achievements.
                         </span>
                     </h1>
 
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-10 animate-fade-in-up animation-delay-200">
-                        The only task manager designed to break the cycle of procrastination.
-                        Smart nudges, gamified progress, and a design that keeps you focused on what matters.
+                    <p className="text-lg md:text-xl text-slate-100 max-w-2xl mx-auto mb-10 animate-fade-in-up animation-delay-[0.2s] leading-relaxed drop-shadow-md font-medium">
+                        Your ultimate task manager designed to help you conquer assignments, build lasting habits,
+                        and celebrate every win along the way.
                     </p>
 
-                    <div className="flex justify-center gap-4 animate-fade-in-up animation-delay-300">
+                    <div className="flex justify-center gap-6 animate-fade-in-up animation-delay-[0.3s] mb-20">
                         <Link
                             to="/signup"
-                            className="group bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-violet-500/25 transition-all flex items-center gap-2"
+                            className="group bg-[#6366F1] hover:bg-[#5558DD] text-white text-lg px-8 py-4 rounded-full font-semibold shadow-lg shadow-indigo-500/30 transition-all hover:scale-105 flex items-center gap-2"
                         >
                             Get Started Free
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
 
-                    {/* preview mockup */}
-                    <div className="mt-20 relative animate-fade-in-up animation-delay-500">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-2xl blur opacity-20"></div>
-                        <div className="relative rounded-xl bg-slate-900/50 border border-slate-800 backdrop-blur-xl p-2 shadow-2xl">
-                            <div className="rounded-lg bg-slate-950 aspect-video flex border border-slate-800/50 overflow-hidden relative">
-                                <div className="w-48 border-r border-slate-800/50 p-4 hidden md:block">
-                                    <div className="w-24 h-4 bg-slate-800 rounded mb-8"></div>
+
+                    <div className="max-w-5xl mx-auto relative animate-fade-in-up animation-delay-[0.5s] mt-16 lg:mt-24">
+
+
+
+
+
+
+                        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-[2rem] blur opacity-20"></div>
+                        <div className="relative rounded-[2rem] bg-[#0F1219]/80 border border-white/10 backdrop-blur-xl p-2 md:p-4 shadow-2xl">
+                            <div className="rounded-3xl bg-[#0B0E14] aspect-[16/9] flex border border-white/5 overflow-hidden relative">
+                                {/* Sidebar */}
+                                <div className="w-20 md:w-64 border-r border-white/5 p-4 md:p-6 hidden sm:flex flex-col gap-6">
+                                    <div className="w-full h-8 bg-white/5 rounded-lg animate-pulse"></div>
                                     <div className="space-y-3">
-                                        <div className="w-full h-8 bg-violet-500/10 rounded border border-violet-500/20"></div>
-                                        <div className="w-full h-8 bg-transparent rounded"></div>
-                                        <div className="w-full h-8 bg-transparent rounded"></div>
+                                        <div className="w-full h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-lg"></div>
+                                        <div className="w-full h-10 bg-white/5 rounded-lg"></div>
+                                        <div className="w-full h-10 bg-white/5 rounded-lg"></div>
                                     </div>
                                 </div>
-                                <div className="flex-1 p-6">
-                                    <div className="flex justify-between items-center mb-8">
-                                        <div className="w-32 h-6 bg-slate-800 rounded"></div>
-                                        <div className="w-8 h-8 bg-slate-800 rounded-full"></div>
+
+                                {/* Main Content */}
+                                <div className="flex-1 p-6 md:p-10">
+                                    <div className="flex justify-between items-center mb-10">
+                                        <div className="w-32 md:w-48 h-8 bg-white/5 rounded-lg"></div>
+                                        <div className="w-10 h-10 bg-white/5 rounded-full"></div>
                                     </div>
-                                    <div className="space-y-4">
-                                        {/* fake task items */}
-                                        {[1, 2, 3].map((i) => (
-                                            <div key={i} className="flex items-center gap-4 p-3 rounded-lg border border-slate-800/50 bg-slate-900/50">
-                                                <div className="w-5 h-5 rounded-full border-2 border-slate-700"></div>
-                                                <div className="flex-1 h-4 bg-slate-800 rounded w-3/4"></div>
-                                                <div className="w-16 h-4 bg-slate-800 rounded"></div>
+
+                                    <div className="space-y-6">
+                                        {/* Progress Item 1 */}
+                                        <div className="group relative">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            <div className="relative flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                                                <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">
+                                                    <Flame size={20} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                                                        <div className="h-full w-3/4 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
+                                                    </div>
+                                                </div>
+                                                <div className="w-12 h-6 bg-white/5 rounded text-xs flex items-center justify-center text-slate-400">75%</div>
                                             </div>
-                                        ))}
+                                        </div>
+
+                                        {/* Progress Item 2 */}
+                                        <div className="group relative">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            <div className="relative flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                                                <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                                    <div className="w-5 h-5 rounded-full border-2 border-current"></div>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                                                        <div className="h-full w-1/2 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full"></div>
+                                                    </div>
+                                                </div>
+                                                <div className="w-12 h-6 bg-white/5 rounded text-xs flex items-center justify-center text-slate-400">50%</div>
+                                            </div>
+                                        </div>
+
+                                        {/* Progress Item 3 */}
+                                        <div className="group relative">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            <div className="relative flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                                                <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                                                    <div className="w-5 h-5 rounded-full border-2 border-current border-dashed"></div>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                                                        <div className="h-full w-1/4 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full"></div>
+                                                    </div>
+                                                </div>
+                                                <div className="w-12 h-6 bg-white/5 rounded text-xs flex items-center justify-center text-slate-400">25%</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-3/4 h-40 bg-violet-500/20 blur-[100px] rounded-full pointer-events-none"></div>
                     </div>
                 </div>
             </section>
 
-            <section className="py-24 bg-slate-950 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                            Everything you need to <span className="text-violet-400">get sh*t done</span>.
+            <section className="relative py-24">
+                <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                            Easily build <span className="text-[#6366F1]">your productivity</span>
                         </h2>
-                        <p className="text-slate-400 text-lg">
-                            Simple, powerful, and designed to keep you moving forward.
-                        </p>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <FeatureCard
-                            icon={<Clock className="w-6 h-6 text-violet-400" />}
-                            title="Smart Reminders"
-                            description="We analyze your work patterns and nudge you exactly when you're most likely to procrastinate."
-                        />
-                        <FeatureCard
-                            icon={<Shield className="w-6 h-6 text-indigo-400" />}
-                            title="Streak Protection"
-                            description="Miss a day? No problem. Freeze your streak and get back on track without the guilt trip."
-                        />
-                        <FeatureCard
-                            icon={<CheckCircle className="w-6 h-6 text-fuchsia-400" />}
-                            title="Visual Progress"
-                            description="Watch your tasks turn into completed pixels. Satisfying animations make finishing work addictive."
-                        />
-                    </div>
-
-                    <div className="mt-16 p-8 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 transition-all text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-violet-500/5 blur-3xl"></div>
-                        <div className="relative z-10">
-                            <h3 className="text-5xl font-bold text-white mb-2">15+ Hours</h3>
-                            <p className="text-violet-300 font-medium mb-4">Saved Per Week</p>
-                            <p className="text-slate-400 max-w-2xl mx-auto">
-                                Our users report reclaiming over 15 hours of lost time every week by simply following our "Brutal Accountability" metrics.
-                            </p>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {features.map((feature, index) => (
+                            <div key={index} className="flex flex-col items-center text-center p-6 rounded-2xl hover:bg-white/5 transition-colors">
+                                <div className="mb-6 p-4 rounded-2xl bg-slate-900 border border-white/10 text-white shadow-lg shadow-indigo-500/10">
+                                    {/* Clone element to increase size */}
+                                    <div className="scale-125 transform">
+                                        {feature.icon}
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-semibold text-white mb-3">{feature.text}</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    {feature.description}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            <footer className="bg-slate-950 border-t border-slate-900 py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-violet-600 rounded-md flex items-center justify-center">
-                            <CheckCircle className="w-4 h-4 text-white" />
-                        </div>
-                        <span className="text-lg font-bold text-slate-200">ProcrastApp</span>
-                    </div>
-                    <p className="text-slate-500 text-sm">
-                        © 2025 ProcrastApp Inc. Stop reading this footer and go do something.
-                    </p>
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 };
-
-const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) => (
-    <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/10 transition-all group">
-        <div className="mb-4 bg-slate-800/50 w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-            {icon}
-        </div>
-        <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-        <p className="text-slate-400 leading-relaxed">{description}</p>
-    </div>
-);
 
 export default LandingPage;

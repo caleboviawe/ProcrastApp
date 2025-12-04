@@ -65,4 +65,33 @@ const getMe = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, getMe };
+const googleLogin = async (req, res, next) => {
+    try {
+        const { googleId, email, name } = req.body;
+        if (!googleId || !email) {
+            return res.status(400).json({ message: 'Invalid request' });
+        }
+
+        let user = await User.findOne({ where: { googleId } });
+        if (!user) {
+            user = await User.findOne({ where: { email } });
+            if (user) {
+                user.googleId = googleId;
+                await user.save();
+            } else {
+                let username = name ? name.replace(/\s+/g, '_').toLowerCase() : email.split('@')[0];
+                const existing = await User.findOne({ where: { username } });
+                if (existing) username = email.split('@')[0];
+                
+                user = await User.create({ username, email, googleId, role: 'student' });
+            }
+        }
+
+        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        res.json({ token, user: { id: user.id, username: user.username, email: user.email, role: user.role } });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { register, login, getMe, googleLogin };
