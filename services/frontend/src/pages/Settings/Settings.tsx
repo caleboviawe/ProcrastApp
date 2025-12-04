@@ -22,7 +22,10 @@ const SettingsPage: React.FC = () => {
                 backgroundAttachment: "fixed",
             }}
         >
-            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
+
+            <div className="absolute inset-0 bg-black/60 pointer-events-none hidden dark:block"></div>
+            
+            <div className="flex justify-between items-center p-4 bg-white/60 dark:bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
                 <div className="flex items-center gap-3">
                     <img
                         src={logo}
@@ -57,7 +60,7 @@ const SettingsPage: React.FC = () => {
                     {/*profile box*/}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
-                            <User className="w-8 h-8 text-white" />
+                            <User className="w-8 h-8 text-slate-900 dark:text-white" />
                             <h4 className="text-lg font-semibold text-white">
                                 Your Profile
                             </h4>
@@ -100,7 +103,7 @@ const SettingsPage: React.FC = () => {
                                         className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-3 py-1 rounded-lg font-medium transition-all"
                                         onClick={() => navigate(route)}
                                     >
-                                        Edit
+                                        Change
                                     </button>
                                 </React.Fragment>
                             ))}
