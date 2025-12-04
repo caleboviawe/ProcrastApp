@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { Button } from '../ui/button';
-import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X} from 'lucide-react';
+import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X, Calendar, Paperclip} from 'lucide-react';
 import { useAppContext } from '../authServices/helper';
 import AddTaskForm from '../components/AddTaskForm';
 
@@ -194,6 +194,22 @@ export default function Dashboard() {
                                   <StatusIcon className={`w-3 h-3 ${status.color === 'red' || status.color === 'slate' ? 'fill-current' : ''}`} />
                                   {status.label}
                                 </span>
+                                {task.dueDate && (
+                                    <span className="text-xs px-3 py-1.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full flex items-center gap-1.5">
+                                        <Calendar className="w-3 h-3" />
+                                        {new Date(task.dueDate).toLocaleDateString('en-US', {
+                                            month: 'short',
+                                            day: 'numeric',
+                                        })}
+                                    </span>
+                                )}
+                                {task.hasDocument && (
+                                    <Link to="/editor" className="flex items-center gap-3">
+                                        <span className="text-xs px-3 py-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-full flex items-center gap-1.5 cursor-pointer hover:bg-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-200">                                            <Paperclip className="w-3 h-3" />
+                                                View Attached Document
+                                        </span>                                   
+                                    </Link>
+                                )}
                               </div>
                             </div>
                           </div>
