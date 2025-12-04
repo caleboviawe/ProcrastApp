@@ -11,22 +11,17 @@ function App() {
   return (
     <Router>
         <Routes>
-               <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route element={<PublicRoutes />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/editor/:id" element={<DocumentEditor />} />
+            </Route>
         </Routes>
     </Router>
-    // <Router>
-    //     <Routes>
-    //         <Route path="/" element={<LandingPage />} />
-    //         <Route element={<PublicRoutes />}>
-    //             <Route path="/login" element={<Login />} />
-    //             <Route path="/signup" element={<Signup />} />
-    //         </Route>
-    //         <Route element={<ProtectedRoutes />}>
-    //             <Route path="/dashboard" element={<Dashboard />} />
-    //             <Route path="/editor/:id" element={<DocumentEditor />} />
-    //         </Route>
-    //     </Routes>
-    // </Router>
   );
 }
 
