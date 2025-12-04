@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Settings, Clock, LogOut, ArrowLeft, Divide } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
+import axios from 'axios';
 
 const ChangePassword: React.FC = () => {
     const [password, setPassword] = useState("");
@@ -10,7 +11,7 @@ const ChangePassword: React.FC = () => {
     const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
-    const handlePasswordChange = () => {
+    const handlePasswordChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
 
@@ -18,6 +19,20 @@ const ChangePassword: React.FC = () => {
 
         if (!isValid) {
             setErrorMessage("Invalid Password. Must have at least one uppercase and lowercase letter, a number and a special character.");
+            return;
+        }
+
+        const res = await axios.put(
+            "http://localhost:8000/api/user/updatePassword",
+            { password },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }
+        );
+        if (res.status !== 200) {
+            setErrorMessage("Failed to change username. Please try again.");
             return;
         }
 
