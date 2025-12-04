@@ -23,9 +23,9 @@ const SettingsPage: React.FC = () => {
             }}
         >
 
-            <div className="absolute inset-0 bg-black/60 pointer-events-none hidden dark:block"></div>
+            {/* <div className="absolute inset-0 bg-black/60 pointer-events-none hidden dark:block"></div> */}
             
-            <div className="flex justify-between items-center p-4 bg-white/60 dark:bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
+            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
                 <div className="flex items-center gap-3">
                     <img
                         src={logo}
@@ -132,7 +132,7 @@ const SettingsPage: React.FC = () => {
                     </div>
 
                     {/*appearance box*/}
-                    <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+                    {/* <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
                             <Palette className="w-8 h-8 text-white" />
                             <h4 className="text-lg font-semibold text-white">
@@ -146,7 +146,7 @@ const SettingsPage: React.FC = () => {
                         <div className="flex justify-center mt-4">
                             <DarkModeToggle />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/*data management box*/}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
