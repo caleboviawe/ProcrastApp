@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { Button } from '../ui/button';
-import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X, Calendar, Paperclip} from 'lucide-react';
+import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X, Calendar, Paperclip, AlertCircle, AlertTriangle} from 'lucide-react';
 import { useAppContext } from '../authServices/helper';
 import AddTaskForm from '../components/AddTaskForm';
 
@@ -145,6 +145,98 @@ export default function Dashboard() {
           {/* LEFT SIDE */}
           <div className="lg:col-span-3 space-y-8">
 
+            {/* Upcoming Deadlines Card */}
+            <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6">
+              {(() => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const in3Days = new Date(today);
+                in3Days.setDate(today.getDate() + 3);
+
+                const upcomingSoon = tasks.filter(t => 
+                  t.dueDate && 
+                  t.status !== 'completed' && 
+                  t.status !== 'archived' &&
+                  new Date(t.dueDate) >= today && 
+                  new Date(t.dueDate) <= in3Days
+                );
+
+                const dueOrOverdue = tasks.filter(t => 
+                  t.dueDate && 
+                  t.status !== 'completed' && 
+                  t.status !== 'archived' &&
+                  new Date(t.dueDate) <= today
+                );
+
+                const hasUrgent = dueOrOverdue.length > 0;
+                const hasSoon = upcomingSoon.length > 0 && !hasUrgent;
+
+                if (hasUrgent) {
+                  return (
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 bg-red-500/20 rounded-full flex-shrink-0">
+                        <AlertCircle className="w-9 h-9 text-red-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-red-300 mb-2">
+                          {dueOrOverdue.length === 1 ? 'Task Due Now!' : `${dueOrOverdue.length} Tasks Due/Overdue!`}
+                        </h3>
+                        <div className="space-y-2">
+                          {dueOrOverdue.map(task => (
+                            <div key={task.id} className="flex items-center gap-3 text-red-200">
+                              <span className="font-medium truncate max-w-md">{task.title}</span>
+                              {task.dueDate && (
+                                <span className="text-xs bg-red-500/20 px-2 py-0.5 rounded">
+                                  {new Date(task.dueDate) < today ? 'Overdue' : 'Due Today'}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (hasSoon) {
+                  return (
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 bg-amber-500/20 rounded-full flex-shrink-0">
+                        <AlertTriangle className="w-9 h-9 text-amber-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-amber-300 mb-2">
+                          Heads Up — {upcomingSoon.length} Deadline{upcomingSoon.length > 1 ? 's' : ''} Approaching
+                        </h3>
+                        <div className="space-y-2">
+                          {upcomingSoon.map(task => (
+                            <div key={task.id} className="flex items-center gap-3 text-amber-200">
+                              <span className="font-medium truncate max-w-md">{task.title}</span>
+                              <span className="text-xs bg-amber-500/20 px-2 py-0.5 rounded">
+                                Due {new Date(task.dueDate!).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-emerald-500/20 rounded-full">
+                      <CheckCircle2 className="w-9 h-9 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-emerald-300">No upcoming deadlines!</h3>
+                      <p className="text-emerald-200/80 text-sm mt-1">You're all caught up. Amazing work!</p>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
             {/* Task Tabs & List */}
             <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
               {/* Tabs */}
@@ -187,7 +279,7 @@ export default function Dashboard() {
               </div>
               {/* Task List */}
                 {hasTasks ? (
-                  <div className="space-y-4 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
+                  <div className="space-y-4 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
                     {filteredTasks.map(task => {
                       const status = getStatusConfig(task.status);
                       const StatusIcon = status.icon;
