@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { Button } from '../ui/button';
-import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle} from 'lucide-react';
+import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X} from 'lucide-react';
 import { useAppContext } from '../authServices/helper';
 import AddTaskForm from '../components/AddTaskForm';
 
@@ -24,18 +24,7 @@ export default function Dashboard() {
   const { user } = useAppContext();
   const [activeTab, setActiveTab] = useState<'all' | 'in-progress' | 'completed' | 'archived'>('all');
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([
-    // I'm just using this placeholder for now
-    {
-      id: '1',
-      title: 'Complete 513 Mockups',
-      category: 'other',
-      dueDate: undefined,
-      hasDocument: false,
-      status: 'not-started',
-      createdAt: new Date().toISOString(),
-    },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
 
   const handleLogout = () => {
@@ -208,18 +197,30 @@ export default function Dashboard() {
                               </div>
                             </div>
                           </div>
-
-                          {/* Status Dropdown */}
-                          <select
-                            value={task.status}
-                            onChange={(e) => updateTaskStatus(task.id, e.target.value as TaskStatus)}
-                            className="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-violet-500"
-                          >
-                            <option value="not-started">Not Started</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                            <option value="archived">Archived</option>
-                          </select>
+                          <div className="flex items-center gap-3">
+                            <select
+                                value={task.status}
+                                onChange={(e) => updateTaskStatus(task.id, e.target.value as TaskStatus)}
+                                className="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-violet-500"
+                            >
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                            <button
+                                onClick={() => {
+                                    if (confirm('Are you sure you want to delete this task?')) {
+                                        setTasks(prev => prev.filter(t => t.id !== task.id));
+                                    }
+                                }}
+                                className="text-white hover:text-red-400 p-2 rounded-lg hover:bg-red-500/10 transition-all"                                
+                                title="Delete task"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+            
+                            </div>
                         </div>
                       );
                     })}

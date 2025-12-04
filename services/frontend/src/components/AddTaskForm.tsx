@@ -54,14 +54,6 @@ export default function AddTaskModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-slate-900/95 backdrop-blur-2xl border border-slate-700 text-white max-w-md rounded-2xl shadow-2xl">
         <DialogHeader>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="absolute right-4 top-4 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
-          >
-            <X size={20} />
-          </Button>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent pr-10">
             Add New Task
           </DialogTitle>
@@ -104,7 +96,7 @@ export default function AddTaskModal({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-slate-300 font-medium flex items-center gap-2">
-                <Calendar size={16} />
+                <Calendar size={16}/>
                 Due Date (optional)
               </Label>
               <Input
