@@ -9,7 +9,7 @@ import { useAppContext } from '../../authServices/helper';
 const SettingsPage: React.FC = () => {
   const {user} = useAppContext();
   const navigate = useNavigate();
-  const googleIdNull = user?.google_id === null ? true : false;
+  const googleIdNull = user?.googleId === null ? true : false;
 
     return (
         <div
@@ -76,7 +76,7 @@ const SettingsPage: React.FC = () => {
                                 {
                                     label: "PASSWORD",
                                     route: "/change-password",
-                                    placeholder: user?.password_hash,
+                                    placeholder: user?.password,
                                     show: googleIdNull,
                                 },
                                 {
@@ -84,8 +84,7 @@ const SettingsPage: React.FC = () => {
                                     route: "/change-email",
                                     placeholder: user?.email,
                                 },
-                            ]
-                            .map(({ label, route, placeholder }) => (
+                            ].map(({ label, route, placeholder }) => (
                                 <React.Fragment key={label}>
                                     <label className="text-left md:text-right font-semibold text-slate-300">
                                         {label}:
@@ -111,10 +110,14 @@ const SettingsPage: React.FC = () => {
                             <input
                                 type="text"
                                 readOnly
+                                placeholder={
+                                    user?.createdAt &&
+                                    new Date(user.createdAt).toLocaleString()
+                                }
                                 className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2"
                             />
                             <label className="text-right font-semibold text-slate-300">
-                                ROLE: 
+                                ROLE:
                             </label>
                         </div>
                     </div>

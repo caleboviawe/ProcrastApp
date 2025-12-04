@@ -56,9 +56,7 @@ const login = async (req, res, next) => {
 
 const getMe = async (req, res, next) => {
     try {
-        const user = await User.findByPk(req.user.id, {
-            attributes: { exclude: ['password'] }
-        });
+        const user = await User.findByPk(req.user.id);
         res.json(user);
     } catch (error) {
         next(error);

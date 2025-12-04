@@ -11,7 +11,12 @@ function Dashboard() {
     return (
         <div>
             <h1>Dashboard</h1>
-            <p>Welcome to your dashboard! User: {user?.username}</p>
+            <p>
+                Welcome to your dashboard! User: {user?.username}
+                Created Date{" "}
+                {user?.createdAt && new Date(user.createdAt).toLocaleString()}
+            </p>
+
             <button onClick={handleLogout}>Logout</button>
             <Link
                 to="/profile"

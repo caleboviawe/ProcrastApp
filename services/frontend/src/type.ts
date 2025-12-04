@@ -2,11 +2,11 @@ export interface User {
     id: number;
     username: string;
     email: string;
-    password_hash: string;
+    password: string;
     role: 'student' | 'admin';
-    created_at: string;
-    updated_at: string;
-    google_id: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    googleId: string | null;
 }
 
 export interface Status {
