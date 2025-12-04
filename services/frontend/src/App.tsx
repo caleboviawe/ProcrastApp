@@ -10,14 +10,14 @@ import Settings from './pages/Settings/Settings'
 import ChangeUsername from './pages/Settings/ChangeUsername'
 import ChangePassword from './pages/Settings/ChangePassword'
 import ChangeEmail from './pages/Settings/ChangeEmail'
-import ChangeBirthday from './pages/Settings/ChangeBirthday'
 
 function App() {
   return (
       <Router>
           <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/*" element={<LandingPage />} />
+            <Route path="/" element={<ChangePassword />} />
+              {/* <Route path="/" element={<LandingPage />} />
+              <Route path="/*" element={<LandingPage />} /> */}
               <Route element={<PublicRoutes />}>
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
@@ -29,7 +29,6 @@ function App() {
                   <Route path="/change-username" element={<ChangeUsername />} />
                   <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="/change-email" element={<ChangeEmail />} />
-                  <Route path="/change-birthday" element={<ChangeBirthday />} />
               </Route>
           </Routes>
       </Router>

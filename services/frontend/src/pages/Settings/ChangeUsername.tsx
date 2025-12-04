@@ -37,8 +37,6 @@ const ChangeUsername: React.FC = () => {
             setErrorMessage("Failed to change username. Please try again.");
             return;
         }
-        // Handle successful username change (e.g., show a success message
-        // or redirect the user
 
         console.log("New UserName:", username);
         setSuccessMessage("Sucessfully Changed.");
@@ -124,7 +122,7 @@ const ChangeUsername: React.FC = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center"
                     />
-                    <span className="text-slate-400 text-sm">
+                    <span className="text-slate-400 text-sm text-center">
                         Must start with a letter or underscore
                     </span>
                 </div>

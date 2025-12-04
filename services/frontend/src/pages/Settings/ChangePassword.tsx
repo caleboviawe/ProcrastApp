@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const ChangePassword: React.FC = () => {
     const [password, setPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
@@ -14,6 +15,16 @@ const ChangePassword: React.FC = () => {
     const handlePasswordChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
+
+        if (!newPassword || !password) {
+            setErrorMessage("Please fill in all fields.");
+            return;
+        }
+
+        if (newPassword !== password) {
+            setErrorMessage("Passwords do not match. Please try again.");
+            return;
+        }
 
         const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
 
@@ -24,7 +35,7 @@ const ChangePassword: React.FC = () => {
 
         const res = await axios.put(
             "http://localhost:8000/api/user/updatePassword",
-            { password },
+            { password: newPassword },
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -76,15 +87,17 @@ const ChangePassword: React.FC = () => {
             </div>
 
             <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-6 w-full max-w-4xl mt-4">
-                <div className="flex flex-col gap-4">
-                    <label className="text-slate-300 font-semibold">CURRENT PASSWORD:</label>
-                    <input type="text" placeholder='Enter Current Password' className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
-                </div>
 
                 <div className="flex flex-col gap-2">
                     <label className="text-slate-300 font-semibold">NEW PASSWORD:</label>
-                    <input type="text" placeholder='Enter New Password' value={password} onChange={(e) => setPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
-                    <span className="text-slate-400 text-sm">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
+                    <input type="text" placeholder='Enter New Password' value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
+                    <span className="text-slate-400 text-sm text-center">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <label className="text-slate-300 font-semibold">RE-ENTER NEW PASSWORD:</label>
+                    <input type="text" placeholder='Re-Enter New Password' value={password} onChange={(e) => setPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
+                    <span className="text-slate-400 text-sm text-center"></span>
                 </div>
 
                 <div className="flex justify-center mt-4">

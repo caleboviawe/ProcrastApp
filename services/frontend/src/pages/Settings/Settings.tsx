@@ -119,6 +119,12 @@ const SettingsPage: React.FC = () => {
                             <label className="text-right font-semibold text-slate-300">
                                 ROLE:
                             </label>
+                            <input
+                                type="text"
+                                readOnly
+                                placeholder={user?.role}
+                                className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2"
+                            />
                         </div>
                     </div>
 
