@@ -87,6 +87,15 @@ export default function Dashboard() {
   const inProgressCount = tasks.filter(t => t.status === 'in-progress').length;
   const notStartedCount = tasks.filter(t => t.status === 'not-started').length;
 
+  const completedThisWeek = tasks.filter(task => {
+    if (task.status !== 'completed') return false;
+    const taskDate = new Date(task.createdAt);
+    const now = new Date();
+    const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+    startOfWeek.setHours(0, 0, 0, 0);
+    return taskDate >= startOfWeek;
+  }).length;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-violet-500/30 selection:text-violet-200">
       
@@ -317,6 +326,17 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
+                </div>
+                {/* This Week – Dynamic & Compact */}
+                <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 text-center">
+                    <div className="w-8 h-8 mx-auto mb-2.5 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-sm">    
+                        <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-sm font-medium text-slate-300 mb-2">This Week</h3>
+                        <p className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent tabular-nums tracking-tight">
+                            {completedThisWeek}
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1">tasks completed</p>
                 </div>
             </div>
         </div>
