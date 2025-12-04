@@ -103,7 +103,7 @@ export default function AddTaskModal({
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="bg-slate-800/50 border-slate-700 text-white focus:border-violet-500 focus:ring-violet-500/30 rounded-xl"
+                className="bg-slate-800/50 border-slate-700 text-white rounded-xl focus:border-violet-500 focus:ring-violet-500/30 [color-scheme:dark]"
               />
             </div>
 

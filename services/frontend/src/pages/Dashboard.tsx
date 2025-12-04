@@ -187,7 +187,7 @@ export default function Dashboard() {
               </div>
               {/* Task List */}
                 {hasTasks ? (
-                  <div className="space-y-4">
+                  <div className="space-y-4 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
                     {filteredTasks.map(task => {
                       const status = getStatusConfig(task.status);
                       const StatusIcon = status.icon;
@@ -230,7 +230,8 @@ export default function Dashboard() {
                             <select
                                 value={task.status}
                                 onChange={(e) => updateTaskStatus(task.id, e.target.value as TaskStatus)}
-                                className="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-violet-500"
+                                className="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-violet-500 hover:bg-slate-800/80 hover:border-slate-600 hover:text-white transition-all duration-200 cursor-pointer"
+                                title='Select task status'
                             >
                                 <option value="not-started">Not Started</option>
                                 <option value="in-progress">In Progress</option>
@@ -327,7 +328,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-                {/* This Week – Dynamic & Compact */}
+                {/* Current Week */}
                 <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 text-center">
                     <div className="w-8 h-8 mx-auto mb-2.5 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-sm">    
                         <Calendar className="w-5 h-5 text-white" />
