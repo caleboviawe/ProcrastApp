@@ -66,7 +66,7 @@ const SettingsPage: React.FC = () => {
                             Manage your personal preferences and information.
                         </p>
 
-                        <div className="grid grid-cols-1 sm:grid-rows-1 md:grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
+                        <div className="grid grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
                             {[
                                 {
                                     label: "USERNAME",
@@ -198,7 +198,7 @@ const SettingsPage: React.FC = () => {
                         ].map((notif, idx) => (
                             <div
                                 key={idx}
-                                className="flex flex-col sm:flex-row sm:justify-between sm:items-center md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2"
+                                className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2"
                             >
                                 <div className="flex flex-col">
                                     <span className="font-semibold text-white">
