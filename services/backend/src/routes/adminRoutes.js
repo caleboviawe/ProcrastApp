@@ -6,6 +6,7 @@ const {
     getAllTasks,
     updateUser,
     deleteUser,
+    deleteTask,
 } = require("../controllers/adminController");
 const { checkAdmin } = require("../middleware/roleMiddleware.js");
 
@@ -16,5 +17,7 @@ router.put("/updateUser/:id", authMiddleware, checkAdmin, updateUser);
 router.delete("/deleteUser/:id", authMiddleware, checkAdmin, deleteUser);
 
 router.get("/allTasks", authMiddleware, checkAdmin, getAllTasks);
+
+router.delete("/deleteTask/:id", authMiddleware, checkAdmin, deleteTask);
 
 module.exports = router;

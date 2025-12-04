@@ -58,4 +58,27 @@ const getAllTasks = async (req, res) => {
     }
 };
 
-module.exports = { getAllUsers, getAllTasks, updateUser, deleteUser };
+const deleteTask = async (req, res) => {
+    const taskId = req.params.id;
+    
+    try {
+        const task = await Task.findByPk(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+        
+        await task.destroy();
+        res.json({ message: "Task deleted successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+module.exports = {
+    getAllUsers,
+    getAllTasks,
+    updateUser,
+    deleteUser,
+    deleteTask,
+};
