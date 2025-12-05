@@ -189,6 +189,22 @@ const updateNotifications = async (req, res, next) => {
     }
 }
 
+const deleteAccount = async (req, res, next) => {
+    try {
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await user.destroy();
+        
+        res.json({ message: 'Account deleted successfully' });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
 const googleLogin = async (req, res, next) => {
     try {
         const { googleId, email, name } = req.body;
@@ -218,4 +234,4 @@ const googleLogin = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, getMe, updateUsername, updateEmail, updatePassword, updateNotifications, googleLogin };
+module.exports = { register, login, getMe, updateUsername, updateEmail, updatePassword, updateNotifications, deleteAccount, googleLogin };

@@ -1,40 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, User, LogOut, ArrowLeft } from 'lucide-react';
+import DarkModeToggle from './DarkModeToggle';
+import { Bell, Database, Palette, User, Clock, LogOut, ArrowLeft, X } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
 import { useAppContext } from '../../authServices/helper';
 import axios from 'axios';
 
-const SettingsPage: React.FC = () => {
-  const { user, setUser } = useAppContext();
-  const navigate = useNavigate();
-  const isGoogleUser = user?.googleId !== null;
+/* Settings.tsx: settings page for users to change private information */
 
+const SettingsPage: React.FC = () => {
+    /* variables for logic */
+  const {user, setUser} = useAppContext();
+  const navigate = useNavigate();
+  const googleIdNull = user?.googleId === null ? true : false;
+
+  // Notification state
   const [notifyDeadlines, setNotifyDeadlines] = useState(user?.notifyDeadlines ?? true);
   const [notifyDailySummary, setNotifyDailySummary] = useState(user?.notifyDailySummary ?? false);
   const [notifyOverdue, setNotifyOverdue] = useState(user?.notifyOverdue ?? true);
-  const [notifLoading, setNotifLoading] = useState(false);
-  const [notifSuccess, setNotifSuccess] = useState("");
-  const [notifError, setNotifError] = useState("");
+  const [notificationLoading, setNotificationLoading] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationError, setNotificationError] = useState('');
 
+  // Delete account modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+
+  // Export data state
+  const [exportLoading, setExportLoading] = useState(false);
+
+  // Sync notification state when user data loads
+  useEffect(() => {
+    if (user) {
+      setNotifyDeadlines(user.notifyDeadlines ?? true);
+      setNotifyDailySummary(user.notifyDailySummary ?? false);
+      setNotifyOverdue(user.notifyOverdue ?? true);
+    }
+  }, [user]);
+
+  // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
     setUser(null);
-    navigate("/login");
+    navigate('/login');
   };
 
+  // Handle save notification preferences
   const handleSaveNotifications = async () => {
-    setNotifSuccess("");
-    setNotifError("");
-    setNotifLoading(true);
+    setNotificationLoading(true);
+    setNotificationMessage('');
+    setNotificationError('');
+
     try {
       const res = await axios.put(
-        "http://localhost:8000/api/user/updateNotifications",
+        'http://localhost:8000/api/user/updateNotifications',
         { notifyDeadlines, notifyDailySummary, notifyOverdue },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
@@ -46,34 +72,82 @@ const SettingsPage: React.FC = () => {
           notifyOverdue: res.data.notifications.notifyOverdue,
         });
       }
-      setNotifSuccess("Notification preferences saved!");
-    } catch {
-      setNotifError("Failed to save notification preferences.");
+      setNotificationMessage('Notification preferences saved successfully!');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setNotificationError(err.response.data.message);
+      } else {
+        setNotificationError('Failed to save notification preferences.');
+      }
     } finally {
-      setNotifLoading(false);
+      setNotificationLoading(false);
     }
   };
 
-  const profileFields = [
-    {
-      label: "USERNAME",
-      route: "/change-username",
-      value: user?.username || "",
-      show: true,
-    },
-    {
-      label: "PASSWORD",
-      route: "/change-password",
-      value: "••••••••",
-      show: !isGoogleUser,
-    },
-    {
-      label: "EMAIL",
-      route: "/change-email",
-      value: user?.email || "",
-      show: true,
-    },
-  ].filter(field => field.show);
+  // Handle export data
+  const handleExportData = async () => {
+    setExportLoading(true);
+    try {
+      const userData = {
+        profile: {
+          username: user?.username,
+          email: user?.email,
+          role: user?.role,
+          createdAt: user?.createdAt,
+        },
+        notifications: {
+          deadlineReminders: user?.notifyDeadlines,
+          dailySummary: user?.notifyDailySummary,
+          overdueAlerts: user?.notifyOverdue,
+        },
+        exportedAt: new Date().toISOString(),
+      };
+
+      const blob = new Blob([JSON.stringify(userData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `procrastapp-data-${user?.username || 'user'}-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Export failed:', err);
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
+  // Handle delete account
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') {
+      setDeleteError('Please type DELETE to confirm.');
+      return;
+    }
+
+    setDeleteLoading(true);
+    setDeleteError('');
+
+    try {
+      await axios.delete('http://localhost:8000/api/user/deleteAccount', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      localStorage.removeItem('token');
+      setUser(null);
+      navigate('/login');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setDeleteError(err.response.data.message);
+      } else {
+        setDeleteError('Failed to delete account. Please try again.');
+      }
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
     return (
         <div
@@ -137,17 +211,40 @@ const SettingsPage: React.FC = () => {
 
                         {/* for changes, a user can change the values below, and they are grabbed from the backend. if an user makes an account with google, changing the password is not shown up as an option. a user can also see the date they created their account */}
                         <div className="grid grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
-                            {profileFields.map(({ label, route, value }) => (
+                            {[
+                                {
+                                    label: "USERNAME",
+                                    route: "/change-username",
+                                    value: user?.username || '',
+                                    show: true,
+                                },
+                                {
+                                    label: "PASSWORD",
+                                    route: "/change-password",
+                                    value: "••••••••",
+                                    show: googleIdNull,
+                                },
+                                {
+                                    label: "EMAIL",
+                                    route: "/change-email",
+                                    value: user?.email || '',
+                                    show: true,
+                                },
+                            ]
+                            .filter(({ show }) => show)
+                            .map(({ label, route, value }) => (
                                 <React.Fragment key={label}>
                                     <label className="text-left md:text-right font-semibold text-slate-300">
                                         {label}:
                                     </label>
                                     <input
-                                        type={label === "PASSWORD" ? "password" : "text"}
+                                        type="text"
                                         readOnly
+                                        disabled
                                         value={value}
                                         className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 cursor-not-allowed opacity-70"
                                     />
+
                                     <button
                                         className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-3 py-1 rounded-lg font-medium transition-all"
                                         onClick={() => navigate(route)}
@@ -156,95 +253,220 @@ const SettingsPage: React.FC = () => {
                                     </button>
                                 </React.Fragment>
                             ))}
-                            <label className="text-left md:text-right font-semibold text-slate-300">
+                            <label className="text-right font-semibold text-slate-300">
                                 DATE CREATED:
                             </label>
-                            <span className="text-white col-span-2">
-                                {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A"}
-                            </span>
-                            <label className="text-left md:text-right font-semibold text-slate-300">
+                            <input
+                                type="text"
+                                readOnly
+                                disabled
+                                value={
+                                    user?.createdAt
+                                        ? new Date(user.createdAt).toLocaleString()
+                                        : ''
+                                }
+                                className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2 cursor-not-allowed opacity-70"
+                            />
+                            <label className="text-right font-semibold text-slate-300">
                                 ROLE:
                             </label>
-                            <span className="text-white col-span-2 capitalize">
-                                {user?.role || "N/A"}
-                            </span>
+                            <input
+                                type="text"
+                                readOnly
+                                disabled
+                                value={user?.role || ''}
+                                className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2 cursor-not-allowed opacity-70"
+                            />
                         </div>
                     </div>
 
-                    {/* Notifications section */}
+                    {/*appearance box*/}
+                    {/* <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+                        <div className="flex items-center gap-4">
+                            <Palette className="w-8 h-8 text-white" />
+                            <h4 className="text-lg font-semibold text-white">
+                                Appearance
+                            </h4>
+                        </div>
+                        <p className="text-slate-400">
+                            Customize the look and feel of your workspace.
+                        </p>
+
+                        <div className="flex justify-center mt-4">
+                            <DarkModeToggle />
+                        </div>
+                    </div> */}
+
+                    {/*data management box: users can download their data or delete their account*/}
+                    <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
+                        <div className="flex items-center gap-4">
+                            <Database className="w-8 h-8 text-white" />
+                            <h4 className="text-lg font-semibold text-white">
+                                Data Management
+                            </h4>
+                        </div>
+
+                        <p className="text-slate-400">
+                            Manage your data and privacy settings.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-3">
+                            <button 
+                                className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50"
+                                onClick={handleExportData}
+                                disabled={exportLoading}
+                            >
+                                {exportLoading ? 'Exporting...' : 'Export Data'}
+                            </button>
+                            <button 
+                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                                onClick={() => setShowDeleteModal(true)}
+                            >
+                                Delete Account
+                            </button>
+                        </div>
+                    </div>
+
+                    {/*notifications box: users can set the type of notifications they want*/}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
                             <Bell className="w-8 h-8 text-white" />
                             <h4 className="text-lg font-semibold text-white">
-                                Notifications
+                                Notifications:
                             </h4>
                         </div>
                         <p className="text-slate-400">
                             Set your notification preferences.
                         </p>
 
-                        {notifSuccess && (
+                        {/* Success/Error messages for notifications */}
+                        {notificationMessage && (
                             <div className="bg-green-600 text-white px-4 py-2 rounded-lg text-center">
-                                {notifSuccess}
+                                {notificationMessage}
                             </div>
                         )}
-                        {notifError && (
+                        {notificationError && (
                             <div className="bg-red-600 text-white px-4 py-2 rounded-lg text-center">
-                                {notifError}
+                                {notificationError}
                             </div>
                         )}
 
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center border-b border-slate-700 py-2">
-                                <div className="flex flex-col">
-                                    <span className="font-semibold text-white">Deadline Reminders</span>
-                                    <span className="text-slate-400 text-sm">Receive reminders for upcoming deadlines.</span>
-                                </div>
-                                <input
-                                    type="checkbox"
-                                    checked={notifyDeadlines}
-                                    onChange={(e) => setNotifyDeadlines(e.target.checked)}
-                                    className="w-5 h-5 mt-2 sm:mt-0 accent-violet-500"
-                                />
+                        {/* Deadline Reminders */}
+                        <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2">
+                            <div className="flex flex-col">
+                                <span className="font-semibold text-white">Deadline Reminders</span>
+                                <span className="text-slate-400 text-sm">Receive reminders for upcoming deadlines.</span>
                             </div>
-                            <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center border-b border-slate-700 py-2">
-                                <div className="flex flex-col">
-                                    <span className="font-semibold text-white">Daily Summary</span>
-                                    <span className="text-slate-400 text-sm">Get a daily summary of your tasks and progress.</span>
-                                </div>
-                                <input
-                                    type="checkbox"
-                                    checked={notifyDailySummary}
-                                    onChange={(e) => setNotifyDailySummary(e.target.checked)}
-                                    className="w-5 h-5 mt-2 sm:mt-0 accent-violet-500"
-                                />
+                            <input
+                                type="checkbox"
+                                checked={notifyDeadlines}
+                                onChange={(e) => setNotifyDeadlines(e.target.checked)}
+                                className="w-5 h-5 mt-2 md:mt-0 accent-violet-500 cursor-pointer"
+                            />
+                        </div>
+
+                        {/* Daily Summary */}
+                        <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2">
+                            <div className="flex flex-col">
+                                <span className="font-semibold text-white">Daily Summary</span>
+                                <span className="text-slate-400 text-sm">Get a daily summary of your tasks and progress.</span>
                             </div>
-                            <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center border-b border-slate-700 py-2">
-                                <div className="flex flex-col">
-                                    <span className="font-semibold text-white">Overdue Alerts</span>
-                                    <span className="text-slate-400 text-sm">Urgent notifications for overdue tasks.</span>
-                                </div>
-                                <input
-                                    type="checkbox"
-                                    checked={notifyOverdue}
-                                    onChange={(e) => setNotifyOverdue(e.target.checked)}
-                                    className="w-5 h-5 mt-2 sm:mt-0 accent-violet-500"
-                                />
+                            <input
+                                type="checkbox"
+                                checked={notifyDailySummary}
+                                onChange={(e) => setNotifyDailySummary(e.target.checked)}
+                                className="w-5 h-5 mt-2 md:mt-0 accent-violet-500 cursor-pointer"
+                            />
+                        </div>
+
+                        {/* Overdue Alerts */}
+                        <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center md:flex-row md:justify-between md:items-center border-b border-slate-700 py-2">
+                            <div className="flex flex-col">
+                                <span className="font-semibold text-white">Overdue Alerts</span>
+                                <span className="text-slate-400 text-sm">Urgent Notifications for overdue tasks</span>
                             </div>
+                            <input
+                                type="checkbox"
+                                checked={notifyOverdue}
+                                onChange={(e) => setNotifyOverdue(e.target.checked)}
+                                className="w-5 h-5 mt-2 md:mt-0 accent-violet-500 cursor-pointer"
+                            />
                         </div>
 
                         <div className="flex justify-center mt-4">
-                            <button
+                            <button 
                                 className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50"
                                 onClick={handleSaveNotifications}
-                                disabled={notifLoading}
+                                disabled={notificationLoading}
                             >
-                                {notifLoading ? "Saving..." : "Save Selections"}
+                                {notificationLoading ? 'Saving...' : 'Save Selections'}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Delete Account Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 w-full max-w-md relative">
+                        <button
+                            className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                            onClick={() => {
+                                setShowDeleteModal(false);
+                                setDeleteConfirmText('');
+                                setDeleteError('');
+                            }}
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+
+                        <h3 className="text-xl font-bold text-red-500 mb-4">Delete Account</h3>
+                        
+                        <p className="text-slate-300 mb-4">
+                            This action is <span className="text-red-500 font-semibold">permanent</span> and cannot be undone. 
+                            All your data, including tasks and documents, will be permanently deleted.
+                        </p>
+
+                        <p className="text-slate-400 mb-2">
+                            Type <span className="font-mono text-red-400">DELETE</span> to confirm:
+                        </p>
+
+                        <input
+                            type="text"
+                            value={deleteConfirmText}
+                            onChange={(e) => setDeleteConfirmText(e.target.value)}
+                            placeholder="Type DELETE to confirm"
+                            className="w-full p-2 rounded-lg border border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 mb-4"
+                        />
+
+                        {deleteError && (
+                            <div className="bg-red-600 text-white px-4 py-2 rounded-lg text-center mb-4">
+                                {deleteError}
+                            </div>
+                        )}
+
+                        <div className="flex gap-3">
+                            <button
+                                className="flex-1 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setDeleteConfirmText('');
+                                    setDeleteError('');
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="flex-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50"
+                                onClick={handleDeleteAccount}
+                                disabled={deleteLoading || deleteConfirmText !== 'DELETE'}
+                            >
+                                {deleteLoading ? 'Deleting...' : 'Delete Account'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

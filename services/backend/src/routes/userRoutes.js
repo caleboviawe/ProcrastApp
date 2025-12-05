@@ -6,6 +6,7 @@ const {
     updateEmail,
     updatePassword,
     updateNotifications,
+    deleteAccount,
 } = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 
@@ -18,6 +19,8 @@ router.put("/updateEmail", authMiddleware, updateEmail);
 router.put("/updatePassword", authMiddleware, updatePassword);
 
 router.put("/updateNotifications", authMiddleware, updateNotifications);
+
+router.delete("/deleteAccount", authMiddleware, deleteAccount);
 
 
 module.exports = router;
