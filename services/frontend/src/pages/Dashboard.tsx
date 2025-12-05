@@ -72,7 +72,7 @@ export default function Dashboard() {
         }
     };
 
-  const handleTaskCreated = async (newTask: Partial<Task>) => {
+    const handleTaskCreated = async (newTask: Partial<Task>) => {
         const task: Task = {
             id: Date.now(),
             user_id: user?.id || 0,
@@ -106,6 +106,26 @@ export default function Dashboard() {
             await fetchTasks();
         } catch (err) {
             console.error("Error creating task:", err);
+        }
+    };
+
+    const handleDeleteTask = async (taskId: number) => {
+        try {
+            const response = await fetch(
+                `http://localhost:8000/api/task/deleteUserTask/${taskId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                }
+            );
+            if (!response.ok) throw new Error("Failed to delete task");
+            await fetchTasks();
+        } catch (err) {
+            console.error("Error deleting task:", err);
         }
     };
 
@@ -588,15 +608,8 @@ export default function Dashboard() {
                                                                 confirm(
                                                                     "Delete this task?"
                                                                 ) &&
-                                                                setTasks(
-                                                                    (prev) =>
-                                                                        prev.filter(
-                                                                            (
-                                                                                t
-                                                                            ) =>
-                                                                                t.id !==
-                                                                                task.id
-                                                                        )
+                                                                handleDeleteTask(
+                                                                    task.id
                                                                 )
                                                             }
                                                             className="text-white hover:text-red-400 p-2 rounded-lg hover:bg-red-500/10 transition-all"
