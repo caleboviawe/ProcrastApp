@@ -7,6 +7,7 @@ import ProtectedRoutes from "./authServices/ProtectedRoutes";
 import Dashboard from "./pages/Dashboard";
 import PublicRoutes from "./authServices/PublicRoutes";
 import AdminUsersPage from "./pages/Admin/AllUsers";
+import AdminTasksPage from "./pages/Admin/AllTasks";
 
 function App() {
     return (
@@ -20,7 +21,14 @@ function App() {
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/editor/:id" element={<DocumentEditor />} />
-                    <Route path="/admin/allUsers" element={<AdminUsersPage />} />
+                    <Route
+                        path="/admin/allUsers"
+                        element={<AdminUsersPage />}
+                    />
+                    <Route
+                        path="/admin/allTasks"
+                        element={<AdminTasksPage />}
+                    />
                 </Route>
             </Routes>
         </Router>
