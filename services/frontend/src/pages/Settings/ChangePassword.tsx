@@ -6,12 +6,16 @@ import logo from '../../assets/procrastapp-logo.png';
 import axios from 'axios';
 
 const ChangePassword: React.FC = () => {
+    /* variables for changing the password: password is the new password, newPassword is the re-entered password */
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    /* success and error messages for feedback to user if the password has been changed successfully */
     const [successMessage, setSuccessMessage] = useState("");
+    /* error message for feedback to user if the password change failed */
     const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
+    /* function to handle the password change when the user clicks the save changes button, the password must have at least one uppercase and lowercase letter, a number and a special character */
     const handlePasswordChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
@@ -32,7 +36,7 @@ const ChangePassword: React.FC = () => {
             setErrorMessage("Invalid Password. Must have at least one uppercase and lowercase letter, a number and a special character.");
             return;
         }
-
+        /* API call to the backend to change the password */
         const res = await axios.put(
             "http://localhost:8000/api/user/updatePassword",
             { password: newPassword },
@@ -52,6 +56,7 @@ const ChangePassword: React.FC = () => {
     };
 
     return (
+        /* page container with background image and styles */
         <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 sm:p-5 md:p-6 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative" style={{
                 backgroundImage: `url(${landingBg})`,
                 backgroundSize: 'cover',
@@ -59,6 +64,7 @@ const ChangePassword: React.FC = () => {
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed'
             }}>
+            {/* the top bar that appears on the page */}
             <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
                 <div className="flex items-center gap-3">
                     <img src={logo} alt="ProcrastApp Logo" className="w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20"/>
@@ -77,17 +83,19 @@ const ChangePassword: React.FC = () => {
                     </button>
                 </div>
             </div>
-
+            {/* success and error messages that appear when the user changes their password */}
             {successMessage && <div className="bg-green-600 text-white px-4 py-2 rounded-lg mt-6 w-full max-w-4xl text-center">{successMessage}</div>}
             {error && <div className="bg-red-600 text-white px-4 py-2 rounded-lg mt-6 w-full max-w-4xl text-center">{error}</div>}
 
+
+            {/* title and icon for the change password page */}
             <div className="flex item-center gap-4 mt-8">
                 <Settings className='w-8 h-8 text-white'/>
                 <h1 className="text-2xl font-bold text-white">Change Password</h1>
             </div>
 
             <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-6 w-full max-w-4xl mt-4">
-
+                {/* input fields for the new password and re-entered password */}
                 <div className="flex flex-col gap-2">
                     <label className="text-slate-300 font-semibold">NEW PASSWORD:</label>
                     <input type="text" placeholder='Enter New Password' value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />

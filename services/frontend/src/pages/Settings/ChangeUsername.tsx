@@ -6,11 +6,15 @@ import logo from "../../assets/procrastapp-logo.png";
 import axios from "axios";
 
 const ChangeUsername: React.FC = () => {
+    /* variables for changing the usernameL the username is used to set the username */
     const [username, setUsername] = useState("");
+    /* success and error messages for feedback to user if the username has been changed successfully */
     const [successMessage, setSuccessMessage] = useState("");
+    /* error message for feedback to user if the username change failed */
     const [error, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
+    /* function to handle the username change when the user clicks the save changes button, the username should have a letter and an underscore */
     const handleUsernameChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
@@ -24,6 +28,7 @@ const ChangeUsername: React.FC = () => {
             return;
         }
 
+        /* API call to the backend to change the username */
         const res = await axios.put(
             "http://localhost:8000/api/user/updateUsername",
             { username },
@@ -43,6 +48,7 @@ const ChangeUsername: React.FC = () => {
     };
 
     return (
+        /* page container with background image and styles */
         <div
             className="min-h-screen w-full bg-slate-950 flex flex-col items-center p-4 sm:p-5 md:p-6 font-sans selection:bg-violet-500/30 selection:text-violet-200 relative"
             style={{
@@ -53,6 +59,7 @@ const ChangeUsername: React.FC = () => {
                 backgroundAttachment: "fixed",
             }}
         >
+            {/* the top bar that appears on the page */}
             <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
                 <div className="flex items-center gap-3">
                     <img
@@ -81,6 +88,7 @@ const ChangeUsername: React.FC = () => {
                 </div>
             </div>
 
+            {/* success and error messages that appear when the user changes their username */}
             {successMessage && (
                 <div className="bg-green-600 text-white px-4 py-2 rounded-lg mt-6 w-full max-w-4xl text-center">
                     {successMessage}
@@ -99,6 +107,7 @@ const ChangeUsername: React.FC = () => {
                 </h1>
             </div>
 
+            {/* box that contains the current username input, new username input and save changes button */}
             <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-6 w-full max-w-4xl mt-4">
                 <div className="flex flex-col gap-4">
                     <label className="text-slate-300 font-semibold">
@@ -127,6 +136,7 @@ const ChangeUsername: React.FC = () => {
                     </span>
                 </div>
 
+                {/* save changes button that triggers the handleUsernameChange function */}
                 <div className="flex justify-center mt-4">
                     <button
                         className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all"

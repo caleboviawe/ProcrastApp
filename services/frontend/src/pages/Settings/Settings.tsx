@@ -6,7 +6,10 @@ import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
 import { useAppContext } from '../../authServices/helper';
 
+/* Settings.tsx: settings page for users to change private information */
+
 const SettingsPage: React.FC = () => {
+    /* variables for logic */
   const {user} = useAppContext();
   const navigate = useNavigate();
   const googleIdNull = user?.googleId === null ? true : false;
@@ -22,9 +25,8 @@ const SettingsPage: React.FC = () => {
                 backgroundAttachment: "fixed",
             }}
         >
-
-            {/* <div className="absolute inset-0 bg-black/60 pointer-events-none hidden dark:block"></div> */}
             
+            {/* the top bar that appears on the page */}
             <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
                 <div className="flex items-center gap-3">
                     <img
@@ -55,9 +57,9 @@ const SettingsPage: React.FC = () => {
 
             {/*page container stuff*/}
             <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
-                {/*setting options stuff*/}
+                {/*setting options stuff in the box that appears on screen*/}
                 <div className="flex flex-col gap-6">
-                    {/*profile box*/}
+                    {/*profile box (user can make changes like username, password, email and can see their role) */}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
                             <User className="w-8 h-8 text-slate-900 dark:text-white" />
@@ -69,6 +71,7 @@ const SettingsPage: React.FC = () => {
                             Manage your personal preferences and information.
                         </p>
 
+                        {/* for changes, a user can change the values below, and they are grabbed from the backend. if an user makes an account with google, changing the password is not shown up as an option. a user can also see the date they created their account */}
                         <div className="grid grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
                             {[
                                 {
@@ -148,7 +151,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                     </div> */}
 
-                    {/*data management box*/}
+                    {/*data management box: users can download their data or delete their account*/}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
                             <Database className="w-8 h-8 text-white" />
@@ -170,7 +173,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/*notifications box*/}
+                    {/*notifications box: users can set the type of notifications they want*/}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
                             <Bell className="w-8 h-8 text-white" />
