@@ -3,9 +3,10 @@ export interface User {
     username: string;
     email: string;
     password_hash: string;
-    role: 'student' | 'admin';
-    created_at: string;
-    updated_at: string;
+    role: "student" | "admin";
+    googleId: string | null;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface Status {
@@ -36,4 +37,11 @@ export interface Reminder {
     task_id: number;
     remind_at: string;
     created_at: string;
+}
+
+export interface EditingUserType {
+    id: number;
+    username: string;
+    email: string;
+    role: "student" | "admin";
 }

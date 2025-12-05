@@ -21,7 +21,8 @@ INSERT INTO users (username, email, password_hash, google_id, role) VALUES
 ('maheen', 'maheen@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
 ('youssef', 'youssef@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
 ('caleb', 'caleb@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
-('syril', 'syril@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student');
+('syril', 'syril@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
+('bob', 'bob@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'admin');
 
 -- insert sample tasks
 INSERT INTO tasks (user_id, category_id, status_id, title, description, due_date) VALUES
