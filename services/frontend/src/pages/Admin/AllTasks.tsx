@@ -15,6 +15,7 @@ import {
     User,
 } from "lucide-react";
 import LoadingScreen from "../../components/LoadingScreen";
+import Navbar from "../../components/Navbar";
 
 interface Task {
     id: number;
@@ -244,21 +245,11 @@ const AdminTasksPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#0B0E14] text-slate-50 p-4 md:p-8">
+            <Navbar
+                heading="Task Management"
+                subheading="Manage and monitor all user tasks"
+            />
             <div className="max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="p-3 rounded-xl bg-[#6366F1] shadow-lg shadow-indigo-500/20">
-                            <ListTodo className="w-6 h-6" />
-                        </div>
-                        <h1 className="text-3xl md:text-4xl font-bold">
-                            Task Management
-                        </h1>
-                    </div>
-                    <p className="text-slate-400 ml-16">
-                        Manage and monitor all user tasks
-                    </p>
-                </div>
-
                 <div className="mb-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
                     <div className="relative flex-1 max-w-md">
                         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />

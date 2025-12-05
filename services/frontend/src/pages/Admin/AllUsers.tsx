@@ -4,7 +4,6 @@ import {
     Trash2,
     Mail,
     Calendar,
-    Shield,
     User as UserIcon,
     Users,
     UserCog,
@@ -15,6 +14,7 @@ import { useAppContext } from "../../authServices/helper";
 import type { User, EditingUserType } from "../../type";
 import EditUserModal from "./components/EditUser";
 import FilterUsers from "./components/FilterUsers";
+import Navbar from "../../components/Navbar";
 
 type FilterRole = "all" | "student" | "admin";
 
@@ -210,21 +210,11 @@ export default function AdminUsersPage() {
 
     return (
         <div className="min-h-screen bg-[#0B0E14] text-slate-50 p-4 md:p-8">
+            <Navbar
+                heading="User Management"
+                subheading="Manage and monitor all users"
+            />
             <div className="max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="p-3 rounded-xl bg-[#6366F1] shadow-lg shadow-indigo-500/20">
-                            <Shield className="w-6 h-6" />
-                        </div>
-                        <h1 className="text-3xl md:text-4xl font-bold">
-                            User Management
-                        </h1>
-                    </div>
-                    <p className="text-slate-400 ml-16">
-                        Manage and monitor all platform users
-                    </p>
-                </div>
-
                 <FilterUsers
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
