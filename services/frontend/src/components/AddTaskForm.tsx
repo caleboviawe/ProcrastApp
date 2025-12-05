@@ -9,7 +9,7 @@ import { useState } from 'react';
 interface TaskFormData {
   title: string;
   category: string;
-  dueDate?: string;
+  due_date?: Date | null;
   hasDocument: boolean;
 }
 
@@ -26,7 +26,7 @@ export default function AddTaskModal({
 }: AddTaskModalProps) {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('other');
-  const [dueDate, setDueDate] = useState('');
+  const [due_date, setDueDate] = useState<Date | null>(null);
   const [hasDocument, setHasDocument] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,7 +37,7 @@ export default function AddTaskModal({
     const newTask: TaskFormData = {
       title: title.trim(),
       category,
-      dueDate: dueDate || undefined,
+      due_date: due_date || undefined, //n changed
       hasDocument,
     };
 
@@ -46,7 +46,7 @@ export default function AddTaskModal({
     // Reset form
     setTitle('');
     setCategory('other');
-    setDueDate('');
+    setDueDate(null); // changed
     setHasDocument(false);
   };
 
@@ -101,8 +101,17 @@ export default function AddTaskModal({
               </Label>
               <Input
                 type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
+                value={due_date ? due_date.toISOString().split('T')[0] : ''}
+                onChange={(e) => {
+                  const val = e.target.value;           
+                  if (val) {
+                    const [year, month, day] = val.split('-').map(Number);
+                    const localDate = new Date(year, month - 1, day);
+                    setDueDate(localDate);
+                  } else {
+                    setDueDate(null);
+                  }
+                }}
                 className="bg-slate-800/50 border-slate-700 text-white rounded-xl focus:border-violet-500 focus:ring-violet-500/30 [color-scheme:dark]"
               />
             </div>
