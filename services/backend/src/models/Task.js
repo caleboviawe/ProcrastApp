@@ -61,6 +61,16 @@ const Task = sequelize.define(
             defaultValue: false,
         },
 
+        document_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: "documents",
+                key: "id",
+            },
+            onDelete: "SET NULL",
+        },
+
         status: {
             type: DataTypes.STRING(50),
             allowNull: false,

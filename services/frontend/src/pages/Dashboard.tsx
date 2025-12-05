@@ -85,6 +85,7 @@ export default function Dashboard() {
             created_at: new Date(),
             updated_at: new Date(),
             has_document: newTask.has_document || false,
+            document_id: newTask.document_id || null,
         };
         try {
             const response = await fetch(
@@ -144,10 +145,31 @@ export default function Dashboard() {
                     body: JSON.stringify({ status: newStatus }),
                 }
             );
-            if (!response.ok) throw new Error("Failed to create task");
+            if (!response.ok) throw new Error("Failed to update task");
             await fetchTasks();
         } catch (err) {
             console.error("Error updating task status:", err);
+        }
+    };
+
+    const openTaskDocument = async (taskId: number) => {
+        try {
+            const response = await fetch(
+                `http://localhost:8000/api/task/${taskId}/document`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                }
+            );
+            if (!response.ok) throw new Error("Failed to get document");
+            const data = await response.json();
+            navigate(`/editor/${data.document_id}`);
+        } catch (err) {
+            console.error("Error opening document:", err);
         }
     };
 
@@ -572,11 +594,13 @@ export default function Dashboard() {
                                                                     </span>
                                                                 )}
                                                                 {task.has_document && (
-                                                                    <span className="text-xs px-3 py-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-full flex items-center gap-1.5 cursor-pointer hover:bg-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-200">
+                                                                    <button
+                                                                        onClick={() => openTaskDocument(task.id)}
+                                                                        className="text-xs px-3 py-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-full flex items-center gap-1.5 cursor-pointer hover:bg-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-200"
+                                                                    >
                                                                         <Paperclip className="w-3 h-3" />
-                                                                        View
-                                                                        Document
-                                                                    </span>
+                                                                        View Document
+                                                                    </button>
                                                                 )}
                                                             </div>
                                                         </div>

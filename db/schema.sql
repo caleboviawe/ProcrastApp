@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS reminders, tasks, categories, status, users CASCADE;
+DROP TABLE IF EXISTS reminders, tasks, documents, categories, status, users CASCADE;
 
 -- table for users
 CREATE TABLE users (
@@ -29,6 +29,18 @@ CREATE TABLE categories (
     description TEXT
 );
 
+-- table for documents
+CREATE TABLE documents (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL DEFAULT 'Untitled',
+    content TEXT DEFAULT '',
+    total_time_spent INT DEFAULT 0,
+    due_date TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- table for tasks
 CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
@@ -41,6 +53,7 @@ CREATE TABLE tasks (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     has_document BOOLEAN DEFAULT FALSE,
+    document_id INT REFERENCES documents(id) ON DELETE SET NULL,
     status VARCHAR(20) DEFAULT 'not-started'
 );
  -- table for reminders
