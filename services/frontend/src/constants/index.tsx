@@ -1,24 +1,24 @@
-import { Compass, Flame, BarChart2, Tags } from 'lucide-react';
+import { ListChecks, Clock, FileText, Calendar } from 'lucide-react';
 
 export const features = [
     {
-        icon: <Compass />,
-        text: 'Smart Task Lists',
-        description: 'Organize your assignments and projects with prioritization.',
+        icon: <ListChecks />,
+        text: 'Task Management',
+        description: 'Create, organize, and track tasks with status options like Not Started, In Progress, and Completed.',
     },
     {
-        icon: <Flame />,
-        text: 'Gamified Streaks',
-        description: 'Stay motivated with collection streaks: keep coming back for more.',
+        icon: <Calendar />,
+        text: 'Due Date Tracking',
+        description: 'Set deadlines and get alerts for upcoming and overdue tasks.',
     },
     {
-        icon: <BarChart2 />,
-        text: 'Track Progress',
-        description: 'Visualize your productivity and insights into your work.',
+        icon: <FileText />,
+        text: 'Document Editor',
+        description: 'Attach documents to tasks with a built-in editor and time tracking.',
     },
     {
-        icon: <Tags />,
-        text: 'Custom Categories',
-        description: 'Separate school, work, personal tasks with sets and filters.',
+        icon: <Clock />,
+        text: 'Progress Overview',
+        description: 'View your task completion stats and stay on top of your assignments.',
     },
 ];
