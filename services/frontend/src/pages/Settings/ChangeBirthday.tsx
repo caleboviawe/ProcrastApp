@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, Clock, LogOut, ArrowLeft } from 'lucide-react';
+import { Settings, LogOut, ArrowLeft } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
+import { useAppContext } from '../../authServices/helper';
 
 const ChangeBirthday: React.FC = () => {
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState("");
     const [birthday, setBirthday] = useState("");
+    const { setUser } = useAppContext();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setUser(null);
+        navigate("/login");
+    };
 
     const handleBirthdayChange = () => {
         console.log("New Birthday:", birthday);
@@ -35,7 +43,7 @@ const ChangeBirthday: React.FC = () => {
                         <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4"/>
                         Back
                     </button>
-                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
+                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={handleLogout}>
                         <LogOut className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4"/>
                         Log Out
                     </button>

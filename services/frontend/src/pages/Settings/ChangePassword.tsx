@@ -1,58 +1,69 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Clock, LogOut, ArrowLeft, Divide } from 'lucide-react';
+import { Settings, LogOut, ArrowLeft } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
 import axios from 'axios';
+import { useAppContext } from '../../authServices/helper';
 
 const ChangePassword: React.FC = () => {
-    /* variables for changing the password: password is the new password, newPassword is the re-entered password */
     const [password, setPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    /* success and error messages for feedback to user if the password has been changed successfully */
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    /* error message for feedback to user if the password change failed */
     const [error, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { setUser } = useAppContext();
 
-    /* function to handle the password change when the user clicks the save changes button, the password must have at least one uppercase and lowercase letter, a number and a special character */
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setUser(null);
+        navigate("/login");
+    };
+
     const handlePasswordChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
 
-        if (!newPassword || !password) {
+        if (!password || !confirmPassword) {
             setErrorMessage("Please fill in all fields.");
             return;
         }
 
-        if (newPassword !== password) {
+        if (password !== confirmPassword) {
             setErrorMessage("Passwords do not match. Please try again.");
             return;
         }
 
         const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
-
         if (!isValid) {
-            setErrorMessage("Invalid Password. Must have at least one uppercase and lowercase letter, a number and a special character.");
-            return;
-        }
-        /* API call to the backend to change the password */
-        const res = await axios.put(
-            "http://localhost:8000/api/user/updatePassword",
-            { password: newPassword },
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            }
-        );
-        if (res.status !== 200) {
-            setErrorMessage("Failed to change username. Please try again.");
+            setErrorMessage("Invalid Password. Must have at least 8 characters with one uppercase, one lowercase, a number and a special character.");
             return;
         }
 
-        console.log("New Password:", password);
-        setSuccessMessage("Sucessfully Changed.");
+        setLoading(true);
+        try {
+            await axios.put(
+                "http://localhost:8000/api/user/updatePassword",
+                { password },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
+            );
+            setSuccessMessage("Password changed successfully.");
+            setPassword("");
+            setConfirmPassword("");
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err) && err.response?.data?.message) {
+                setErrorMessage(err.response.data.message);
+            } else {
+                setErrorMessage("Failed to change password. Please try again.");
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -77,7 +88,7 @@ const ChangePassword: React.FC = () => {
                         <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4"/>
                         Back
                     </button>
-                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
+                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors" onClick={handleLogout}>
                         <LogOut className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4"/>
                         Log Out
                     </button>
@@ -98,18 +109,17 @@ const ChangePassword: React.FC = () => {
                 {/* input fields for the new password and re-entered password */}
                 <div className="flex flex-col gap-2">
                     <label className="text-slate-300 font-semibold">NEW PASSWORD:</label>
-                    <input type="text" placeholder='Enter New Password' value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
-                    <span className="text-slate-400 text-sm text-center">Must have at least one uppercase and lowercase letter, a number and a special character.</span>
+                    <input type="password" placeholder='Enter New Password' value={password} onChange={(e) => setPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
+                    <span className="text-slate-400 text-sm text-center">Must have at least 8 characters with one uppercase, one lowercase, a number and a special character.</span>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="text-slate-300 font-semibold">RE-ENTER NEW PASSWORD:</label>
-                    <input type="text" placeholder='Re-Enter New Password' value={password} onChange={(e) => setPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
-                    <span className="text-slate-400 text-sm text-center"></span>
+                    <label className="text-slate-300 font-semibold">CONFIRM NEW PASSWORD:</label>
+                    <input type="password" placeholder='Re-Enter New Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center" />
                 </div>
 
                 <div className="flex justify-center mt-4">
-                    <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all" onClick={handlePasswordChange}>Save Changes</button>
+                    <button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50" onClick={handlePasswordChange} disabled={loading}>{loading ? "Saving..." : "Save Changes"}</button>
                 </div>
             </div>
 

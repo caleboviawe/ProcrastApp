@@ -6,6 +6,9 @@ export interface User {
     createdAt: Date;
     updatedAt: Date;
     googleId: string | null;
+    notifyDeadlines: boolean;
+    notifyDailySummary: boolean;
+    notifyOverdue: boolean;
 }
 
 export interface Status {

@@ -1,50 +1,65 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, Clock, LogOut, ArrowLeft, Divide } from "lucide-react";
+import { Settings, LogOut, ArrowLeft } from "lucide-react";
 import landingBg from "../../assets/landing-bg-3.jpg";
 import logo from "../../assets/procrastapp-logo.png";
 import axios from "axios";
+import { useAppContext } from "../../authServices/helper";
 
 const ChangeUsername: React.FC = () => {
-    /* variables for changing the usernameL the username is used to set the username */
     const [username, setUsername] = useState("");
-    /* success and error messages for feedback to user if the username has been changed successfully */
     const [successMessage, setSuccessMessage] = useState("");
-    /* error message for feedback to user if the username change failed */
     const [error, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { user, setUser } = useAppContext();
 
-    /* function to handle the username change when the user clicks the save changes button, the username should have a letter and an underscore */
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setUser(null);
+        navigate("/login");
+    };
+
     const handleUsernameChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
 
+        if (!username.trim()) {
+            setErrorMessage("Please enter a username.");
+            return;
+        }
+
         const isValid = /^[A-Za-z_].*/.test(username);
-
         if (!isValid) {
-            setErrorMessage(
-                "Invalid Username. Must start with a letter or underscore."
+            setErrorMessage("Invalid Username. Must start with a letter or underscore.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await axios.put(
+                "http://localhost:8000/api/user/updateUsername",
+                { username },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
             );
-            return;
-        }
-
-        /* API call to the backend to change the username */
-        const res = await axios.put(
-            "http://localhost:8000/api/user/updateUsername",
-            { username },
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+            if (user) {
+                setUser({ ...user, username: res.data.username || username });
             }
-        );
-        if (res.status !== 200) {
-            setErrorMessage("Failed to change username. Please try again.");
-            return;
+            setSuccessMessage("Username changed successfully.");
+            setUsername("");
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err) && err.response?.data?.message) {
+                setErrorMessage(err.response.data.message);
+            } else {
+                setErrorMessage("Failed to change username. Please try again.");
+            }
+        } finally {
+            setLoading(false);
         }
-
-        console.log("New UserName:", username);
-        setSuccessMessage("Sucessfully Changed.");
     };
 
     return (
@@ -81,7 +96,10 @@ const ChangeUsername: React.FC = () => {
                         <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4" />
                         Back
                     </button>
-                    <button className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors">
+                    <button 
+                        className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors"
+                        onClick={handleLogout}
+                    >
                         <LogOut className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4" />
                         Log Out
                     </button>
@@ -115,8 +133,9 @@ const ChangeUsername: React.FC = () => {
                     </label>
                     <input
                         type="text"
-                        placeholder="Enter Current Username"
-                        className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center"
+                        readOnly
+                        value={user?.username || ""}
+                        className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-white w-full text-center cursor-not-allowed opacity-70"
                     />
                 </div>
 
@@ -139,10 +158,11 @@ const ChangeUsername: React.FC = () => {
                 {/* save changes button that triggers the handleUsernameChange function */}
                 <div className="flex justify-center mt-4">
                     <button
-                        className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                        className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50"
                         onClick={handleUsernameChange}
+                        disabled={loading}
                     >
-                        Save Changes
+                        {loading ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
             </div>
