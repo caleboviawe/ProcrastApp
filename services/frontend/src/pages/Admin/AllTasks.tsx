@@ -25,7 +25,7 @@ interface EditingTask {
     description: string | null;
     due_date: Date | null;
     status_id: number | null;
-    category_id: number | null;
+    category: string;
 }
 
 type FilterStatus = "all" | "pending" | "completed" | "overdue";
@@ -117,7 +117,7 @@ const AdminTasksPage: React.FC = () => {
             description: task.description,
             due_date: task.due_date ? new Date(task.due_date) : null,
             status_id: task.status_id,
-            category_id: task.category_id,
+            category: task.category,
         });
         setShowEditModal(true);
     };
@@ -141,7 +141,7 @@ const AdminTasksPage: React.FC = () => {
                         description: editingTask.description,
                         due_date: editingTask.due_date || null,
                         status_id: editingTask.status_id,
-                        category_id: editingTask.category_id,
+                        category: editingTask.category,
                     }),
                 }
             );

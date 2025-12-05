@@ -15,6 +15,7 @@ import type { User, EditingUserType } from "../../type";
 import EditUserModal from "./components/EditUser";
 import FilterUsers from "./components/FilterUsers";
 import Navbar from "../../components/Navbar";
+import ConfirmModal from "./components/ConfirmationPopup";
 
 type FilterRole = "all" | "student" | "admin";
 
@@ -29,6 +30,15 @@ export default function AdminUsersPage() {
         null
     );
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [showEditPopup, setShowEditPopup] = useState<boolean>(false);
+    const [editLoading, setEditLoading] = useState<boolean>(false);
+    const [editError, setEditError] = useState<string | undefined>(undefined);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+    const [deleteError, setDeleteError] = useState<string | undefined>(
+        undefined
+    );
+    const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
 
     // Fetch all users on mount
     useEffect(() => {
@@ -65,13 +75,7 @@ export default function AdminUsersPage() {
     };
 
     const handleDelete = async (userId: number): Promise<void> => {
-        if (
-            !window.confirm(
-                "Are you sure you want to delete this user? This action cannot be undone."
-            )
-        ) {
-            return;
-        }
+        setDeleteLoading(true);
 
         try {
             const response = await fetch(
@@ -87,13 +91,14 @@ export default function AdminUsersPage() {
             );
 
             if (!response.ok) throw new Error("Failed to delete user");
-
-            setUsers(users.filter((user) => user.id !== userId));
-            alert("User deleted successfully");
+            await fetchUsers();
+            setShowDeleteModal(false);
+            setUserIdToDelete(null);
+            setDeleteLoading(false);
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
-            alert("Error deleting user: " + errorMessage);
+            setDeleteError(errorMessage);
             console.error("Error deleting user:", err);
         }
     };
@@ -108,13 +113,9 @@ export default function AdminUsersPage() {
         setShowEditModal(true);
     };
 
-    const handleUpdateUser = async (
-        e: React.FormEvent<HTMLFormElement>
-    ): Promise<void> => {
-        e.preventDefault();
-
+    const handleUpdateUser = async (): Promise<void> => {
         if (!editingUser) return;
-
+        setEditLoading(true);
         try {
             const response = await fetch(
                 `http://localhost:8000/api/admin/updateUser/${editingUser.id}`,
@@ -136,19 +137,15 @@ export default function AdminUsersPage() {
 
             if (!response.ok) throw new Error("Failed to update user");
 
-            const updatedUser: User = await response.json();
-            setUsers(
-                users.map((user) =>
-                    user.id === updatedUser.id ? updatedUser : user
-                )
-            );
+            await fetchUsers();
             setShowEditModal(false);
             setEditingUser(null);
-            alert("User updated successfully");
+            setEditLoading(false);
+            setShowEditPopup(false);
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
-            alert("Error updating user: " + errorMessage);
+            setEditError(errorMessage);
             console.error("Error updating user:", err);
         }
     };
@@ -390,11 +387,14 @@ export default function AdminUsersPage() {
                                                     </button>
 
                                                     <button
-                                                        onClick={() =>
-                                                            handleDelete(
+                                                        onClick={() => {
+                                                            setUserIdToDelete(
                                                                 user.id
-                                                            )
-                                                        }
+                                                            );
+                                                            setShowDeleteModal(
+                                                                true
+                                                            );
+                                                        }}
                                                         className="p-2 rounded-lg bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/30 text-slate-400 hover:text-red-400 transition-all group-hover:scale-105"
                                                         title="Delete user"
                                                     >
@@ -453,10 +453,31 @@ export default function AdminUsersPage() {
                     show={showEditModal}
                     editingUser={editingUser}
                     onClose={() => setShowEditModal(false)}
-                    onSubmit={handleUpdateUser}
+                    onRequestSubmit={() => setShowEditPopup(true)}
                     onChange={setEditingUser}
                 />
             )}
+            <ConfirmModal
+                isOpen={showEditPopup}
+                onClose={() => setShowEditPopup(false)}
+                title="Edit Task"
+                message="Update the user details below."
+                actionText="Save Changes"
+                loading={editLoading}
+                error={editError}
+                onConfirm={handleUpdateUser}
+            />
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                title="Delete Account"
+                message="This action is permanent and cannot be undone. All your data will be deleted."
+                confirmText="DELETE"
+                actionText="Delete Account"
+                loading={deleteLoading}
+                error={deleteError}
+                onConfirm={() => handleDelete(userIdToDelete as number)}
+            />
         </div>
     );
 }

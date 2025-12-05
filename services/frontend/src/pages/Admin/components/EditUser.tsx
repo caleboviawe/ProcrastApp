@@ -1,4 +1,4 @@
-import { X, Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import type { EditingUserType } from "../../../type";
 
 interface EditUserModalProps {
@@ -6,7 +6,7 @@ interface EditUserModalProps {
     show: boolean;
     onClose: () => void;
     onChange: (user: EditingUserType) => void;
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    onRequestSubmit: () => void; // renamed
 }
 
 export default function EditUserModal({
@@ -14,7 +14,7 @@ export default function EditUserModal({
     show,
     onClose,
     onChange,
-    onSubmit,
+    onRequestSubmit,
 }: EditUserModalProps) {
     if (!show || !editingUser) return null;
 
@@ -31,9 +31,9 @@ export default function EditUserModal({
                     </button>
                 </div>
 
-                <form onSubmit={onSubmit} className="space-y-4">
+                <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                        <label className="block text-sm mb-2 text-slate-300">
                             Username
                         </label>
                         <input
@@ -45,13 +45,12 @@ export default function EditUserModal({
                                     username: e.target.value,
                                 })
                             }
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
-                            required
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                        <label className="block text-sm mb-2 text-slate-300">
                             Email
                         </label>
                         <input
@@ -63,13 +62,12 @@ export default function EditUserModal({
                                     email: e.target.value,
                                 })
                             }
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
-                            required
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                        <label className="block text-sm mb-2 text-slate-300">
                             Role
                         </label>
                         <select
@@ -80,8 +78,7 @@ export default function EditUserModal({
                                     role: e.target.value as "student" | "admin",
                                 })
                             }
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
-                            required
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         >
                             <option value="student">Student</option>
                             <option value="admin">Admin</option>
@@ -90,22 +87,21 @@ export default function EditUserModal({
 
                     <div className="flex gap-3 pt-4">
                         <button
-                            type="button"
                             onClick={onClose}
-                            className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-semibold transition-all"
+                            className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         >
                             Cancel
                         </button>
 
                         <button
-                            type="submit"
-                            className="flex-1 px-4 py-3 bg-[#6366F1] hover:bg-[#5558DD] rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                            onClick={onRequestSubmit}
+                            className="flex-1 px-4 py-3 bg-[#6366F1] rounded-xl flex items-center justify-center gap-2"
                         >
                             <Check className="w-4 h-4" />
-                            Save Changes
+                            Continue
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
