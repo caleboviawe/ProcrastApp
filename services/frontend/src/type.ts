@@ -36,6 +36,7 @@ export interface Task {
     created_at: Date;
     updated_at: Date;
     has_document: boolean;
+    document_id: number | null;
 }
 
 export interface Reminder {

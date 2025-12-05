@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Task = require("../models/Task");
+const Document = require("../models/Document");
 
 const getAllUserTasks = async (req, res, next) => {
     try {
@@ -92,9 +93,51 @@ const addUserTask = async (req, res, next) => {
     }
 };
 
+// Get or create a document for a task
+const getTaskDocument = async (req, res, next) => {
+    const taskId = req.params.id;
+
+    try {
+        const task = await Task.findByPk(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        if (task.user_id !== req.user.id) {
+            return res.status(403).json({ message: "Not authorized" });
+        }
+
+        // If task already has a document, return it
+        if (task.document_id) {
+            const doc = await Document.findByPk(task.document_id);
+            if (doc) {
+                return res.json({ document_id: doc.id });
+            }
+        }
+
+        // Create new document for this task
+        const newDoc = await Document.create({
+            user_id: req.user.id,
+            title: task.title,
+            content: "",
+            due_date: task.due_date,
+        });
+
+        // Link document to task
+        task.document_id = newDoc.id;
+        task.has_document = true;
+        await task.save();
+
+        res.status(201).json({ document_id: newDoc.id });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllUserTasks,
     updateUserTask,
     deleteUserTask,
     addUserTask,
+    getTaskDocument,
 };

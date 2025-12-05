@@ -7,9 +7,8 @@ exports.getDocument = async (req, res) => {
 exports.updateDocument = async (req, res) => {
     try {
         const { content, total_time_spent } = req.body;
-        console.log('Before update:', req.document.toJSON());
         await req.document.update({ content, total_time_spent });
-        console.log('After update:', req.document.toJSON());
+        res.json({ message: "Document saved" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
