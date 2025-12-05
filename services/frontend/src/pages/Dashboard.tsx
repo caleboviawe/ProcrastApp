@@ -21,14 +21,15 @@ interface Task {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user } = useAppContext();
+  const { user, setUser } = useAppContext();
   const [activeTab, setActiveTab] = useState<'all' | 'in-progress' | 'completed' | 'archived'>('all');
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
 
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+      localStorage.removeItem("token");
+      setUser(null);
     navigate("/login");
   };
 
@@ -249,7 +250,7 @@ export default function Dashboard() {
                 ].map(tab => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
+                    onClick={() => setActiveTab(tab.id as string as typeof activeTab)}
                     className={`px-6 py-4 text-sm font-medium transition-all relative ${
                       activeTab === tab.id
                         ? 'text-white'
