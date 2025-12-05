@@ -55,8 +55,8 @@ const LandingPage = () => {
                     </h1>
 
                     <p className="text-lg md:text-xl text-slate-100 max-w-2xl mx-auto mb-10 animate-fade-in-up animation-delay-[0.2s] leading-relaxed drop-shadow-md font-medium">
-                        Your ultimate task manager designed to help you conquer assignments, build lasting habits,
-                        and celebrate every win along the way.
+                        Your ultimate task manager designed to help you organize assignments, track deadlines,
+                        and get things done.
                     </p>
 
                     <div className="flex justify-center gap-6 animate-fade-in-up animation-delay-[0.3s] mb-20">
