@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../components/Logo";
 import { Button } from "../ui/button";
 import {
     LogOut,
@@ -19,9 +18,10 @@ import {
 } from "lucide-react";
 import { useAppContext } from "../authServices/helper";
 import AddTaskForm from "../components/AddTaskForm";
-import type { Task, TaskStatus } from "../type"; // Adjust path if needed
+import type { Task, TaskStatus } from "../type";
 import LoadingScreen from "../components/LoadingScreen";
 import Notifications from "../components/Notifications";
+import Navbar from "../components/Navbar";
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -334,83 +334,7 @@ export default function Dashboard() {
             </div>
 
             {/* HEADER */}
-            <header className="bg-slate-900/60ándose backdrop-blur-xl border-b border-slate-800 shadow-2xl relative z-10">
-                <div className="max-w-7xl mx-auto px-6 py-5">
-                    <div className="flex justify-between items-center">
-                        <Link to="/" className="flex items-center gap-3">
-                            <Logo className="h-20 w-30 drop-shadow-2xl" />
-                        </Link>
-
-                        <div className="hidden md:flex items-center gap-4">
-                            {user?.role === "admin" ? (
-                                <>
-                                    <span className="text-slate-300 text-sm font-medium">
-                                        Hey admin: {user.email}
-                                    </span>
-
-                                    <Button
-                                        variant="outline"
-                                        onClick={() =>
-                                            navigate("/admin/allUsers")
-                                        }
-                                        className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
-                                    >
-                                        <Users size={16} className="mr-2" />
-                                        View Users
-                                    </Button>
-
-                                    <Button
-                                        variant="outline"
-                                        onClick={() =>
-                                            navigate("/admin/allTasks")
-                                        }
-                                        className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
-                                    >
-                                        <ListChecks
-                                            size={16}
-                                            className="mr-2"
-                                        />
-                                        View Tasks
-                                    </Button>
-
-                                    <Button
-                                        variant="outline"
-                                        onClick={handleLogout}
-                                        className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
-                                    >
-                                        <LogOut size={16} className="mr-2" />
-                                        Logout
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                    <span className="text-slate-400 text-sm">
-                                        Hey {user?.email}
-                                    </span>
-
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => navigate("/profile")}
-                                        className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
-                                    >
-                                        <Settings size={16} className="mr-2" />
-                                        Settings
-                                    </Button>
-
-                                    <Button
-                                        variant="outline"
-                                        onClick={handleLogout}
-                                        className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
-                                    >
-                                        <LogOut size={16} className="mr-2" />
-                                        Logout
-                                    </Button>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
             {/* MAIN CONTENT */}
             <main className="relative z-10 max-w-7xl mx-auto px-6 py-10">
