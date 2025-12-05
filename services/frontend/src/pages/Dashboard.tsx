@@ -154,7 +154,7 @@ export default function Dashboard() {
 
                   <Button
                     variant="outline"
-                    onClick={() => navigate("/settings")}
+                    onClick={() => navigate("/profile")}
                     className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
                   >
                     <Settings size={16} className="mr-2" />
