@@ -72,7 +72,7 @@ export default function Dashboard() {
         }
     };
 
-    const handleTaskCreated = async (newTask: Partial<Task>) => {
+  const handleTaskCreated = async (newTask: Partial<Task>) => {
         const task: Task = {
             id: Date.now(),
             user_id: user?.id || 0,
@@ -86,35 +86,49 @@ export default function Dashboard() {
             updated_at: new Date(),
             has_document: newTask.has_document || false,
         };
-      try {
-        const response = await fetch(
-            "http://localhost:8000/api/task/addUserTask",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-                body: JSON.stringify(task),
-            }
-        );
+        try {
+            const response = await fetch(
+                "http://localhost:8000/api/task/addUserTask",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                    body: JSON.stringify(task),
+                }
+            );
 
-        if (!response.ok) throw new Error("Failed to create task");
+            if (!response.ok) throw new Error("Failed to create task");
 
-        await fetchTasks();
-      }catch (err) {
-        console.error("Error creating task:", err);
-      }
+            await fetchTasks();
+        } catch (err) {
+            console.error("Error creating task:", err);
+        }
     };
 
-    const updateTaskStatus = (taskId: number, newStatus: TaskStatus) => {
-        setTasks((prev) =>
-            prev.map((t) =>
-                t.id === taskId
-                    ? { ...t, status: newStatus, updated_at: new Date() }
-                    : t
-            )
-        );
+    const updateTaskStatus = async (taskId: number, newStatus: TaskStatus) => {
+        try {
+            const response = await fetch(
+                `http://localhost:8000/api/task/updateUserTask/${taskId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                    body: JSON.stringify({ status: newStatus }),
+                }
+            );
+            if (!response.ok) throw new Error("Failed to create task");
+            await fetchTasks();
+        } catch (err) {
+            console.error("Error updating task status:", err);
+        }
     };
 
     const getStatusConfig = (status: TaskStatus) => {
@@ -171,7 +185,8 @@ export default function Dashboard() {
 
     const formatDueDate = (date: Date | null) => {
         if (!date) return null;
-        return date.toLocaleDateString("en-US", {
+        const d = typeof date === "string" ? new Date(date) : date;
+        return d.toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
         });

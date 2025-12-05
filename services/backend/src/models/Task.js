@@ -10,10 +10,9 @@ const Task = sequelize.define(
             primaryKey: true,
         },
 
-        userId: {
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            field: "user_id",
             references: {
                 model: "users",
                 key: "id",
@@ -21,10 +20,9 @@ const Task = sequelize.define(
             onDelete: "CASCADE",
         },
 
-        categoryId: {
+        category_id: {
             type: DataTypes.INTEGER,
             allowNull: true,
-            field: "category_id",
             references: {
                 model: "categories",
                 key: "id",
@@ -32,10 +30,9 @@ const Task = sequelize.define(
             onDelete: "SET NULL",
         },
 
-        statusId: {
+        status_id: {
             type: DataTypes.INTEGER,
             allowNull: true,
-            field: "status_id",
             references: {
                 model: "status",
                 key: "id",
@@ -53,10 +50,9 @@ const Task = sequelize.define(
             allowNull: true,
         },
 
-        dueDate: {
+        due_date: {
             type: DataTypes.DATE,
             allowNull: true,
-            field: "due_date",
         },
 
         has_document: {
