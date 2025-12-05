@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Database, User, LogOut, ArrowLeft, X } from 'lucide-react';
+import { Bell, Database, User, X } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
-import logo from '../../assets/procrastapp-logo.png';
 import { useAppContext } from '../../authServices/helper';
 import axios from 'axios';
+import Navbar from '../../components/Navbar';
 
 /* Settings.tsx: settings page for users to change private information */
 
@@ -160,38 +160,8 @@ const SettingsPage: React.FC = () => {
                 backgroundAttachment: "fixed",
             }}
         >
-            
-            {/* the top bar that appears on the page */}
-            <div className="flex justify-between items-center p-4 bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl w-full mb-6">
-                <div className="flex items-center gap-3">
-                    <img
-                        src={logo}
-                        alt="ProcrastApp Logo"
-                        className="w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20"
-                    />
-                </div>
-
-                <h4 className="text-xl sm:text-lg md:text-2xl text-white font-semibold text-center">
-                    Settings
-                </h4>
-
-                <div className="flex items-center gap-3">
-                    <button
-                        className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors"
-                        onClick={() => navigate(-1)}
-                    >
-                        <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4" />
-                        Back
-                    </button>
-                    <button 
-                        className="flex items-center gap-2 border border-slate-700 text-slate-200 px-3 py-1 rounded-lg hover:bg-slate-800 transition-colors"
-                        onClick={handleLogout}
-                    >
-                        <LogOut className="w-3 h-3 sm:w-4 sm:h-4 md:wd-4 md:h-4" />
-                        Log Out
-                    </button>
-                </div>
-            </div>
+            {/* Navbar component for navigation across the app so it looks consistent */}
+            <Navbar />
 
             {/*page container stuff*/}
             <div className="w-full max-w-4xl relative z-10 flex flex-col gap-8">
