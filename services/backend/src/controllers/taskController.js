@@ -65,8 +65,31 @@ const deleteUserTask = async (req, res, next) => {
     }
 };
 
+const addUserTask = async (req, res, next) => {
+    const { title, description, status_id, category_id, due_date } = req.body;
+    console.log("Adding task for user:", req.user.id);
+    try {
+        if (req.user.id == null) {
+            return res.status(400).json({ message: "Invalid user" });
+        }
+        const newTask = await Task.create({
+            title,
+            description,
+            statusId: status_id,
+            categoryId: category_id,
+            dueDate: due_date,
+            userId: req.user.id,
+        });
+
+        res.status(201).json({ message: "Task created successfully", newTask });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllUserTasks,
     updateUserTask,
     deleteUserTask,
+    addUserTask,
 };
