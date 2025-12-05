@@ -72,7 +72,7 @@ export default function Dashboard() {
         }
     };
 
-    const handleTaskCreated = (newTask: Partial<Task>) => {
+    const handleTaskCreated = async (newTask: Partial<Task>) => {
         const task: Task = {
             id: Date.now(),
             user_id: user?.id || 0,
@@ -86,7 +86,25 @@ export default function Dashboard() {
             updated_at: new Date(),
             has_document: newTask.has_document || false,
         };
-        setTasks((prev) => [...prev, task]);
+      try {
+        const response = await fetch(
+            "http://localhost:8000/api/task/addUserTask",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(task),
+            }
+        );
+
+        if (!response.ok) throw new Error("Failed to create task");
+
+        await fetchTasks();
+      }catch (err) {
+        console.error("Error creating task:", err);
+      }
     };
 
     const updateTaskStatus = (taskId: number, newStatus: TaskStatus) => {
