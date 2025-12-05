@@ -14,7 +14,7 @@ const getAllUserTasks = async (req, res, next) => {
     }
 };
 
-const updateUserTask = async (req, res) => {
+const updateUserTask = async (req, res, next) => {
     const taskId = req.params.id;
     const { title, description, status_id, category_id, due_date } = req.body;
 
@@ -25,11 +25,9 @@ const updateUserTask = async (req, res) => {
         }
 
         if (task.userId !== req.user.id) {
-            return res
-                .status(403)
-                .json({
-                    message: "You are not authorized to update this task",
-                });
+            return res.status(403).json({
+                message: "You are not authorized to update this task",
+            });
         }
 
         task.title = title || task.title;
@@ -45,7 +43,27 @@ const updateUserTask = async (req, res) => {
     }
 };
 
-const deleteUserTask = () => {};
+const deleteUserTask = async (req, res, next) => {
+    const taskId = req.params.id;
+
+    try {
+        const task = await Task.findByPk(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        if (task.userId !== req.user.id) {
+            return res.status(403).json({
+                message: "You are not authorized to delete this task",
+            });
+        }
+
+        await task.destroy();
+        res.json({ message: "Task deleted successfully" });
+    } catch (error) {
+        next(error);
+    }
+};
 
 module.exports = {
     getAllUserTasks,
