@@ -60,7 +60,15 @@ const getAllTasks = async (req, res) => {
 
 const updateTask = async (req, res) => {
     const taskId = req.params.id;
-    const { title, description, dueDate, statusId, categoryId } = req.body;
+    const {
+        title,
+        description,
+        status_id,
+        category_id,
+        due_date,
+        status,
+        has_document,
+    } = req.body;
 
     try {
         const task = await Task.findByPk(taskId);
@@ -68,11 +76,15 @@ const updateTask = async (req, res) => {
             return res.status(404).json({ message: "Task not found" });
         }
 
-        task.title = title || task.title;
-        task.description = description || task.description;
-        task.dueDate = dueDate || task.dueDate;
-        task.statusId = statusId || task.statusId;
-        task.categoryId = categoryId || task.categoryId;
+       task.title = title || task.title;
+       task.description = description || task.description;
+       task.status_id = status_id || task.status_id;
+       task.category_id = category_id || task.category_id;
+       task.due_date = due_date || task.due_date;
+       task.updated_at = new Date();
+       task.status = status || task.status;
+       if (has_document !== undefined) task.has_document = has_document;
+
 
         await task.save();
         res.json({ message: "Task updated successfully", task });

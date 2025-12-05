@@ -16,26 +16,16 @@ import {
 } from "lucide-react";
 import LoadingScreen from "../../components/LoadingScreen";
 import Navbar from "../../components/Navbar";
-
-interface Task {
-    id: number;
-    userId: number;
-    categoryId: number | null;
-    statusId: number | null;
-    title: string;
-    description: string | null;
-    dueDate: Date | null;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import type { Task } from "../../type";
+import ConfirmModal from "./components/ConfirmationPopup";
 
 interface EditingTask {
     id: number;
     title: string;
     description: string | null;
-    dueDate: string;
-    statusId: number | null;
-    categoryId: number | null;
+    due_date: Date | null;
+    status_id: number | null;
+    category_id: number | null;
 }
 
 type FilterStatus = "all" | "pending" | "completed" | "overdue";
@@ -48,6 +38,15 @@ const AdminTasksPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [editingTask, setEditingTask] = useState<EditingTask | null>(null);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [showEditPopup, setShowEditPopup] = useState<boolean>(false);
+    const [editLoading, setEditLoading] = useState<boolean>(false);
+    const [editError, setEditError] = useState<string | undefined>(undefined);
+    const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+    const [deleteError, setDeleteError] = useState<string | undefined>(
+        undefined
+    );
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [taskIdToDelete, setTaskIdToDelete] = useState<number | null>(null);
 
     useEffect(() => {
         fetchTasks();
@@ -83,13 +82,7 @@ const AdminTasksPage: React.FC = () => {
     };
 
     const handleDelete = async (taskId: number): Promise<void> => {
-        if (
-            !window.confirm(
-                "Are you sure you want to delete this task? This action cannot be undone."
-            )
-        ) {
-            return;
-        }
+        setDeleteLoading(true);
 
         try {
             const response = await fetch(
@@ -105,13 +98,14 @@ const AdminTasksPage: React.FC = () => {
             );
 
             if (!response.ok) throw new Error("Failed to delete task");
-
-            setTasks(tasks.filter((task) => task.id !== taskId));
-            alert("Task deleted successfully");
+            await fetchTasks();
+            setShowDeleteModal(false);
+            setTaskIdToDelete(null);
+            setDeleteLoading(false);
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
-            alert("Error deleting task: " + errorMessage);
+            setDeleteError(errorMessage);
             console.error("Error deleting task:", err);
         }
     };
@@ -121,18 +115,16 @@ const AdminTasksPage: React.FC = () => {
             id: task.id,
             title: task.title,
             description: task.description,
-            dueDate: task.dueDate
-                ? new Date(task.dueDate).toISOString().split("T")[0]
-                : "",
-            statusId: task.statusId,
-            categoryId: task.categoryId,
+            due_date: task.due_date ? new Date(task.due_date) : null,
+            status_id: task.status_id,
+            category_id: task.category_id,
         });
         setShowEditModal(true);
     };
 
     const handleUpdateTask = async (): Promise<void> => {
         if (!editingTask) return;
-
+        setEditLoading(true);
         try {
             const response = await fetch(
                 `http://localhost:8000/api/admin/updateTask/${editingTask.id}`,
@@ -147,37 +139,33 @@ const AdminTasksPage: React.FC = () => {
                     body: JSON.stringify({
                         title: editingTask.title,
                         description: editingTask.description,
-                        dueDate: editingTask.dueDate || null,
-                        statusId: editingTask.statusId,
-                        categoryId: editingTask.categoryId,
+                        due_date: editingTask.due_date || null,
+                        status_id: editingTask.status_id,
+                        category_id: editingTask.category_id,
                     }),
                 }
             );
 
             if (!response.ok) throw new Error("Failed to update task");
 
-            const updatedTask: Task = await response.json();
-            setTasks(
-                tasks.map((task) =>
-                    task.id === updatedTask.id ? updatedTask : task
-                )
-            );
+            await fetchTasks();
             setShowEditModal(false);
             setEditingTask(null);
-            alert("Task updated successfully");
+            setEditLoading(false);
+            setShowEditPopup(false);
+            // Use toast for notification as confirmation
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
-            alert("Error updating task: " + errorMessage);
+            setEditError(errorMessage);
             console.error("Error updating task:", err);
         }
     };
 
     const getTaskStatus = (task: Task): string => {
-        if (task.statusId === 2) return "completed";
-        if (task.dueDate && new Date(task.dueDate) < new Date())
+        if (task.due_date && new Date(task.due_date) < new Date())
             return "overdue";
-        return "pending";
+        return task.status;
     };
 
     const filteredTasks = tasks.filter((task) => {
@@ -207,11 +195,25 @@ const AdminTasksPage: React.FC = () => {
                         Overdue
                     </span>
                 );
+            case "archived":
+                return (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-500/20 text-slate-400 border border-slate-500/30">
+                        <Check className="w-3 h-3" />
+                        Archived
+                    </span>
+                );
+            case "in-progress":
+                return (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        In Progress
+                    </span>
+                );
             default:
                 return (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#6366F1]/20 text-[#6366F1] border border-[#6366F1]/30">
                         <Clock className="w-3 h-3" />
-                        Pending
+                        Not Started
                     </span>
                 );
         }
@@ -419,16 +421,16 @@ const AdminTasksPage: React.FC = () => {
                                             <div className="flex items-center gap-2">
                                                 <User className="w-4 h-4 text-slate-500" />
                                                 <span className="font-mono text-sm">
-                                                    #{task.userId}
+                                                    #{task.user_id}
                                                 </span>
                                             </div>
                                         </td>
                                         <td className="p-6 text-slate-300 hidden xl:table-cell">
-                                            {task.dueDate ? (
+                                            {task.due_date ? (
                                                 <div className="flex items-center gap-2">
                                                     <Calendar className="w-4 h-4 text-slate-500" />
                                                     {new Date(
-                                                        task.dueDate
+                                                        task.due_date
                                                     ).toLocaleDateString(
                                                         "en-US",
                                                         {
@@ -448,7 +450,7 @@ const AdminTasksPage: React.FC = () => {
                                             <div className="flex items-center gap-2">
                                                 <Calendar className="w-4 h-4 text-slate-500" />
                                                 {new Date(
-                                                    task.createdAt
+                                                    task.created_at
                                                 ).toLocaleDateString("en-US", {
                                                     month: "short",
                                                     day: "numeric",
@@ -468,9 +470,14 @@ const AdminTasksPage: React.FC = () => {
                                                     <Edit2 className="w-4 h-4" />
                                                 </button>
                                                 <button
-                                                    onClick={() =>
-                                                        handleDelete(task.id)
-                                                    }
+                                                    onClick={() => {
+                                                        setShowDeleteModal(
+                                                            true
+                                                        );
+                                                        setTaskIdToDelete(
+                                                            task.id
+                                                        );
+                                                    }}
                                                     className="p-2 rounded-lg bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/30 text-slate-400 hover:text-red-400 transition-all group-hover:scale-105"
                                                     title="Delete task"
                                                 >
@@ -563,11 +570,19 @@ const AdminTasksPage: React.FC = () => {
                                 </label>
                                 <input
                                     type="date"
-                                    value={editingTask.dueDate}
+                                    value={
+                                        editingTask.due_date
+                                            ? new Date(editingTask.due_date)
+                                                  .toISOString()
+                                                  .substring(0, 10)
+                                            : ""
+                                    }
                                     onChange={(e) =>
                                         setEditingTask({
                                             ...editingTask,
-                                            dueDate: e.target.value,
+                                            due_date: e.target.value
+                                                ? new Date(e.target.value)
+                                                : null,
                                         })
                                     }
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
@@ -580,11 +595,11 @@ const AdminTasksPage: React.FC = () => {
                                 </label>
                                 <input
                                     type="number"
-                                    value={editingTask.statusId || ""}
+                                    value={editingTask.status_id || ""}
                                     onChange={(e) =>
                                         setEditingTask({
                                             ...editingTask,
-                                            statusId: e.target.value
+                                            status_id: e.target.value
                                                 ? parseInt(e.target.value)
                                                 : null,
                                         })
@@ -602,7 +617,7 @@ const AdminTasksPage: React.FC = () => {
                                     Cancel
                                 </button>
                                 <button
-                                    onClick={handleUpdateTask}
+                                    onClick={() => setShowEditPopup(true)}
                                     className="flex-1 px-4 py-3 bg-[#6366F1] hover:bg-[#5558DD] rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
                                 >
                                     <Check className="w-4 h-4" />
@@ -613,6 +628,27 @@ const AdminTasksPage: React.FC = () => {
                     </div>
                 </div>
             )}
+            <ConfirmModal
+                isOpen={showEditPopup}
+                onClose={() => setShowEditPopup(false)}
+                title="Edit Task"
+                message="Update the task details below."
+                actionText="Save Changes"
+                loading={editLoading}
+                error={editError}
+                onConfirm={() => handleUpdateTask()}
+            />
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                title="Delete Account"
+                message="This action is permanent and cannot be undone. All your data will be deleted."
+                confirmText="DELETE"
+                actionText="Delete Account"
+                loading={deleteLoading}
+                error={deleteError}
+                onConfirm={() => handleDelete(taskIdToDelete as number)}
+            />
         </div>
     );
 };

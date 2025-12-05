@@ -213,8 +213,9 @@ export default function Dashboard() {
     };
 
     const formatDueDateWithDay = (date: Date | null) => {
-        if (!date) return null;
-        return date.toLocaleDateString("en-US", {
+      if (!date) return null;
+      const d = typeof date === "string" ? new Date(date) : date;
+        return d.toLocaleDateString("en-US", {
             weekday: "short",
             month: "short",
             day: "numeric",
@@ -272,7 +273,9 @@ export default function Dashboard() {
 
                                     <Button
                                         variant="outline"
-                                        onClick={() => navigate("/admin/users")}
+                                        onClick={() =>
+                                            navigate("/admin/allUsers")
+                                        }
                                         className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
                                     >
                                         <Users size={16} className="mr-2" />
@@ -281,7 +284,9 @@ export default function Dashboard() {
 
                                     <Button
                                         variant="outline"
-                                        onClick={() => navigate("/admin/tasks")}
+                                        onClick={() =>
+                                            navigate("/admin/allTasks")
+                                        }
                                         className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
                                     >
                                         <ListChecks
