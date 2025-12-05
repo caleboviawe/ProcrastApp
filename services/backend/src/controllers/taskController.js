@@ -17,7 +17,7 @@ const getAllUserTasks = async (req, res, next) => {
 const updateUserTask = async (req, res, next) => {
     const taskId = req.params.id;
 
-    const { title, description, status_id, category_id, due_date, status, has_document } = req.body;
+    const { title, description, status_id, category, due_date, status, has_document } = req.body;
 
     try {
         const task = await Task.findByPk(taskId);
@@ -34,7 +34,7 @@ const updateUserTask = async (req, res, next) => {
         task.title = title || task.title;
         task.description = description || task.description;
         task.status_id = status_id || task.status_id;
-        task.category_id = category_id || task.category_id;
+        task.category = category || task.category;
         task.due_date = due_date || task.due_date;
         task.updated_at = new Date();
         task.status = status || task.status;
@@ -71,7 +71,8 @@ const deleteUserTask = async (req, res, next) => {
 };
 
 const addUserTask = async (req, res, next) => {
-    const { title, description, status_id, category_id, due_date, has_document } = req.body;
+    const { title, description, status_id, category, due_date, has_document } =
+        req.body;
 
     try {
         if (req.user.id == null) {
@@ -81,10 +82,10 @@ const addUserTask = async (req, res, next) => {
             title,
             description,
             status_id,
-            category_id,
+            category,
             due_date,
             user_id: req.user.id,
-            has_document
+            has_document,
         });
 
         res.status(201).json({ message: "Task created successfully", newTask });

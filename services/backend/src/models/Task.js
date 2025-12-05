@@ -20,16 +20,6 @@ const Task = sequelize.define(
             onDelete: "CASCADE",
         },
 
-        category_id: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            references: {
-                model: "categories",
-                key: "id",
-            },
-            onDelete: "SET NULL",
-        },
-
         status_id: {
             type: DataTypes.INTEGER,
             allowNull: true,
@@ -75,6 +65,11 @@ const Task = sequelize.define(
             type: DataTypes.STRING(50),
             allowNull: false,
             defaultValue: "not-started",
+        },
+        category: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            defaultValue: "other",
         },
     },
     {

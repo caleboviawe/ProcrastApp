@@ -45,8 +45,8 @@ CREATE TABLE documents (
 CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
-    category_id INT REFERENCES categories(id) ON DELETE SET NULL,
     status_id INT REFERENCES status(id) ON DELETE SET NULL,
+    category VARCHAR(100) NOT NULL DEFAULT 'other',
     title VARCHAR(100) NOT NULL,
     description TEXT,
     due_date TIMESTAMP,

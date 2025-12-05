@@ -76,7 +76,7 @@ export default function Dashboard() {
         const task: Task = {
             id: Date.now(),
             user_id: user?.id || 0,
-            category_id: 1,
+            category: newTask.category || "other",
             status_id: 1,
             status: "not-started",
             title: newTask.title || "Untitled Task",
@@ -559,14 +559,16 @@ export default function Dashboard() {
                                                             <div className="flex items-center gap-3 mt-3 flex-wrap">
                                                                 <span
                                                                     className={`text-xs px-3 py-1.5 bg-${getCategoryColor(
-                                                                        task.category_id
+                                                                        1
                                                                     )}-500/20 text-${getCategoryColor(
-                                                                        task.category_id
+                                                                       1
                                                                     )}-300 border border-${getCategoryColor(
-                                                                        task.category_id
+                                                                        1
                                                                     )}-500/40 rounded-full`}
                                                                 >
-                                                                    Category
+                                                                    {
+                                                                        task.category
+                                                                    }
                                                                 </span>
                                                                 <span
                                                                     className={`text-xs px-3 py-1.5 bg-${status.color}-500/20 text-${status.color}-300 border border-${status.color}-500/40 rounded-full flex items-center gap-1.5`}
@@ -595,11 +597,16 @@ export default function Dashboard() {
                                                                 )}
                                                                 {task.has_document && (
                                                                     <button
-                                                                        onClick={() => openTaskDocument(task.id)}
+                                                                        onClick={() =>
+                                                                            openTaskDocument(
+                                                                                task.id
+                                                                            )
+                                                                        }
                                                                         className="text-xs px-3 py-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-full flex items-center gap-1.5 cursor-pointer hover:bg-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-200"
                                                                     >
                                                                         <Paperclip className="w-3 h-3" />
-                                                                        View Document
+                                                                        View
+                                                                        Document
                                                                     </button>
                                                                 )}
                                                             </div>

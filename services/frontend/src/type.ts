@@ -27,9 +27,9 @@ export interface Category {
 export interface Task {
     id: number;
     user_id: number;
-    category_id: number;
     status_id: number;
     status: TaskStatus;
+    category: string;
     title: string;
     description: string | null;
     due_date: Date | null;
