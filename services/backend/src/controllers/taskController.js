@@ -14,7 +14,36 @@ const getAllUserTasks = async (req, res, next) => {
     }
 };
 
-const updateUserTask = () => {};
+const updateUserTask = async (req, res) => {
+    const taskId = req.params.id;
+    const { title, description, status_id, category_id, due_date } = req.body;
+
+    try {
+        const task = await Task.findByPk(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        if (task.userId !== req.user.id) {
+            return res
+                .status(403)
+                .json({
+                    message: "You are not authorized to update this task",
+                });
+        }
+
+        task.title = title || task.title;
+        task.description = description || task.description;
+        task.status_id = status_id || task.status_id;
+        task.category_id = category_id || task.category_id;
+        task.due_date = due_date || task.due_date;
+
+        await task.save();
+        res.json({ message: "Task updated successfully", task });
+    } catch (error) {
+        next(error);
+    }
+};
 
 const deleteUserTask = () => {};
 
