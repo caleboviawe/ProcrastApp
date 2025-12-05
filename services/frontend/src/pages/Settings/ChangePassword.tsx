@@ -6,21 +6,30 @@ import logo from '../../assets/procrastapp-logo.png';
 import axios from 'axios';
 import { useAppContext } from '../../authServices/helper';
 
+/* ChangePassword.tsx: the page for users to change their password */
+
 const ChangePassword: React.FC = () => {
+    /* variables for changing the password: password is the new password, newPassword is the re-entered password */
     const [password, setPassword] = useState("");
+    /* confirmPassword is used to confirm the new password entered by the user */
     const [confirmPassword, setConfirmPassword] = useState("");
+     /* success and error messages for feedback to user if the password has been changed successfully */
     const [successMessage, setSuccessMessage] = useState("");
+     /* error message for feedback to user if the password change failed */
     const [error, setErrorMessage] = useState("");
+    /* loading state to indicate when the password change process is ongoing */
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { setUser } = useAppContext();
 
+    /* function to handle user logout */
     const handleLogout = () => {
         localStorage.removeItem("token");
         setUser(null);
         navigate("/login");
     };
 
+    /* function to handle the password change when the user clicks the save changes button, the password must meet certain criteria */
     const handlePasswordChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");

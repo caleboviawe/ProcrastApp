@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DarkModeToggle from './DarkModeToggle';
-import { Bell, Database, Palette, User, Clock, LogOut, ArrowLeft, X } from 'lucide-react';
+import { Bell, Database, User, LogOut, ArrowLeft, X } from 'lucide-react';
 import landingBg from '../../assets/landing-bg-3.jpg';
 import logo from '../../assets/procrastapp-logo.png';
 import { useAppContext } from '../../authServices/helper';
@@ -10,7 +9,7 @@ import axios from 'axios';
 /* Settings.tsx: settings page for users to change private information */
 
 const SettingsPage: React.FC = () => {
-    /* variables for logic */
+  /* variables for logic */
   const {user, setUser} = useAppContext();
   const navigate = useNavigate();
   const googleIdNull = user?.googleId === null ? true : false;
@@ -150,6 +149,7 @@ const SettingsPage: React.FC = () => {
   };
 
     return (
+        /* main container for the settings page with background image and styling so it looks clean and matches the rest of the application! */
         <div
             className="min-h-screen w-full flex flex-col items-center p-4 sm:p-5 md:p-6 font-sans selection:bg-violet-500/30 selection:text-violet-200 overflow-x-hidden relative"
             style={{
@@ -172,7 +172,7 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <h4 className="text-xl sm:text-lg md:text-2xl text-white font-semibold text-center">
-                    Settings:
+                    Settings
                 </h4>
 
                 <div className="flex items-center gap-3">
@@ -200,7 +200,7 @@ const SettingsPage: React.FC = () => {
                     {/*profile box (user can make changes like username, password, email and can see their role) */}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-4">
-                            <User className="w-8 h-8 text-slate-900 dark:text-white" />
+                            <User className="w-8 h-8 text-white" />
                             <h4 className="text-lg font-semibold text-white">
                                 Your Profile
                             </h4>
@@ -279,23 +279,6 @@ const SettingsPage: React.FC = () => {
                             />
                         </div>
                     </div>
-
-                    {/*appearance box*/}
-                    {/* <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">
-                        <div className="flex items-center gap-4">
-                            <Palette className="w-8 h-8 text-white" />
-                            <h4 className="text-lg font-semibold text-white">
-                                Appearance
-                            </h4>
-                        </div>
-                        <p className="text-slate-400">
-                            Customize the look and feel of your workspace.
-                        </p>
-
-                        <div className="flex justify-center mt-4">
-                            <DarkModeToggle />
-                        </div>
-                    </div> */}
 
                     {/*data management box: users can download their data or delete their account*/}
                     <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 flex flex-col gap-4">

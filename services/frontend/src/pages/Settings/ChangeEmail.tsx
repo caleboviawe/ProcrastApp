@@ -6,20 +6,28 @@ import logo from '../../assets/procrastapp-logo.png';
 import axios from "axios";
 import { useAppContext } from "../../authServices/helper";
 
+/* ChangeEmail.tsx: the page for users to change their email address */
+
 const ChangeEmail: React.FC = () => {
+    /* variables for changing the email: email is used to set the new email address */
     const [email, setEmail] = useState("");
+    /* success and error messages for feedback to user if the email has been changed successfully */
     const [successMessage, setSuccessMessage] = useState("");
+    /* error message for feedback to user if the email change failed */
     const [error, setErrorMessage] = useState("");
+    /* loading state to indicate when the email change process is ongoing */
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { user, setUser } = useAppContext();
 
+    /* function to handle user logout */
     const handleLogout = () => {
         localStorage.removeItem("token");
         setUser(null);
         navigate("/login");
     };
 
+    /* function to handle the email change when the user clicks the save changes button, the email must be a valid email format */
     const handleEmailChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");

@@ -6,20 +6,28 @@ import logo from "../../assets/procrastapp-logo.png";
 import axios from "axios";
 import { useAppContext } from "../../authServices/helper";
 
+/* ChangeUsername.tsx: the page for users to change their username */
+
 const ChangeUsername: React.FC = () => {
+    /* variables for changing the usernameL the username is used to set the username */
     const [username, setUsername] = useState("");
+    /* success and error messages for feedback to user if the username has been changed successfully */
     const [successMessage, setSuccessMessage] = useState("");
+    /* error message for feedback to user if the username change failed */
     const [error, setErrorMessage] = useState("");
+    /* loading state to indicate when the username change process is ongoing */
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { user, setUser } = useAppContext();
 
+    /* function to handle user logout */
     const handleLogout = () => {
         localStorage.removeItem("token");
         setUser(null);
         navigate("/login");
     };
 
+    /* function to handle the username change when the user clicks the save changes button, the username must start with a letter or underscore */
     const handleUsernameChange = async () => {
         setSuccessMessage("");
         setErrorMessage("");
@@ -51,6 +59,7 @@ const ChangeUsername: React.FC = () => {
             }
             setSuccessMessage("Username changed successfully.");
             setUsername("");
+        // catch block to handle errors during the username change process
         } catch (err: unknown) {
             if (axios.isAxiosError(err) && err.response?.data?.message) {
                 setErrorMessage(err.response.data.message);
