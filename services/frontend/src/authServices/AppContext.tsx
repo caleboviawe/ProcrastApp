@@ -27,7 +27,7 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
             const token = localStorage.getItem("token");
             if (token) {
                 try {
-                    const response = await fetch("http://localhost:8000/api/auth/me", {
+                    const response = await fetch("http://localhost:8000/api/user/me", {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },

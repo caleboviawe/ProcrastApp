@@ -29,7 +29,7 @@ const Login = () => {
             if (res.data.token) {
                 try {
                     const userResponse = await axios.get(
-                        "http://localhost:8000/api/auth/me",
+                        "http://localhost:8000/api/user/me",
                         {
                             headers: {
                                 Authorization: `Bearer ${res.data.token}`,

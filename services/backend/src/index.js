@@ -5,6 +5,8 @@ require('dotenv').config();
 const { connectDB, sequelize } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,6 +17,8 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use("/api/task", taskRoutes);
+app.use("/api/user", userRoutes);
 
 const errorHandler = require('./middleware/errorMiddleware');
 app.use(errorHandler);

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, getMe, googleLogin } = require('../controllers/authController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { register, login, googleLogin } = require('../controllers/authController');
 
 const { check } = require('express-validator');
 const validate = require('../middleware/validationMiddleware');
@@ -16,8 +15,6 @@ router.post('/login', [
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists()
 ], validate, login);
-
-router.get('/me', authMiddleware, getMe);
 
 router.post('/google', googleLogin);
 

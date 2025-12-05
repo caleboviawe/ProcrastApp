@@ -65,6 +65,146 @@ const getMe = async (req, res, next) => {
     }
 };
 
+const updatePassword = async (req, res, next) => {
+    try {
+        const { password } = req.body;
+        
+        if (!password) {
+            return res.status(400).json({ message: 'Password is required' });
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({ message: 'Password must be at least 8 characters' });
+        }
+
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Google users cannot change password
+        if (user.googleId) {
+            return res.status(400).json({ message: "Google users cannot change password" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ message: "Password updated successfully" });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const updateUsername = async (req, res, next) => {
+    try {
+        const { username } = req.body;
+        
+        if (!username || !username.trim()) {
+            return res.status(400).json({ message: 'Username is required' });
+        }
+
+        const trimmedUsername = username.trim();
+        
+        // Check if username already exists
+        const existingUser = await User.findOne({ where: { username: trimmedUsername } });
+        if (existingUser && existingUser.id !== req.user.id) {
+            return res.status(400).json({ message: 'Username already taken' });
+        }
+
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.username = trimmedUsername;
+        await user.save();
+        
+        res.json({ message: 'Username updated successfully', username: user.username });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+const updateEmail = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email || !email.trim()) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+
+        const trimmedEmail = email.trim().toLowerCase();
+        
+        // Check if email already exists
+        const existingUser = await User.findOne({ where: { email: trimmedEmail } });
+        if (existingUser && existingUser.id !== req.user.id) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.email = trimmedEmail;
+        await user.save();
+        
+        res.json({ message: 'Email updated successfully', email: user.email });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+const updateNotifications = async (req, res, next) => {
+    try {
+        const { notifyDeadlines, notifyDailySummary, notifyOverdue } = req.body;
+        
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (typeof notifyDeadlines === 'boolean') user.notifyDeadlines = notifyDeadlines;
+        if (typeof notifyDailySummary === 'boolean') user.notifyDailySummary = notifyDailySummary;
+        if (typeof notifyOverdue === 'boolean') user.notifyOverdue = notifyOverdue;
+        
+        await user.save();
+        
+        res.json({ 
+            message: 'Notification preferences updated successfully',
+            notifications: {
+                notifyDeadlines: user.notifyDeadlines,
+                notifyDailySummary: user.notifyDailySummary,
+                notifyOverdue: user.notifyOverdue
+            }
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+const deleteAccount = async (req, res, next) => {
+    try {
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await user.destroy();
+        
+        res.json({ message: 'Account deleted successfully' });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
 const googleLogin = async (req, res, next) => {
     try {
         const { googleId, email, name } = req.body;
@@ -94,4 +234,4 @@ const googleLogin = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login, getMe, googleLogin };
+module.exports = { register, login, getMe, updateUsername, updateEmail, updatePassword, updateNotifications, deleteAccount, googleLogin };
