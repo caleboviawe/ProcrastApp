@@ -103,8 +103,14 @@ export default function AddTaskModal({
                 type="date"
                 value={due_date ? due_date.toISOString().split('T')[0] : ''}
                 onChange={(e) => {
-                  const value = e.target.value;
-                  setDueDate(value ? new Date(value) : null);
+                  const val = e.target.value;           
+                  if (val) {
+                    const [year, month, day] = val.split('-').map(Number);
+                    const localDate = new Date(year, month - 1, day);
+                    setDueDate(localDate);
+                  } else {
+                    setDueDate(null);
+                  }
                 }}
                 className="bg-slate-800/50 border-slate-700 text-white rounded-xl focus:border-violet-500 focus:ring-violet-500/30 [color-scheme:dark]"
               />

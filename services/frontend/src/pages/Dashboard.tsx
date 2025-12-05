@@ -103,7 +103,6 @@ export default function Dashboard() {
     });
   };
 
-  console.log(tasks)
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-violet-500/30 selection:text-violet-200">
       {/* BACKGROUND */}
@@ -113,7 +112,7 @@ export default function Dashboard() {
       </div>
 
       {/* HEADER */}
-      <header className="bg-slate-900/60 backdrop-blur-xl border-b border-slate-800 shadow-2xl relative z-10">
+      <header className="bg-slate-900/60ándose backdrop-blur-xl border-b border-slate-800 shadow-2xl relative z-10">
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center gap-3">
@@ -121,19 +120,60 @@ export default function Dashboard() {
             </Link>
 
             <div className="hidden md:flex items-center gap-4">
-              <span className="text-slate-400 text-sm">Hey {user?.email}</span>
-              
-              <Button variant="outline" onClick={() => navigate("/settings")}
-                className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all">
-                <Settings size={16} />
-                <span className="ml-2">Settings</span>
-              </Button>
+              {user?.role === 'admin' ? (
+                <>
+                  <span className="text-slate-300 text-sm font-medium">Hey admin: {user.email}</span>
 
-              <Button variant="outline" onClick={handleLogout}
-                className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all">
-                <LogOut size={16} />
-                <span className="ml-2">Logout</span>
-              </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/admin/users")}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
+                  >
+                    <Users size={16} className="mr-2" />
+                    View Users
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/admin/tasks")}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
+                  >
+                    <ListChecks size={16} className="mr-2" />
+                    View Tasks
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={handleLogout}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <span className="text-slate-400 text-sm">Hey {user?.email}</span>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/settings")}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
+                  >
+                    <Settings size={16} className="mr-2" />
+                    Settings
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={handleLogout}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    Logout
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
