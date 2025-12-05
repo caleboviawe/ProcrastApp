@@ -6,6 +6,9 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useState } from 'react';
 
+/* AddTaskForm.tsx: a component of the dashboard that prompts for user input to make a new task item */ 
+
+// Interface Declaration
 interface TaskFormData {
   title: string;
   category: string;
@@ -16,7 +19,7 @@ interface TaskFormData {
 interface AddTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTaskCreated?: (task: TaskFormData) => void; // Now accepts form data
+  onTaskCreated?: (task: TaskFormData) => void;
 }
 
 export default function AddTaskModal({
@@ -24,11 +27,13 @@ export default function AddTaskModal({
   onClose,
   onTaskCreated,
 }: AddTaskModalProps) {
+  // States
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('other');
   const [due_date, setDueDate] = useState<Date | null>(null);
   const [hasDocument, setHasDocument] = useState(false);
 
+  // Handle Submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -37,7 +42,7 @@ export default function AddTaskModal({
     const newTask: TaskFormData = {
       title: title.trim(),
       category,
-      due_date: due_date || undefined, //n changed
+      due_date: due_date || undefined,
       has_document: hasDocument,
     };
 
@@ -46,20 +51,23 @@ export default function AddTaskModal({
     // Reset form
     setTitle('');
     setCategory('other');
-    setDueDate(null); // changed
+    setDueDate(null);
     setHasDocument(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-slate-900/95 backdrop-blur-2xl border border-slate-700 text-white max-w-md rounded-2xl shadow-2xl">
+        {/* Form Header */}
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent pr-10">
             Add New Task
           </DialogTitle>
         </DialogHeader>
 
+        {/* Form Body  */}
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+          {/* Select Title */}
           <div className="space-y-2">
             <Label htmlFor="title" className="text-slate-300 font-medium">
               Task Title *
@@ -74,6 +82,7 @@ export default function AddTaskModal({
             />
           </div>
 
+          {/* Select Category  */}
           <div className="space-y-2">
             <Label className="text-slate-300 font-medium flex items-center gap-2">
               <Tag size={16} />
@@ -93,7 +102,9 @@ export default function AddTaskModal({
             </Select>
           </div>
 
+          {/* Optional Inputs */}
           <div className="grid grid-cols-2 gap-4">
+            {/* Select Due Date */}
             <div className="space-y-2">
               <Label className="text-slate-300 font-medium flex items-center gap-2">
                 <Calendar size={16}/>
@@ -116,6 +127,7 @@ export default function AddTaskModal({
               />
             </div>
 
+            {/* Add a Document */}
             <div className="space-y-2">
               <Label className="text-slate-300 font-medium">
                 Add a Document (optional)
@@ -131,7 +143,8 @@ export default function AddTaskModal({
               </Select>
             </div>
           </div>
-
+          
+          {/* Cancel and Submit Buttons */}
           <div className="flex gap-3 pt-4">
             <Button
               type="button"
