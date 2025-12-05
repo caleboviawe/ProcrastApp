@@ -10,7 +10,7 @@ interface TaskFormData {
   title: string;
   category: string;
   due_date?: Date | null;
-  hasDocument: boolean;
+  has_document: boolean;
 }
 
 interface AddTaskModalProps {
@@ -38,7 +38,7 @@ export default function AddTaskModal({
       title: title.trim(),
       category,
       due_date: due_date || undefined, //n changed
-      hasDocument,
+      has_document: hasDocument,
     };
 
     onTaskCreated?.(newTask);

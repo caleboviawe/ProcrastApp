@@ -16,26 +16,25 @@ INSERT INTO categories (name, description) VALUES
 ('ENGG 519', 'Working on ENGG 519 Project');
 
 -- insert sample users
-INSERT INTO users (username, email, password_hash, google_id, role) VALUES
-('fisayo', 'fisayo@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'admin'),
-('maheen', 'maheen@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
-('youssef', 'youssef@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
-('caleb', 'caleb@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
-('syril', 'syril@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student'),
-('bob', 'bob@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'admin');
+INSERT INTO users (username, email, password_hash, google_id, role, notify_deadlines, notify_daily_summary, notify_overdue, created_at, updated_at) VALUES
+('fisayo', 'fisayo@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'admin', true, false, true, NOW(), NOW()),
+('maheen', 'maheen@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student', true, false, true, NOW(), NOW()),
+('youssef', 'youssef@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student', true, false, true, NOW(), NOW()),
+('caleb', 'caleb@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student', true, false, true, NOW(), NOW()),
+('syril', 'syril@procrastapp.com', '$2b$10$WV8l.USo9YikBLVPyqHPZeNlGWtASiVMKAU1LHp6m0z9EYNzrFhoG', NULL, 'student', true, false, true, NOW(), NOW());
 
 -- insert sample tasks
-INSERT INTO tasks (user_id, category_id, status_id, title, description, due_date) VALUES
-(1, 1, 1, 'Finish Project Proposal', 'Complete the project proposal document', '2025-12-10 23:59:59'),
-(1, 2, 2, 'Buy Groceries', 'Milk, Eggs, Bread', '2025-12-05 18:00:00'),
-(2, 3, 1, 'Study Algorithms', 'Practice dynamic programming problems', '2025-12-08 20:00:00'),
-(2, 2, 3, 'Clean Room', 'Organize desk and wardrobe', '2025-12-06 19:00:00'),
-(3, 1, 2, 'Team Meeting Prep', 'Prepare slides for Monday meeting', '2025-12-07 10:00:00'),
-(3, 3, 1, 'Read Research Paper', 'Read paper on neural networks', '2025-12-09 15:00:00'),
-(4, 2, 1, 'Workout', 'Gym session for 1 hour', '2025-12-05 07:00:00'),
-(4, 3, 2, 'Math Assignment', 'Complete calculus assignment', '2025-12-08 23:59:59'),
-(5, 1, 3, 'Client Email', 'Respond to client inquiries', '2025-12-06 17:00:00'),
-(5, 2, 1, 'Grocery Shopping', 'Buy vegetables and fruits', '2025-12-05 18:00:00');
+INSERT INTO tasks (user_id, category_id, status_id, title, description, due_date, has_document, status) VALUES
+(1, 1, 1, 'Finish Project Proposal', 'Complete the project proposal document', '2025-12-10 23:59:59', true, 'not-started'),
+(1, 2, 2, 'Buy Groceries', 'Milk, Eggs, Bread', '2025-12-05 18:00:00', false, 'in-progress'),
+(2, 3, 1, 'Study Algorithms', 'Practice dynamic programming problems', '2025-12-08 20:00:00', true, 'completed'),
+(2, 2, 3, 'Clean Room', 'Organize desk and wardrobe', '2025-12-06 19:00:00', false, 'archived'),
+(3, 1, 2, 'Team Meeting Prep', 'Prepare slides for Monday meeting', '2025-12-07 10:00:00', true, 'not-started'),
+(3, 3, 1, 'Read Research Paper', 'Read paper on neural networks', '2025-12-09 15:00:00', false, 'in-progress'),
+(4, 2, 1, 'Workout', 'Gym session for 1 hour', '2025-12-05 07:00:00', true, 'completed'),
+(4, 3, 2, 'Math Assignment', 'Complete calculus assignment', '2025-12-08 23:59:59', false, 'archived'),
+(5, 1, 3, 'Client Email', 'Respond to client inquiries', '2025-12-06 17:00:00', true, 'not-started'),
+(5, 2, 1, 'Grocery Shopping', 'Buy vegetables and fruits', '2025-12-05 18:00:00', true, 'not-started');
 
 -- insert reminders
 INSERT INTO reminders (task_id, remind_at) VALUES

@@ -39,7 +39,9 @@ CREATE TABLE tasks (
     description TEXT,
     due_date TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    has_document BOOLEAN DEFAULT FALSE,
+    status VARCHAR(20) DEFAULT 'not-started'
 );
  -- table for reminders
 CREATE TABLE reminders (

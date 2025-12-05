@@ -10,13 +10,13 @@ const getAllUserTasks = async (req, res, next) => {
         res.json(tasks);
     } catch (error) {
         next(error);
-        res.status(500).json({ message: "Server error" });
     }
 };
 
 const updateUserTask = async (req, res, next) => {
     const taskId = req.params.id;
-    const { title, description, status_id, category_id, due_date } = req.body;
+
+    const { title, description, status_id, category_id, due_date, status, has_document } = req.body;
 
     try {
         const task = await Task.findByPk(taskId);
@@ -24,17 +24,21 @@ const updateUserTask = async (req, res, next) => {
             return res.status(404).json({ message: "Task not found" });
         }
 
-        if (task.userId !== req.user.id) {
+        if (task.user_id !== req.user.id) {
             return res.status(403).json({
                 message: "You are not authorized to update this task",
             });
         }
-
+        
         task.title = title || task.title;
         task.description = description || task.description;
         task.status_id = status_id || task.status_id;
         task.category_id = category_id || task.category_id;
         task.due_date = due_date || task.due_date;
+        task.updated_at = new Date();
+        task.status = status || task.status;
+        if (has_document !== undefined) task.has_document = has_document;
+
 
         await task.save();
         res.json({ message: "Task updated successfully", task });
@@ -52,7 +56,7 @@ const deleteUserTask = async (req, res, next) => {
             return res.status(404).json({ message: "Task not found" });
         }
 
-        if (task.userId !== req.user.id) {
+        if (task.user_id !== req.user.id) {
             return res.status(403).json({
                 message: "You are not authorized to delete this task",
             });
@@ -66,8 +70,8 @@ const deleteUserTask = async (req, res, next) => {
 };
 
 const addUserTask = async (req, res, next) => {
-    const { title, description, status_id, category_id, due_date } = req.body;
-    console.log("Adding task for user:", req.user.id);
+    const { title, description, status_id, category_id, due_date, has_document } = req.body;
+
     try {
         if (req.user.id == null) {
             return res.status(400).json({ message: "Invalid user" });
@@ -75,10 +79,11 @@ const addUserTask = async (req, res, next) => {
         const newTask = await Task.create({
             title,
             description,
-            statusId: status_id,
-            categoryId: category_id,
-            dueDate: due_date,
-            userId: req.user.id,
+            status_id,
+            category_id,
+            due_date,
+            user_id: req.user.id,
+            has_document
         });
 
         res.status(201).json({ message: "Task created successfully", newTask });
