@@ -10,7 +10,6 @@ const getAllUserTasks = async (req, res, next) => {
         res.json(tasks);
     } catch (error) {
         next(error);
-        res.status(500).json({ message: "Server error" });
     }
 };
 

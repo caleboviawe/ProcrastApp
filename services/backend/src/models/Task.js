@@ -58,6 +58,18 @@ const Task = sequelize.define(
             allowNull: true,
             field: "due_date",
         },
+
+        has_document: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+
+        status: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            defaultValue: "not-started",
+        },
     },
     {
         tableName: "tasks",
