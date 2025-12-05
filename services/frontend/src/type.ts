@@ -1,3 +1,5 @@
+export type TaskStatus = 'not-started' | 'in-progress' | 'completed' | 'archived';
+
 export interface User {
     id: number;
     username: string;
@@ -27,11 +29,13 @@ export interface Task {
     user_id: number;
     category_id: number;
     status_id: number;
+    status: TaskStatus;
     title: string;
     description: string | null;
-    due_date: string | null;
-    created_at: string;
-    updated_at: string;
+    due_date: Date | null;
+    created_at: Date;
+    updated_at: Date;
+    hasDocument: boolean;
 }
 
 export interface Reminder {
