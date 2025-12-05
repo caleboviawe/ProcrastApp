@@ -21,6 +21,7 @@ import { useAppContext } from "../authServices/helper";
 import AddTaskForm from "../components/AddTaskForm";
 import type { Task, TaskStatus } from "../type"; // Adjust path if needed
 import LoadingScreen from "../components/LoadingScreen";
+import Notifications from "../components/Notifications";
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -32,6 +33,60 @@ export default function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [notifMessage, setNotifMessage] = useState<string | null>(null);
+
+    /* Effect to check for notifications based on user preferences and task statuses */
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      const now = new Date();
+
+      if (user.notifyDeadlines) {
+        const in48Hours = new Date();
+        in48Hours.setHours(now.getHours() + 48);
+
+        const upcomingDeadline = tasks.filter(task =>
+          task.due_date &&
+          task.status !== 'completed' &&
+          task.status !== 'archived' &&
+          new Date(task.due_date) >= now &&
+          new Date(task.due_date) <= in48Hours
+        ); 
+
+        if (upcomingDeadline.length > 0) {
+          setNotifMessage(`📅 Upcoming Deadline: ${upcomingDeadline.length} task(s) due soon!`);
+          return;
+        }
+      }
+
+      if (user.notifyDailySummary && tasks.length > 0) {
+        const taskNames = tasks.map(t => t.title).join(', ');
+        setNotifMessage(`📝 Daily Summary: You have ${tasks.length} task(s): ${taskNames}`);
+        return;
+      }
+
+      if (user.notifyOverdue) {
+        const overdueTasks = tasks.filter(task => 
+          task.due_date &&
+          task.status !== 'completed' &&
+          task.status !== 'archived' &&
+          new Date(task.due_date) < now
+        );
+
+        if (overdueTasks.length > 0) {
+          setNotifMessage(`⚠️ Overdue Tasks: ${overdueTasks.length} task(s) are overdue!`);
+          return;
+        }
+      }
+
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [user, tasks]);
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -775,6 +830,12 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+                {notifMessage && (
+                <Notifications
+                    message={notifMessage}
+                    onClose={() => setNotifMessage(null)}
+                />
+            )}
             </main>
 
             <AddTaskForm
