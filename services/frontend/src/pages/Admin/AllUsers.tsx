@@ -379,7 +379,7 @@ export default function AdminUsersPage() {
                                                     <button
                                                         onClick={() =>
                                                             (window.location.href =
-                                                                "/settings")
+                                                                "/profile")
                                                         }
                                                         className="px-4 py-2 rounded-lg bg-[#6366F1] hover:bg-[#5558DD] text-white text-sm font-semibold transition-all flex items-center gap-2"
                                                     >
