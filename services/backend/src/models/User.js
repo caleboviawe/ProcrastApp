@@ -35,6 +35,24 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         defaultValue: 'student',
         allowNull: false
+    },
+    notifyDeadlines: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        field: 'notify_deadlines'
+    },
+    notifyDailySummary: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+        field: 'notify_daily_summary'
+    },
+    notifyOverdue: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        field: 'notify_overdue'
     }
 }, {
     tableName: 'users',

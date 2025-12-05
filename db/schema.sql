@@ -8,6 +8,9 @@ CREATE TABLE users (
     password_hash VARCHAR(255),
     google_id VARCHAR(255) UNIQUE,
     role VARCHAR(20) DEFAULT 'student',
+    notify_deadlines BOOLEAN DEFAULT TRUE,
+    notify_daily_summary BOOLEAN DEFAULT FALSE,
+    notify_overdue BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT password_or_google CHECK (password_hash IS NOT NULL OR google_id IS NOT NULL)

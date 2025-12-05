@@ -2,10 +2,13 @@ export interface User {
     id: number;
     username: string;
     email: string;
-    password_hash: string;
     role: 'student' | 'admin';
-    created_at: string;
-    updated_at: string;
+    createdAt: Date;
+    updatedAt: Date;
+    googleId: string | null;
+    notifyDeadlines: boolean;
+    notifyDailySummary: boolean;
+    notifyOverdue: boolean;
 }
 
 export interface Status {
