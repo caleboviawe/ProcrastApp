@@ -12,16 +12,9 @@ import {
 } from "lucide-react";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useAppContext } from "../../authServices/helper";
-import type { User } from "../../type";
+import type { User, EditingUserType } from "../../type";
 import EditUserModal from "./components/EditUser";
 import FilterUsers from "./components/FilterUsers";
-
-interface EditingUser {
-    id: number;
-    username: string;
-    email: string;
-    role: "student" | "admin";
-}
 
 type FilterRole = "all" | "student" | "admin";
 
@@ -32,7 +25,9 @@ export default function AdminUsersPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [editingUser, setEditingUser] = useState<EditingUser | null>(null);
+    const [editingUser, setEditingUser] = useState<EditingUserType | null>(
+        null
+    );
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     // Fetch all users on mount
