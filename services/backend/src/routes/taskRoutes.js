@@ -7,7 +7,7 @@ const {
     deleteUserTask,
 } = require("../controllers/taskController");
 
-router.get("/allUsersTask", authMiddleware, getAllUserTasks);
+router.get("/allUserTasks", authMiddleware, getAllUserTasks);
 
 router.put("/updateUserTask/:id", authMiddleware, updateUserTask);
 
