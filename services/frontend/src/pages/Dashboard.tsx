@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { Button } from '../ui/button';
-import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X, Calendar, Paperclip, AlertCircle, AlertTriangle} from 'lucide-react';
+import { LogOut, Settings, Plus, CheckCircle2, Clock, Circle, X, 
+  Calendar, Paperclip, AlertCircle, AlertTriangle, Users, ListChecks} from 'lucide-react';
 import { useAppContext } from '../authServices/helper';
 import AddTaskForm from '../components/AddTaskForm';
 
@@ -115,25 +116,61 @@ export default function Dashboard() {
             </Link>
 
             <div className="hidden md:flex items-center gap-4">
-              <span className="text-slate-400 text-sm">Hey {user?.email}</span>
-              
-              <Button
-                variant="outline"
-                onClick={() => navigate("/settings")}
-                className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
-              >
-                <Settings size={16} />
-                <span className="ml-2">Settings</span>
-              </Button>
+              {/* Dynamic Header Based on Role */}
+              {user?.role === 'admin' ? (
+                <>
+                  <span className="text-slate-400 text-sm font-medium">Hey admin: {user.email}</span>
 
-              <Button
-                variant="outline"
-                onClick={handleLogout}
-                className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
-              >
-                <LogOut size={16} />
-                <span className="ml-2">Logout</span>
-              </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/admin/users")}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
+                  >
+                    <Users size={16} className="mr-2" />
+                    View Users
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/admin/tasks")}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
+                  >
+                    <ListChecks size={16} className="mr-2" />
+                    View Tasks
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={handleLogout}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <span className="text-slate-400 text-sm">Hey {user?.email}</span>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/settings")}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-300 transition-all"
+                  >
+                    <Settings size={16} className="mr-2" />
+                    Settings
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={handleLogout}
+                    className="bg-slate-950/50 border-slate-700 text-slate-300 hover:border-red-500 hover:text-red-400 transition-all"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    Logout
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
