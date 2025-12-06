@@ -165,7 +165,7 @@ toast.success("User updated successfully");
         return matchesSearch && matchesFilter;
     });
 
-    const getRoleBadgeColor = (role: "student" | "admin"): string => {
+    const getRoleBadgeColor = (role: "student" | "admin" | "guest"): string => {
         return role.toLowerCase() === "admin"
             ? "bg-[#6366F1] text-white"
             : "bg-white/10 text-slate-300";

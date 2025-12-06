@@ -4,7 +4,7 @@ export interface User {
     id: number;
     username: string;
     email: string;
-    role: 'student' | 'admin';
+    role: 'student' | 'admin' | 'guest';
     createdAt: Date;
     updatedAt: Date;
     googleId: string | null;
@@ -50,5 +50,5 @@ export interface EditingUserType {
     id: number;
     username: string;
     email: string;
-    role: "student" | "admin";
+    role: "student" | "admin" | "guest";
 }

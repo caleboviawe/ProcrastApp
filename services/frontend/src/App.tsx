@@ -13,6 +13,8 @@ import ChangeEmail from "./pages/Settings/ChangeEmail";
 import AdminUsersPage from "./pages/Admin/AllUsers";
 import AdminTasksPage from "./pages/Admin/AllTasks";
 import AdminRoutes from "./authServices/AdminRoutes";
+import GuestDashboard from "./pages/Guest/GuestDashboard";
+import GuestRoutes from "./authServices/GuestRoutes";
 
 function App() {
     return (
@@ -20,6 +22,12 @@ function App() {
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/*" element={<LandingPage />} />
+                <Route element={<GuestRoutes />}>
+                    <Route
+                        path="/guest/dashboard"
+                        element={<GuestDashboard />}
+                    />
+                </Route>
                 <Route element={<PublicRoutes />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
