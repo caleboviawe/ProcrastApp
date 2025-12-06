@@ -180,7 +180,7 @@ const SettingsPage: React.FC = () => {
                         </p>
 
                         {/* for changes, a user can change the values below, and they are grabbed from the backend. if an user makes an account with google, changing the password is not shown up as an option. a user can also see the date they created their account */}
-                        <div className="grid grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
+                        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_2fr] gap-2 sm:gap-4 items-center">
                             {[
                                 {
                                     label: "USERNAME",
@@ -212,18 +212,18 @@ const SettingsPage: React.FC = () => {
                                         readOnly
                                         disabled
                                         value={value}
-                                        className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 cursor-not-allowed opacity-70"
+                                        className="w-full min-w-0 border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 cursor-not-allowed opacity-70"
                                     />
 
                                     <button
-                                        className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-3 py-1 rounded-lg font-medium transition-all"
+                                        className="w-full md:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white px-3 py-1 rounded-lg font-medium transition-all"
                                         onClick={() => navigate(route)}
                                     >
                                         Change
                                     </button>
                                 </React.Fragment>
                             ))}
-                            <label className="text-right font-semibold text-slate-300">
+                            <label className="text-left md:text-right font-semibold text-slate-300">
                                 DATE CREATED:
                             </label>
                             <input
@@ -235,9 +235,9 @@ const SettingsPage: React.FC = () => {
                                         ? new Date(user.createdAt).toLocaleString()
                                         : ''
                                 }
-                                className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2 cursor-not-allowed opacity-70"
+                                className="w-full min-w-0 border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-1 md:col-span-2 cursor-not-allowed opacity-70"
                             />
-                            <label className="text-right font-semibold text-slate-300">
+                            <label className="text-left md:text-right font-semibold text-slate-300">
                                 ROLE:
                             </label>
                             <input
@@ -245,7 +245,7 @@ const SettingsPage: React.FC = () => {
                                 readOnly
                                 disabled
                                 value={user?.role || ''}
-                                className="border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-2 cursor-not-allowed opacity-70"
+                                className="w-full min-w-0 border border-slate-700 rounded-lg p-2 bg-slate-800 text-white placeholder:text-slate-500 col-span-1 md:col-span-2 cursor-not-allowed opacity-70"
                             />
                         </div>
                     </div>
