@@ -22,7 +22,7 @@ import landingBg from "../../assets/landing-bg-3.jpg";
 import GuestSignInModal from "./GuestPopup";
 import { toast } from "react-toastify";
 
-/* Dashboard.tsx: the main body of the app that displays tasks, progress summaries, and any notfications */
+/* GuestDashboard.tsx: the main body of the app that displays tasks, progress summaries, and any notfications for guests */
 
 export default function GuestDashboard() {
     // Logic Variables
