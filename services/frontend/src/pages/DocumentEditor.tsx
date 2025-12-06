@@ -13,14 +13,14 @@ export default function DocumentEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
   useAppContext(); // Ensures user is authenticated
-
+  
   const [editorContent, setEditorContent] = useState("");
   const [title, setTitle] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [totalTime, setTotalTime] = useState(0);
   const [sessionTime, setSessionTime] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
 
@@ -87,24 +87,32 @@ export default function DocumentEditor() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-50">
-        <p>Loading document...</p>
+      <div className="flex items-center justify-center min-h-screen bg-[#0B0E14] text-slate-50">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-300 font-medium">Loading document...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="editor-container flex flex-col min-h-screen bg-slate-950 text-slate-50">
+    <div className="editor-container flex flex-col min-h-screen bg-[#0B0E14] text-slate-50 font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
       <EditorHeader
         onSave={saveDocument}
         onDownload={download}
         onSettings={goToSettings}
       />
-
-      <div className="flex flex-1 overflow-hidden">
+      
+      <div className="hidden md:flex flex-1 overflow-hidden">
         <EditorSide title={title} dueDate={dueDate} onHome={goHome} />
         <div className="flex-1 p-4 overflow-auto">
           <EditorDoc value={editorContent} onChange={setEditorContent} />
+        </div>
+      </div>
+      <div className="md:hidden flex-1 flex items-center justify-center p-6 overflow-auto">
+        <div className="w-full max-w-sm">
+          <EditorSide title={title} dueDate={dueDate} onHome={goHome} />
         </div>
       </div>
 
