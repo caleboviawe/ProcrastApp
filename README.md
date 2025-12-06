@@ -13,7 +13,7 @@ setup/[aspect of project] (i.e. setup/frontend)
 
 ### AI Assistance Disclaimer
 
-Portions of this project were developed with the assistance of artificial intelligence (AI) tools. AI was used mainly to generate sample/dummy data and help debug errors. All code and outputs were reviewed and validated by the team.
+Portions of this project were aided with the assistance of artificial intelligence (AI) tools. AI was used mainly to generate sample/dummy data and help debug errors. All code and outputs were reviewed and validated by the team.
 
 ### Live Deployment Link
 https://seng513-202510-group-12.vercel.app/
