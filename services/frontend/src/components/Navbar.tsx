@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useAppContext } from "../authServices/helper";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 export default function Navbar({
     heading,
@@ -21,6 +22,7 @@ export default function Navbar({
     const navigate = useNavigate();
     const location = useLocation();
     const { user, setUser } = useAppContext();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -40,6 +42,19 @@ export default function Navbar({
     return (
         <nav className="sticky top-0 z-50 py-4 backdrop-blur-lg border-b border-white/5 w-full mb-2">
             <div className="container px-4 mx-auto relative lg:text-sm">
+
+                <div className="md:hidden flex justify-between items-center">
+                    <Link to="/" className="flex items-center">
+                        <Logo className="h-12 w-auto" />
+                    </Link>
+                    <button className="text-slate-200 p-2" onClick={() => setMobileOpen(!mobileOpen)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-7 h-7">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div className="hidden md:block">
                 {isLandingPage && (
                     <div className="flex justify-between items-center">
                         <div className="flex items-center flex-shrink-0">
@@ -210,6 +225,59 @@ export default function Navbar({
                                 Log Out
                             </button>
                         </div>
+                    </div>
+                )}
+                </div>
+
+                {mobileOpen && (
+                    <div className="md:hidden mt-3 space-y-2 bg-slate-900/90 p-4 rounded-xl border border-slate-700">
+                        {isSettingsPage && (
+                            <>
+                                <button onClick={() => navigate(-1)} className="w-full flex items-center gap-2 text-left text-slate-200 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                                    <ArrowLeft size={16} /> Back
+                                </button>
+
+                                <button onClick={handleLogout} className="w-full flex items-center gap-2 text-left text-red-400 px-3 py-2 rounded-lg hover:bg-red-500/20 transition">
+                                    <LogOut size={16} /> Log Out
+                                </button>
+                            </>
+                        )}
+
+                        {isDashboardPage && (
+                            <>
+                                <button onClick={() => navigate("/profile")} className="w-full flex items-center gap-2 text-left text-slate-200 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                                    <Settings size={16} /> Settings
+                                </button>
+
+                                <button onClick={handleLogout} className="w-full flex items-center gap-2 text-left text-red-400 px-3 py-2 rounded-lg hover:bg-red-500/20 transition">
+                                    <LogOut size={16} /> Logout
+                                </button>
+                            </>
+                        )}
+
+                        {isLandingPage && (
+                            <>
+                                <button onClick={() => navigate("/login")} className="w-full flex items-center gap-2 text-left text-slate-200 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                                    Sign In
+                                </button>
+
+                                <button onClick={() => navigate("/signup")} className="w-full flex items-center gap-2 text-left text-white px-3 py-2 rounded-lg hover:bg-[#5558DD] transition">
+                                    Get Started
+                                </button>
+                            </>
+                        )}
+
+                        {isAdminPage && (
+                            <>
+                                <button onClick={() => navigate("-1")} className="w-full flex items-center gap-2 text-left text-slate-200 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                                    Home
+                                </button>
+
+                                <button onClick={handleLogout} className="w-full flex items-center gap-2 text-left text-red-400 px-3 py-2 rounded-lg hover:bg-red-500/20 transition">
+                                    Log Out
+                                </button>
+                            </>
+                        )}
                     </div>
                 )}
             </div>
