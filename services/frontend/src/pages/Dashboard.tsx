@@ -273,9 +273,20 @@ export default function Dashboard() {
       return map[category.toLowerCase()] || "orange";
     };
 
+    // Filtering Tasks Logic
     const filteredTasks = tasks.filter((task) => {
         if (activeTab === "all") return true;
         return task.status === activeTab;
+    }).sort((a, b) => {
+        // 1. Tasks with due dates → closest first
+        if (a.due_date && b.due_date) {
+          return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+        }
+        // 2. Tasks with due date come before no due date
+        if (a.due_date && !b.due_date) return -1;
+        if (!a.due_date && b.due_date) return 1;
+        // 3. No due dates → newest first
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
 
     const hasTasks = filteredTasks.length > 0;
