@@ -19,6 +19,7 @@ export default function FilterUsers({
 }: UserControlsBarProps) {
     return (
         <div className="mb-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+            {/* Search function for filtering users */}
             <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                 <input
@@ -31,6 +32,7 @@ export default function FilterUsers({
             </div>
 
             <div className="flex gap-3">
+                {/* Filer Users by roles */}
                 <div className="relative">
                     <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                     <select
@@ -45,7 +47,7 @@ export default function FilterUsers({
                         <option value="student">Student</option>
                     </select>
                 </div>
-
+                {/* Resync user table from backend */}
                 <button
                     onClick={onRefresh}
                     className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-semibold transition-all"

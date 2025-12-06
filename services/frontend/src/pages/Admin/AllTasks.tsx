@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import LoadingScreen from "../../components/LoadingScreen";
 import Navbar from "../../components/Navbar";
-import type { Task } from "../../type";
+import type { Task, TaskStatus } from "../../type";
 import ConfirmModal from "./components/ConfirmationPopup";
 import landingBg from "../../assets/landing-bg-3.jpg";
 import { toast } from "react-toastify";
@@ -25,7 +25,7 @@ interface EditingTask {
     title: string;
     description: string | null;
     due_date: Date | null;
-    status_id: number | null;
+    status: string;
     category: string;
 }
 
@@ -55,10 +55,12 @@ const AdminTasksPage: React.FC = () => {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [taskIdToDelete, setTaskIdToDelete] = useState<number | null>(null);
 
+    // Fetch all tasks on mount
     useEffect(() => {
         fetchTasks();
     }, []);
 
+    // Function for fetching all tasks
     const fetchTasks = async (): Promise<void> => {
         try {
             setLoading(true);
@@ -90,6 +92,7 @@ const AdminTasksPage: React.FC = () => {
         }
     };
 
+    // Delete task function
     const handleDelete = async (taskId: number): Promise<void> => {
         setDeleteLoading(true);
 
@@ -121,18 +124,20 @@ const AdminTasksPage: React.FC = () => {
         }
     };
 
+    // Handle edit function for setting task to get updated and showing edit modal
     const handleEdit = (task: Task): void => {
         setEditingTask({
             id: task.id,
             title: task.title,
             description: task.description,
             due_date: task.due_date ? new Date(task.due_date) : null,
-            status_id: task.status_id,
+            status: task.status,
             category: task.category,
         });
         setShowEditModal(true);
     };
 
+    // Update task functions for admin
     const handleUpdateTask = async (): Promise<void> => {
         if (!editingTask) return;
         setEditLoading(true);
@@ -151,7 +156,7 @@ const AdminTasksPage: React.FC = () => {
                         title: editingTask.title,
                         description: editingTask.description,
                         due_date: editingTask.due_date || null,
-                        status_id: editingTask.status_id,
+                        status: editingTask.status,
                         category: editingTask.category,
                     }),
                 }
@@ -173,12 +178,14 @@ const AdminTasksPage: React.FC = () => {
         }
     };
 
+    // Get task status function for overdue and return regular tasks
     const getTaskStatus = (task: Task): string => {
         if (task.due_date && new Date(task.due_date) < new Date())
             return "overdue";
         return task.status;
     };
 
+    // filterTask value
     const filteredTasks = tasks.filter((task) => {
         const matchesSearch =
             task.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -189,6 +196,7 @@ const AdminTasksPage: React.FC = () => {
         return matchesSearch && matchesFilter;
     });
 
+    // Get status badge function to show each badge in the table
     const getStatusBadge = (task: Task) => {
         const status = getTaskStatus(task);
         switch (status) {
@@ -229,7 +237,7 @@ const AdminTasksPage: React.FC = () => {
                 );
         }
     };
-
+    //Show loading screen
     if (loading) {
         return <LoadingScreen />;
     }
@@ -237,6 +245,7 @@ const AdminTasksPage: React.FC = () => {
     if (error) {
         return (
             <div className="min-h-screen bg-[#0B0E14] text-slate-50 flex items-center justify-center p-4">
+                {/* Div for showcasing errors */}
                 <div className="max-w-md w-full p-6 rounded-xl bg-red-500/10 border border-red-500/30">
                     <div className="flex items-center gap-3 mb-2">
                         <AlertCircle className="w-6 h-6 text-red-400" />
@@ -267,12 +276,14 @@ const AdminTasksPage: React.FC = () => {
                 backgroundAttachment: "fixed",
             }}
         >
+            {/* Importing navbar component */}
             <Navbar
                 heading="Task Management"
                 subheading="Manage and monitor all user tasks"
             />
             <div className="max-w-7xl mx-auto">
                 <div className="mb-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+                    {/* Search function for filtering users */}
                     <div className="relative flex-1 max-w-md">
                         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                         <input
@@ -285,6 +296,7 @@ const AdminTasksPage: React.FC = () => {
                     </div>
 
                     <div className="flex gap-3">
+                        {/* Filer Tasks by status */}
                         <div className="relative">
                             <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                             <select
@@ -304,7 +316,7 @@ const AdminTasksPage: React.FC = () => {
                                 <option value="archived">Archived</option>
                             </select>
                         </div>
-
+                        {/* Resync task table from backend */}
                         <button
                             onClick={fetchTasks}
                             className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-semibold transition-all"
@@ -316,6 +328,7 @@ const AdminTasksPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+                    {/* Total task block count */}
                     <div className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                         <div className="flex items-center justify-between">
                             <div>
@@ -331,6 +344,7 @@ const AdminTasksPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Not Started task block count */}
                     <div className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                         <div className="flex items-center justify-between">
                             <div>
@@ -352,6 +366,7 @@ const AdminTasksPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Completed task block count */}
                     <div className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                         <div className="flex items-center justify-between">
                             <div>
@@ -372,6 +387,7 @@ const AdminTasksPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Overdue task block count */}
                     <div className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                         <div className="flex items-center justify-between">
                             <div>
@@ -396,6 +412,7 @@ const AdminTasksPage: React.FC = () => {
 
                 <div className="rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl overflow-hidden shadow-2xl">
                     <div className="overflow-x-auto">
+                        {/* Table for showing tasks */}
                         <table className="w-full">
                             <thead>
                                 <tr className="border-b border-white/10">
@@ -538,7 +555,7 @@ const AdminTasksPage: React.FC = () => {
                     tasks
                 </div>
             </div>
-
+            {/* Open the edit modal */}
             {showEditModal && editingTask && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                     <div className="bg-[#0F1219] border border-white/10 rounded-2xl p-6 max-w-md w-full shadow-2xl">
@@ -553,6 +570,7 @@ const AdminTasksPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
+                            {/* Title input field */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-300 mb-2">
                                     Title
@@ -569,7 +587,7 @@ const AdminTasksPage: React.FC = () => {
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
                                 />
                             </div>
-
+                            {/* Description input field */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-300 mb-2">
                                     Description
@@ -586,7 +604,7 @@ const AdminTasksPage: React.FC = () => {
                                     rows={3}
                                 />
                             </div>
-
+                            {/* Due Date input field */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-300 mb-2">
                                     Due Date
@@ -611,34 +629,45 @@ const AdminTasksPage: React.FC = () => {
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
                                 />
                             </div>
-
+                            {/* Status input field */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-300 mb-2">
-                                    Status ID
+                                    Status
                                 </label>
-                                <input
-                                    type="number"
-                                    value={editingTask.status_id || ""}
+                                <select
+                                    value={editingTask.status || ""}
                                     onChange={(e) =>
                                         setEditingTask({
                                             ...editingTask,
-                                            status_id: e.target.value
-                                                ? parseInt(e.target.value)
-                                                : null,
+                                            status: e.target
+                                                .value as TaskStatus,
                                         })
                                     }
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
-                                    placeholder="e.g., 1 for pending, 2 for completed"
-                                />
+                                >
+                                    <option value="" disabled>
+                                        Select status
+                                    </option>
+                                    <option value="not-started">
+                                        Not Started
+                                    </option>
+                                    <option value="in-progress">
+                                        In Progress
+                                    </option>
+                                    <option value="completed">Completed</option>
+                                    <option value="archived">Archived</option>
+                                </select>
                             </div>
 
                             <div className="flex gap-3 pt-4">
+                                {/* Cancel button to exit out of the modal */}
                                 <button
                                     onClick={() => setShowEditModal(false)}
                                     className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-semibold transition-all"
                                 >
                                     Cancel
                                 </button>
+                                {/* Save changes for editing */}
                                 <button
                                     onClick={() => setShowEditPopup(true)}
                                     className="flex-1 px-4 py-3 bg-[#6366F1] hover:bg-[#5558DD] rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
@@ -651,6 +680,7 @@ const AdminTasksPage: React.FC = () => {
                     </div>
                 </div>
             )}
+            {/* Confirmation for editing task */}
             <ConfirmModal
                 isOpen={showEditPopup}
                 onClose={() => setShowEditPopup(false)}
@@ -661,6 +691,7 @@ const AdminTasksPage: React.FC = () => {
                 error={editError}
                 onConfirm={() => handleUpdateTask()}
             />
+            {/* Confirmation for deleting task */}
             <ConfirmModal
                 isOpen={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}

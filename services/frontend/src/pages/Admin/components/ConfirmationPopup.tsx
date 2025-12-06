@@ -26,8 +26,10 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
     const [inputText, setInputText] = useState("");
 
+    // Prevents rendering when modal is not opened
     if (!isOpen) return null;
 
+    // Determines whether the confirm action button should be disabled
     const isActionDisabled = confirmText
         ? inputText !== confirmText || loading
         : loading;
@@ -35,6 +37,7 @@ export default function ConfirmModal({
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 w-full max-w-md relative">
+                {/* Close button to exit out of the modal */}
                 <button
                     className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
                     onClick={() => {
@@ -55,6 +58,7 @@ export default function ConfirmModal({
 
                 <p className="text-slate-300 mb-4">{message}</p>
 
+                {/* Show confirmation instructions and input when confirmText is required */}
                 {confirmText && (
                     <>
                         <p className="text-slate-400 mb-2">
@@ -73,14 +77,14 @@ export default function ConfirmModal({
                         />
                     </>
                 )}
-
+                {/* Display error if found */}
                 {error && (
                     <div className="bg-red-600 text-white px-4 py-2 rounded-lg text-center mb-4">
                         {error}
                     </div>
                 )}
-
                 <div className="flex gap-3">
+                    {/* Cancel button to exit out of the modal */}
                     <button
                         className="flex-1 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium transition-all"
                         onClick={() => {
@@ -90,6 +94,7 @@ export default function ConfirmModal({
                     >
                         Cancel
                     </button>
+                    {/* Button that runs the confirm action */}
                     <button
                         className={`flex-1 ${
                             confirmText

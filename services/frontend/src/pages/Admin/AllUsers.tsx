@@ -47,6 +47,7 @@ export default function AdminUsersPage() {
         fetchUsers();
     }, []);
 
+    // Function for fetching all users
     const fetchUsers = async (): Promise<void> => {
         try {
             setLoading(true);
@@ -78,6 +79,7 @@ export default function AdminUsersPage() {
         }
     };
 
+    // Delete user function
     const handleDelete = async (userId: number): Promise<void> => {
         setDeleteLoading(true);
 
@@ -108,6 +110,7 @@ export default function AdminUsersPage() {
         }
     };
 
+    // Handle edit function for setting user to get updated and showing edit modal
     const handleEdit = (user: User): void => {
         setEditingUser({
             id: user.id,
@@ -118,6 +121,7 @@ export default function AdminUsersPage() {
         setShowEditModal(true);
     };
 
+    // Update user functions for admin
     const handleUpdateUser = async (): Promise<void> => {
         if (!editingUser) return;
         setEditLoading(true);
@@ -141,7 +145,7 @@ export default function AdminUsersPage() {
             );
 
             if (!response.ok) throw new Error("Failed to update user");
-toast.success("User updated successfully");
+            toast.success("User updated successfully");
             await fetchUsers();
             setShowEditModal(false);
             setEditingUser(null);
@@ -155,6 +159,7 @@ toast.success("User updated successfully");
         }
     };
 
+    // filter user value
     const filteredUsers = users.filter((user) => {
         const matchesSearch =
             user.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -165,12 +170,14 @@ toast.success("User updated successfully");
         return matchesSearch && matchesFilter;
     });
 
+    // Get role badge function to show each badge in the table
     const getRoleBadgeColor = (role: "student" | "admin" | "guest"): string => {
         return role.toLowerCase() === "admin"
             ? "bg-[#6366F1] text-white"
             : "bg-white/10 text-slate-300";
     };
 
+    // Get user initials from username
     const getInitials = (username: string): string => {
         return (
             username
@@ -182,8 +189,10 @@ toast.success("User updated successfully");
         );
     };
 
+    // value to count how many admins are within the users
     const adminCount = users.filter((u) => u.role === "admin").length;
 
+    // Show loading screen
     if (loading) {
         return <LoadingScreen />;
     }
@@ -191,6 +200,7 @@ toast.success("User updated successfully");
     if (error) {
         return (
             <div className="min-h-screen bg-[#0B0E14] text-slate-50 flex items-center justify-center p-4">
+                {/* Div for showcasing errors */}
                 <div className="max-w-md w-full p-6 rounded-xl bg-red-500/10 border border-red-500/30">
                     <div className="flex items-center gap-3 mb-2">
                         <AlertCircle className="w-6 h-6 text-red-400" />
@@ -221,11 +231,13 @@ toast.success("User updated successfully");
                 backgroundAttachment: "fixed",
             }}
         >
+            {/* Importing navbar component */}
             <Navbar
                 heading="User Management"
                 subheading="Manage and monitor all users"
             />
             <div className="max-w-7xl mx-auto">
+                {/* Call the filter user component */}
                 <FilterUsers
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
@@ -233,7 +245,7 @@ toast.success("User updated successfully");
                     setFilterRole={setFilterRole}
                     onRefresh={fetchUsers}
                 />
-
+                {/* User counts for roles and total */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                         <div className="flex items-center justify-between">
@@ -288,7 +300,7 @@ toast.success("User updated successfully");
                         </div>
                     </div>
                 </div>
-
+                {/* Table for showing users */}
                 <div className="rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl overflow-hidden shadow-2xl">
                     <div className="overflow-x-auto">
                         <table className="w-full">
@@ -462,6 +474,7 @@ toast.success("User updated successfully");
                 </div>
             </div>
 
+            {/* Open modal for editing user */}
             {editingUser && (
                 <EditUserModal
                     show={showEditModal}
@@ -471,6 +484,7 @@ toast.success("User updated successfully");
                     onChange={setEditingUser}
                 />
             )}
+            {/* Confirmation for editing user */}
             <ConfirmModal
                 isOpen={showEditPopup}
                 onClose={() => setShowEditPopup(false)}
@@ -481,6 +495,7 @@ toast.success("User updated successfully");
                 error={editError}
                 onConfirm={handleUpdateUser}
             />
+            {/* Confirmation for deleting user */}
             <ConfirmModal
                 isOpen={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}

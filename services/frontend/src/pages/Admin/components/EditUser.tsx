@@ -23,6 +23,8 @@ export default function EditUserModal({
             <div className="bg-[#0F1219] border border-white/10 rounded-2xl p-6 max-w-md w-full shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold">Edit User</h3>
+
+                    {/* Cancel button to exit out of the modal */}
                     <button
                         onClick={onClose}
                         className="p-2 rounded-lg hover:bg-white/5 transition-colors"
@@ -32,6 +34,7 @@ export default function EditUserModal({
                 </div>
 
                 <div className="space-y-4">
+                    {/*  Username input */}
                     <div>
                         <label className="block text-sm mb-2 text-slate-300">
                             Username
@@ -48,7 +51,7 @@ export default function EditUserModal({
                             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         />
                     </div>
-
+                    {/* User email input */}
                     <div>
                         <label className="block text-sm mb-2 text-slate-300">
                             Email
@@ -65,7 +68,7 @@ export default function EditUserModal({
                             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         />
                     </div>
-
+                    {/* Change user roles selection */}
                     <div>
                         <label className="block text-sm mb-2 text-slate-300">
                             Role
@@ -86,13 +89,14 @@ export default function EditUserModal({
                     </div>
 
                     <div className="flex gap-3 pt-4">
+                        {/* Cancel button to exit out of the modal */}
                         <button
                             onClick={onClose}
                             className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl"
                         >
                             Cancel
                         </button>
-
+                        {/* Continue button to move to save edits */}
                         <button
                             onClick={onRequestSubmit}
                             className="flex-1 px-4 py-3 bg-[#6366F1] rounded-xl flex items-center justify-center gap-2"
