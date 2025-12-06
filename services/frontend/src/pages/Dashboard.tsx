@@ -22,6 +22,8 @@ import type { Task, TaskStatus } from "../type";
 import LoadingScreen from "../components/LoadingScreen";
 import Notifications from "../components/Notifications";
 import Navbar from "../components/Navbar";
+import ConfirmationPopup from "./Admin/components/ConfirmationPopup";
+import landingBg from '../assets/landing-bg-3.jpg';
 
 /* Dashboard.tsx: the main body of the app that displays tasks, progress summaries, and any notfications */
 
@@ -39,6 +41,9 @@ export default function Dashboard() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [notifMessage, setNotifMessage] = useState<string | null>(null);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState<number | null>(null);
+    const [deleting, setDeleting] = useState(false);
 
     /* Effect to check for notifications based on user preferences and task statuses */
   useEffect(() => {
@@ -341,7 +346,15 @@ export default function Dashboard() {
     }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-violet-500/30 selection:text-violet-200">
+    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-violet-500/30 selection:text-violet-200"
+          style={{
+                      backgroundImage: `url(${landingBg})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundAttachment: 'fixed'
+          }}
+    >
       {/* BACKGROUND */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-grid-white opacity-[0.15]"></div>
@@ -597,8 +610,12 @@ export default function Dashboard() {
                             </select>
 
                             <button
-                              onClick={() => confirm('Delete this task?') && handleDeleteTask(task.id)}
+                              onClick={() => {
+                                setTaskToDelete(task.id);
+                                setDeleteModalOpen(true);
+                              }}
                               className="text-white hover:text-red-400 p-2 rounded-lg hover:bg-red-500/10 transition-all"
+                              title="Delete task"
                             >
                               <X className="w-5 h-5" />
                             </button>
@@ -792,6 +809,31 @@ export default function Dashboard() {
         isOpen={isAddTaskOpen}
         onClose={() => setIsAddTaskOpen(false)}
         onTaskCreated={handleTaskCreated}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationPopup
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setTaskToDelete(null);
+        }}
+        title="Delete Task?"
+        message="This action cannot be undone. Are you sure you want to permanently delete this task?"
+        actionText="Delete Task"
+        confirmText="delete"
+        loading={deleting}
+        onConfirm={async () => {
+          if (!taskToDelete) return;
+          setDeleting(true);
+          try {
+            await handleDeleteTask(taskToDelete);
+            setDeleteModalOpen(false);
+          } finally {
+            setDeleting(false);
+            setTaskToDelete(null);
+          }
+        }}
       />
     </div>
   );
