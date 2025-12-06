@@ -16,6 +16,7 @@ import EditUserModal from "./components/EditUser";
 import FilterUsers from "./components/FilterUsers";
 import Navbar from "../../components/Navbar";
 import ConfirmModal from "./components/ConfirmationPopup";
+import landingBg from "../../assets/landing-bg-3.jpg";
 
 type FilterRole = "all" | "student" | "admin";
 
@@ -206,7 +207,16 @@ export default function AdminUsersPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0B0E14] text-slate-50 p-4 md:p-8">
+        <div
+            className="min-h-screen bg-[#0B0E14] text-slate-50 p-4 md:p-8"
+            style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15)), url(${landingBg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+            }}
+        >
             <Navbar
                 heading="User Management"
                 subheading="Manage and monitor all users"

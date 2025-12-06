@@ -18,7 +18,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 import Navbar from "../../components/Navbar";
 import type { Task } from "../../type";
 import ConfirmModal from "./components/ConfirmationPopup";
-
+import landingBg from "../../assets/landing-bg-3.jpg";
 interface EditingTask {
     id: number;
     title: string;
@@ -28,7 +28,13 @@ interface EditingTask {
     category: string;
 }
 
-type FilterStatus = "all" | "pending" | "completed" | "overdue";
+type FilterStatus =
+    | "all"
+    | "not-started"
+    | "in-progress"
+    | "completed"
+    | "overdue"
+    | "archived";
 
 const AdminTasksPage: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -246,7 +252,16 @@ const AdminTasksPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#0B0E14] text-slate-50 p-4 md:p-8">
+        <div
+            className="min-h-screen text-slate-50 p-4 md:p-8"
+            style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15)), url(${landingBg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+            }}
+        >
             <Navbar
                 heading="Task Management"
                 subheading="Manage and monitor all user tasks"
@@ -277,9 +292,11 @@ const AdminTasksPage: React.FC = () => {
                                 className="pl-12 pr-8 py-3 bg-white/5 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all appearance-none cursor-pointer"
                             >
                                 <option value="all">All Status</option>
-                                <option value="pending">Pending</option>
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress">In Progress</option>
                                 <option value="completed">Completed</option>
                                 <option value="overdue">Overdue</option>
+                                <option value="archived">Archived</option>
                             </select>
                         </div>
 
@@ -313,13 +330,14 @@ const AdminTasksPage: React.FC = () => {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-slate-400 text-sm mb-1">
-                                    Pending
+                                    Not Started
                                 </p>
                                 <p className="text-3xl font-bold">
                                     {
                                         tasks.filter(
                                             (t) =>
-                                                getTaskStatus(t) === "pending"
+                                                getTaskStatus(t) ===
+                                                "not-started"
                                         ).length
                                     }
                                 </p>
@@ -641,10 +659,10 @@ const AdminTasksPage: React.FC = () => {
             <ConfirmModal
                 isOpen={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
-                title="Delete Account"
+                title="Delete Task"
                 message="This action is permanent and cannot be undone. All your data will be deleted."
                 confirmText="DELETE"
-                actionText="Delete Account"
+                actionText="Delete Task"
                 loading={deleteLoading}
                 error={deleteError}
                 onConfirm={() => handleDelete(taskIdToDelete as number)}
