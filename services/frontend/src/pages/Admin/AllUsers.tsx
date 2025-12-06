@@ -17,6 +17,7 @@ import FilterUsers from "./components/FilterUsers";
 import Navbar from "../../components/Navbar";
 import ConfirmModal from "./components/ConfirmationPopup";
 import landingBg from "../../assets/landing-bg-3.jpg";
+import { toast } from "react-toastify";
 
 type FilterRole = "all" | "student" | "admin";
 
@@ -64,12 +65,14 @@ export default function AdminUsersPage() {
             if (!response.ok) throw new Error("Failed to fetch users");
 
             const data: User[] = await response.json();
+            toast.success("Users fetched successfully");
             setUsers(data);
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
             setError(errorMessage);
             console.error("Error fetching users:", err);
+            toast.error(`Error fetching users: ${errorMessage}`);
         } finally {
             setLoading(false);
         }
@@ -92,6 +95,7 @@ export default function AdminUsersPage() {
             );
 
             if (!response.ok) throw new Error("Failed to delete user");
+            toast.success("User deleted successfully");
             await fetchUsers();
             setShowDeleteModal(false);
             setUserIdToDelete(null);
@@ -137,7 +141,7 @@ export default function AdminUsersPage() {
             );
 
             if (!response.ok) throw new Error("Failed to update user");
-
+toast.success("User updated successfully");
             await fetchUsers();
             setShowEditModal(false);
             setEditingUser(null);

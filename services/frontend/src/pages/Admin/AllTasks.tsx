@@ -19,6 +19,7 @@ import Navbar from "../../components/Navbar";
 import type { Task } from "../../type";
 import ConfirmModal from "./components/ConfirmationPopup";
 import landingBg from "../../assets/landing-bg-3.jpg";
+import { toast } from "react-toastify";
 interface EditingTask {
     id: number;
     title: string;
@@ -77,11 +78,13 @@ const AdminTasksPage: React.FC = () => {
 
             const data: Task[] = await response.json();
             setTasks(data);
+            toast.success("Tasks loaded successfully");
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
             setError(errorMessage);
             console.error("Error fetching tasks:", err);
+            toast.error(`Error fetching tasks: ${errorMessage}`);
         } finally {
             setLoading(false);
         }
@@ -104,6 +107,7 @@ const AdminTasksPage: React.FC = () => {
             );
 
             if (!response.ok) throw new Error("Failed to delete task");
+            toast.success("Task deleted successfully");
             await fetchTasks();
             setShowDeleteModal(false);
             setTaskIdToDelete(null);
@@ -113,6 +117,7 @@ const AdminTasksPage: React.FC = () => {
                 err instanceof Error ? err.message : "An error occurred";
             setDeleteError(errorMessage);
             console.error("Error deleting task:", err);
+            toast.error(`Error deleting task: ${errorMessage}`);
         }
     };
 
@@ -153,18 +158,18 @@ const AdminTasksPage: React.FC = () => {
             );
 
             if (!response.ok) throw new Error("Failed to update task");
-
+            toast.success("Task updated successfully");
             await fetchTasks();
             setShowEditModal(false);
             setEditingTask(null);
             setEditLoading(false);
             setShowEditPopup(false);
-            // Use toast for notification as confirmation
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : "An error occurred";
             setEditError(errorMessage);
             console.error("Error updating task:", err);
+            toast.error(`Error updating task: ${errorMessage}`);
         }
     };
 
